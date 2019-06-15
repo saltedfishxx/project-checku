@@ -4,7 +4,7 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Built Details](#built-details)
+  * [Build Details](#build-details)
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequitsites)
   * [Installation](#installation)
