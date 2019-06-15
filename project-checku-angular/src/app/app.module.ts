@@ -13,6 +13,10 @@ import { SideBarComponent } from './common/components/side-bar/side-bar.componen
 import { ImageCheckboxComponent } from './common/components/image-checkbox/image-checkbox.component';
 import { DialogComponent } from './common/components/dialog/dialog.component';
 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { APIInterceptor } from './common/services/APIInterceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,12 +32,23 @@ import { DialogComponent } from './common/components/dialog/dialog.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
-    LoginComponent
+    LoginComponent,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: APIInterceptor,
+    multi: true,
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

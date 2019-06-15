@@ -1,40 +1,62 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiCallService {
 
-  constructor() { }
+  constructor(private http : HttpClient) { }
 
   //GET
-  getPendingCustRecords() {
+  getRecords(requestUrl) {
+    return new Promise((resolve, reject) => {
 
-  }
-
-  getHoldingAccRecords() {
-
-  }
-
-  getRejectedChequeRecords() {
-
+      this.http.get(requestUrl).subscribe(response => {
+        resolve(response);
+      },
+      errorResponse => {
+        reject(errorResponse);
+      });
+    });
   }
 
   //POST
-  processScannedCheques() {
+  login(requestUrl, data){
+    return new Promise((resolve, reject) => {
 
+      this.http.post(requestUrl, data).subscribe(response => {
+        resolve(response);
+      },
+      errorResponse => {
+        reject(errorResponse);
+      });
+    });
   }
 
-  addRejectRecords() {
+  processScannedCheques(requestUrl, data) {
+    return new Promise((resolve, reject) => {
 
+      this.http.post(requestUrl, data).subscribe(response => {
+        resolve(response);
+      },
+      errorResponse => {
+        reject(errorResponse);
+      });
+    });
   }
 
-  addSuccessRecords() {
+  addRecords(requestUrl, data) {
+    return new Promise((resolve, reject) => {
 
-  }
-
-  addReviewRecords() {
-
+      this.http.post(requestUrl, data).subscribe(response => {
+        resolve(response);
+      },
+      errorResponse => {
+        reject(errorResponse);
+      });
+    });
   }
 
 

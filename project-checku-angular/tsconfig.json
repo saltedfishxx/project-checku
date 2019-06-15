@@ -2,6 +2,11 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      //"@example-import":["example.ts"]
+      "@urls" : ["src/app/common/services/urls"],
+      "@apiService": ["src/app/common/services/api-call.service"]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
