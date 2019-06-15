@@ -32,17 +32,17 @@ Checku is built with Angular 7 and Python
 project-checku\project-checku-angular> npm install
 ```
 2) Run the following command to view the website on localhost:
-```typescript
+```npm
 project-checku\project-checku-angular> ng serve
 ```
 #### Python/Flask:
 1) Install the required modules using ```requirements.txt```:
-```python
+```npm
 project-checku\project-checku-python> py -m pip install -r requirements.txt
 ```
 
 2) Run ```app.py``` to run server on localhost:
-```python
+```npm
 project-checku\project-checku-python> py app.py
 ```
 
