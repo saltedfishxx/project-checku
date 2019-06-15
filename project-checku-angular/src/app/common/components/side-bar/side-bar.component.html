@@ -1,3 +1,37 @@
-<p>
-  side-bar works!
-</p>
+<nav class="navbar navbar-nav d-block bg-white h-100 p-0 shadow" id="sidenav-main">
+  <div class="w-100 d-block h-25">
+    <a href="javascript:void(0);" class="nav-item nav-link" (click)="changeTab(0)">
+      <div class="pl-4">
+        <i class="fa fa-long-arrow-left text-gray"></i>
+        <span class="pl-4">Back</span>
+      </div>
+    </a>
+  </div>
+  <!-- User -->
+  <ul class="nav d-block w-100 mt-5 pt-5">
+    <li class="nav-item" (click)="changeTab(1)">
+      <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 1}">
+        <div class="text-center">
+          <i class="fa fa-times  text-danger"></i>
+          <span >To Reject</span>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item" (click)="changeTab(2)">
+      <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 2}">
+        <div class="text-center ">
+          <i class="fa fa-ellipsis-h  text-warning"></i>
+          <span >To Review</span>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item" (click)="changeTab(3)">
+      <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 3}">
+        <div class="text-center ">
+          <i class="fa fa-check  text-success"></i>
+          <span >To Accept</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</nav>

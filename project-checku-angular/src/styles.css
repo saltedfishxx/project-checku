@@ -9,3 +9,18 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.strip {
+    background: #6770E2;
+    position: relative;
+    min-height:300px;
+    overflow:hidden;
+}
+.strip::after {
+  content: '';
+  position: absolute;
+  bottom: -25%; left: 0; right: 0;
+  height:100%;
+  background:#F8F9FE;
+  z-index: -1;
+}

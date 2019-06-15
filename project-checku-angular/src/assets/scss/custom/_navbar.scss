@@ -1,6 +1,7 @@
 .navbar-nav {
     .nav-link {
-        font-size: $navbar-nav-link-font-size;
+        color: #adb5bd;
+        font-size: 1.4em;
         font-family: $navbar-nav-link-font-family;
         font-weight: $navbar-nav-link-font-weight;
         text-transform: $navbar-nav-link-text-transform;
@@ -10,6 +11,23 @@
         .nav-link-inner--text {
             margin-left: .25rem;
         }
+
+        @include hover-focus{
+            color: #212529;
+        }
+        &.active {
+            position: relative;
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: $nav-link-padding-y;
+                bottom: $nav-link-padding-y;
+                border-left: 2px solid $primary;
+            }
+        }
+
     }
 }
 
@@ -52,7 +70,6 @@
 
     .navbar-nav {
         .nav-item {
-            margin-right: .5rem;
 
             [data-toggle="dropdown"]::after {
                 transition: $transition-base;

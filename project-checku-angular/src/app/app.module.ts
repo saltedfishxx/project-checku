@@ -16,6 +16,7 @@ import { DialogComponent } from './common/components/dialog/dialog.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './common/services/APIInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProcessChequesComponent,
     SideBarComponent,
     ImageCheckboxComponent,
-    DialogComponent
+    DialogComponent,
+    TestPageComponent
   ],
   imports: [
     BrowserModule,

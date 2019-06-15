@@ -14,9 +14,12 @@
 .nav-link {
   display: block;
   padding: $nav-link-padding-y $nav-link-padding-x;
+  color: #adb5bd;
 
   @include hover-focus {
     text-decoration: none;
+    background-color: #F8F9FE;
+    color: #212529;
   }
 
   // Disabled state lightens text
@@ -49,6 +52,19 @@
       background-color: transparent;
       border-color: transparent;
     }
+
+    &.active {
+      position: relative;
+
+      &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: $nav-link-padding-y;
+          bottom: $nav-link-padding-y;
+          border-left: 2px solid $primary;
+      }
+  }
   }
 
   .nav-link.active,
