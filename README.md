@@ -6,12 +6,9 @@
 * [About the Project](#about-the-project)
   * [Built Details](#built-details)
 * [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
+  * [Prerequisites](#prerequitsites)
   * [Installation](#installation)
 * [Usage](#usage)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
 ## About the Project 
@@ -50,7 +47,4 @@ project-checku\project-checku-python> py app.py
 
 coming soon.
 
-## Contributing
-
-
-## License
+## Acknowledgements
