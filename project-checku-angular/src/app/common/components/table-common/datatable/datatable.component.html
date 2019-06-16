@@ -1,3 +1,65 @@
-<p>
-  datatable works!
-</p>
+<div class="table-responsive bg-white" *ngIf="config">
+  <table class="table align-items-center table-flush" [ngClass]="{'table-hover': config.hoverable, 'table-striped' : config.hasStripes}">
+    <thead class="thead-light">
+      <!--if extra header row for column grouping is specified (only works non-frozen tables)-->
+      <tr *ngIf="config.stretchedHeaderList.length !== 0 && hasFrozen == false && config.resizable == false">
+        <th *ngFor="let header of config.stretchedHeaderList" [style.width]="'inherit'"
+          [style.height]="config.stretchedHeaderHeight" [attr.colspan]="header.colspan">{{header.name}}</th>
+      </tr>
+      <tr>
+        <ng-container *ngFor="let col of config.columns">
+          <th [style.width]="col.width ? col.width : 'inherit'" [style.height]="hasFrozen ? config.headerHeight : ''">
+            {{col.header}}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rowData of config.value">
+        <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
+          [ngStyle]="(col.hasDollar || col.currency)? {'text-align':'right'} : col.style">
+          <div *ngIf="col.isStatus; else noStatus">
+            <div *ngIf="col.hasBar; else noBar">
+              <div class="d-flex align-items-center">
+                <span class="mr-2">{{rowData[col.field]}}/3</span>
+                <div>
+                  <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar"
+                      aria-valuenow="checkProgess(rowData[col.field])" aria-valuemin="0" aria-valuemax="100"
+                      style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #noBar>
+              <span class="badge badge-dot">
+                <i [ngClass]="{'bg-warning': rowData[col.field] == 'pending', 'bg-success': rowData[col.field] == 'verified', 'bg-danger': rowData[col.field] == 'unverified'}"></i>
+              </span>
+              {{rowData[col.field]}}
+            </ng-template>
+          </div>
+          <ng-template #noStatus>
+              <div *ngIf="col.hasBar; else noBar">
+                  <div class="d-flex align-items-center">
+                    <span class="mr-2">{{rowData[col.field]}}/3</span>
+                    <div>
+                      <div class="progress mb-0" [style.width]="'200px'">
+                        <div class="progress-bar" 
+                        [ngClass]="{'bg-warning': rowData['smsStatus'] == 'pending', 'bg-success': rowData['smsStatus'] == 'verified', 'bg-danger': rowData['smsStatus'] == 'unverified'}" 
+                        role="progressbar"
+                          [style.width] ="checkProgess(rowData[col.field])"
+                          ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noBar>
+                    <span
+                    *ngIf="checkNumeric(rowData[col.field]) && (col.hasDollar || col.currency)">$</span>{{ (col.currency || col.dateFormat )? (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :(rowData[col.field])}}
+                </ng-template>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

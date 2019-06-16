@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'side-bar',
@@ -13,7 +13,9 @@ export class SideBarComponent implements OnInit {
   ngOnInit() {
   }
 
+  @Output() changeTabs = new EventEmitter<any>();
   changeTab(selectNum){
     this.tab = selectNum;
+    this.changeTabs.emit(selectNum);
   }
 }

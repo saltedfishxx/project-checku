@@ -102,9 +102,12 @@
 
 
 // Angular diferences
-@import "angular/alerts.scss";
-@import "angular/navbar.scss";
-@import "angular/dropdowns.scss";
-@import "angular/tabs.scss";
-@import "angular/datepicker.scss";
-@import "angular/input-group.scss";
+@import "angular/_alerts.scss";
+@import "angular/_navbar.scss";
+@import "angular/_dropdowns.scss";
+@import "angular/_tabs.scss";
+@import "angular/_datepicker.scss";
+@import "angular/_input-group.scss";
+@import "angular/badges/_badge-circle.scss";
+@import "angular/badges/_badge.scss";
+@import "angular/badges/_badge-dot.scss";
