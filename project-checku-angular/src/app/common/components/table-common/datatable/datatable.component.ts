@@ -11,6 +11,8 @@ export class DatatableComponent implements OnInit {
 
   @Input() config: any;
   onChangeSubscription: Subscription;
+  toggleButton: boolean = false;
+  selectedSortHeader: any;
   
   constructor() { }
 
@@ -46,6 +48,15 @@ export class DatatableComponent implements OnInit {
         this.parseInput(this.config);
       });
     }
+  }
+
+  setSortField(header){
+    this.selectedSortHeader = header;
+    this.toggleButton = !this.toggleButton;
+  }
+
+  getSortField(header){
+    return this.selectedSortHeader == header;
   }
 
   protected parseInput(inputValue: TableConfig) {
@@ -128,9 +139,6 @@ export class DatatableComponent implements OnInit {
         temp.push(element);
       }
     })
-    if (this.config.sortBy) {
-      temp.sort(this.dynamicSort(this.config.sortOrder, this.config.sortBy));
-    }
     this.config.value = temp;
     this.config.totalRecords = this.config.value.length;
     this.config.pageCount = Math.max(Math.ceil(this.config.totalRecords / this.config.rows), 1);
@@ -139,63 +147,6 @@ export class DatatableComponent implements OnInit {
       Math.min(this.config.first + this.config.rows, this.config.totalRecords));
   }
 
-  // // overwrite original sort function
-  // customSort(event: SortEvent) {
-  //   event.data.sort((data1, data2) => {
-  //     return 0;
-  //   });
-  // }
-
-  sort(field: string) {
-    if (!this.config.value) return;
-    if (field == this.config.sortBy) {
-      // clicked for second time
-      this.config.sortOrder = -1 * this.config.sortOrder;
-    } else {
-      this.config.sortOrder = 1;
-    }
-    this.config.sortBy = field;
-    this.config.value.sort(this.dynamicSort(this.config.sortOrder, field));
-    this.config.valueToDisplay = this.config.value.slice(this.config.first,
-      Math.min(this.config.first + this.config.rows, this.config.totalRecords));
-  }
-
-  private dynamicSort(sortOrder: number, property: string) {
-    return function (a, b) {
-      var value1 = a[property];
-      var value2 = b[property];
-      let result = null;
-      if (value1 == null && value2 != null) {
-        result = -1;
-      } else if (value1 != null && value2 == null) {
-        result = 1;
-      } else if (value1 == null && value2 == null) {
-        result = 0;
-      } else if (typeof value1 === 'string' && typeof value2 === 'string') {
-        result = value1.localeCompare(value2);
-      } else {
-        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-      }
-      return (sortOrder * result);
-    }
-  }
-
-  showRows(selectedRows: any) {
-    if (selectedRows == "All") {
-      this.config.valueToDisplay = this.config.value;
-    } else {
-      this.config.valueToDisplay = this.config.value.slice(this.config.first,
-        Math.min(this.config.first + selectedRows, this.config.totalRecords));
-    }
-  }
-
-  // showAll() {
-  //   if (this.config.totalRecords > this.config.valueToDisplay.length) {
-  //     this.config.valueToDisplay = this.config.value;
-  //     this.config.rows = this.config.totalRecords;
-  //     //this.config.disable = true;
-  //   }
-  // }
 
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
   onRowClick(event) {
@@ -203,13 +154,7 @@ export class DatatableComponent implements OnInit {
       this.clicked.emit(event);
     }
   }
-
-  //FOR DYNAMIC BUTTON TABLE
-  @Output() buttonsClicked: EventEmitter<any> = new EventEmitter<any>();
-  onButtonsClick(data, id) {
-    this.buttonsClicked.emit({ data, id });
-  }
-
+  
   onCellAnchorClick(col, event) {
     if (col.clickable) {
       this.clicked.emit(event);

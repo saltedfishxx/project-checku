@@ -40,8 +40,29 @@ export class TestPageComponent implements OnInit {
     this.testConfig.hoverable = true;
     this.testConfig.columns = cols;
     this.testConfig.value = [{"data1" : "what", "data2" : "neni", "smsStatus" : "pending", "data4": "1"}, 
-                             {"data1" : "what", "data2" : "neni", "smsStatus" : "verified", "data4": "2"},
-                             {"data1" : "what", "data2" : "neni", "smsStatus" : "unverified", "data4": "3"}];
+                             {"data1" : "ehh", "data2" : "neni", "smsStatus" : "verified", "data4": "2"},
+                             {"data1" : "what", "data2" : "dafuq", "smsStatus" : "unverified", "data4": "3"}];
   }
 
 }
+
+/*column:
+  isStatus
+  hasBar
+  currency
+  dateFormat
+  header
+  field
+  width
+  style
+
+config:
+hoverable
+columns
+value
+hasCheckBox
+hasHamburger
+isStripe
+stickyHeader
+
+*/

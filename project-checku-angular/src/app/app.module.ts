@@ -16,7 +16,10 @@ import { DialogComponent } from './common/components/dialog/dialog.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './common/services/APIInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
+ 
 
 @NgModule({
   declarations: [
@@ -37,13 +40,15 @@ import { TestPageComponent } from './web-pages/test-components/test-page/test-pa
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MDBBootstrapModule
   ],
   exports: [
     LoginComponent,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MDBBootstrapModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

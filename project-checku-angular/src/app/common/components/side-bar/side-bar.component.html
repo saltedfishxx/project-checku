@@ -2,7 +2,7 @@
   <div class="w-100 d-block h-25">
     <a href="javascript:void(0);" class="nav-item nav-link" (click)="changeTab(0)">
       <div class="pl-4">
-        <i class="fa fa-long-arrow-left text-gray"></i>
+          <mdb-icon fas icon="long-arrow-alt-left" class="text-gray"></mdb-icon>
         <span class="pl-4">Back</span>
       </div>
     </a>
@@ -12,7 +12,7 @@
     <li class="nav-item" (click)="changeTab(1)">
       <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 1}">
         <div class="text-center">
-          <i class="fa fa-times  text-danger"></i>
+            <mdb-icon fas icon="times" class="text-danger"></mdb-icon>
           <span >To Reject</span>
         </div>
       </a>
@@ -20,7 +20,7 @@
     <li class="nav-item" (click)="changeTab(2)">
       <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 2}">
         <div class="text-center ">
-          <i class="fa fa-ellipsis-h  text-warning"></i>
+            <mdb-icon fas icon="ellipsis-h" class="text-warning"></mdb-icon>
           <span >To Review</span>
         </div>
       </a>
@@ -28,7 +28,7 @@
     <li class="nav-item" (click)="changeTab(3)">
       <a href="javascript:void(0);" class="nav-link" [ngClass]="{'active': tab == 3}">
         <div class="text-center ">
-          <i class="fa fa-check  text-success"></i>
+            <mdb-icon fas icon="check" class="text-success"></mdb-icon>
           <span >To Accept</span>
         </div>
       </a>
