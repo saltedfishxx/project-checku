@@ -21,6 +21,7 @@ Checku is built with Angular 7 and Python
 ### Prerequitsites
 * [Angular Cli](https://cli.angular.io/)
 * [Flask](http://flask.pocoo.org/)
+* [MSSQL](https://www.microsoft.com/en-us/sql-server/sql-server-2019)
 
 ### Installation
 #### Angular:
@@ -42,6 +43,9 @@ project-checku\project-checku-python> py -m pip install -r requirements.txt
 ```npm
 project-checku\project-checku-python> py app.py
 ```
+
+#### MSSQL Database
+//todo
 
 ## Usage
 
