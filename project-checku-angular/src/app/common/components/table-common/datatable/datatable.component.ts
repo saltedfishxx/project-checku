@@ -3,7 +3,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'data-table',
+  selector: 'datatable',
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.scss']
 })
@@ -148,19 +148,6 @@ export class DatatableComponent implements OnInit {
   }
 
 
-  @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
-  onRowClick(event) {
-    if (this.config.clickable) {
-      this.clicked.emit(event);
-    }
-  }
-  
-  onCellAnchorClick(col, event) {
-    if (col.clickable) {
-      this.clicked.emit(event);
-    }
-  }
-
   //Check if value passed in is numeric
   checkNumeric(value) {
     return /\d+(\.\d*)?|\.\d+/g.test(value) && value != null && value !='';
@@ -193,6 +180,7 @@ export class DatatableComponent implements OnInit {
  * @param displayEOT if to display End Of Table. default to false;
  */
 export class TableConfig {
+  nestedColumns: any[];
   columns: any[]; //field, header, width, clickable, sortable, dateFormat, style, currency, hasDollar, hasBar, isStatus
   /*
   ex)
@@ -262,7 +250,8 @@ export class TableConfig {
   disable: boolean = false;
   clickable: boolean = false; // if the overall row is clickable or not
   hoverable: boolean = false;
-  hasStripes: boolean = true;
+  hasStripes: boolean = false;
+  hasBorders: boolean = false;
 
   // when parent element width < minWidth, display horizontal scroll bar
   minWidth: string = '640px'; // only applicable when table is scrollable

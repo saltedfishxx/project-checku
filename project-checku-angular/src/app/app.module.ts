@@ -11,14 +11,13 @@ import { UploadChequesComponent } from './web-pages/upload-cheques/upload-cheque
 import { ProcessChequesComponent } from './web-pages/process-cheques/process-cheques.component';
 import { SideBarComponent } from './common/components/side-bar/side-bar.component';
 import { ImageCheckboxComponent } from './common/components/image-checkbox/image-checkbox.component';
-import { DialogComponent } from './common/components/dialog/dialog.component';
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './common/services/APIInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
+import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.component';
  
 
 @NgModule({
@@ -32,8 +31,8 @@ import { TestPageComponent } from './web-pages/test-components/test-page/test-pa
     ProcessChequesComponent,
     SideBarComponent,
     ImageCheckboxComponent,
-    DialogComponent,
-    TestPageComponent
+    TestPageComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,15 +40,17 @@ import { TestPageComponent } from './web-pages/test-components/test-page/test-pa
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MDBBootstrapModule
+    MDBBootstrapModule.forRoot()
   ],
   exports: [
     LoginComponent,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MDBBootstrapModule
+    MDBBootstrapModule,
+    ConfirmDialogComponent
   ],
+  entryComponents: [ConfirmDialogComponent],    
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: APIInterceptor,

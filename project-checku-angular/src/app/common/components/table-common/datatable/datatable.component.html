@@ -10,7 +10,7 @@
       </div> -->
         <table mdbTable #tableEl="mdbTable" 
         [stickyHeader]="config.stickyHeader" 
-        [hover]="config.hoverable" 
+        [hover]="config.hoverable && !config.nestedColumns" 
         [striped]="config.isStripe"
         responsive="true"
         class="z-depth-1">
@@ -37,7 +37,9 @@
                                     <div>
                                         <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
                                             <div class="progress-bar animated slideInLeft"
-                                            [ngClass]="{'bg-warning': rowData['smsStatus'] == 'pending', 'bg-success': rowData['smsStatus'] == 'verified', 'bg-danger': rowData['smsStatus'] == 'unverified'}"
+                                            [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
+                                            'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
+                                            'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}"
                                             role="progressbar" [style.width]="checkProgess(rowData[col.field])">
                                         </div>
                                         </div>
@@ -57,7 +59,9 @@
                                     <div>
                                         <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
                                             <div class="progress-bar animated slideInLeft"
-                                                [ngClass]="{'bg-warning': rowData['smsStatus'] == 'pending', 'bg-success': rowData['smsStatus'] == 'verified', 'bg-danger': rowData['smsStatus'] == 'unverified'}"
+                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
+                                                'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
+                                                'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}"
                                                 role="progressbar" [style.width]="checkProgess(rowData[col.field])">
                                             </div>
                                         </div>
@@ -66,7 +70,7 @@
                             </div>
                             <ng-template #noBar>
                                 <span
-                                    *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">$</span>{{ (col.currency || col.dateFormat )? (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :(rowData[col.field])}}
+                                    *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :(rowData[col.field])}}
                             </ng-template>
                         </ng-template>
                     </td>

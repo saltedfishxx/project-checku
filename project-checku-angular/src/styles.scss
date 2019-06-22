@@ -25,3 +25,22 @@ html, body {
   background:#F8F9FE;
   z-index: -1;
 }
+
+//overwrite primary color
+$primary-color: #6770E2;
+.btn.btn-primary {
+    background-color: #6770E2!important;
+}
+
+button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary {
+    color: #6770E2 !important;
+}
+
+.btn.round {
+    border-radius: 5px;
+}
+
+//overwrite strip color
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f5f5f5 !important;
+}

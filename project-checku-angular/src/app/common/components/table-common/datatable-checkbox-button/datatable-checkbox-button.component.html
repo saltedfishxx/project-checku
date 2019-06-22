@@ -1,3 +1,121 @@
-<p>
-  datatable-checkbox-button works!
-</p>
+<div class="container">
+  <div class="row table-responsive">
+    <!-- for keyword search-->
+    <!-- <div class="col-md-6 mx-auto">
+      <div class="md-form">
+        <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+               mdbInput>
+        <label for="search-input">Search</label>
+      </div>
+    </div> -->
+    <table mdbTable #tableEl="mdbTable" class="z-depth-1 bg-white w-100" 
+    [bordered]="config.hasBorders"
+    [borderless]="config.hasBorders? false : true"
+    [striped]="config.hasStripes"
+    [hover]="config.hoverable"
+    >
+      <thead class="sticky-top blue-grey lighten-5">
+        <tr>
+          <ng-container *ngIf="config.nestedColumns; else normalth">
+            <th *ngFor="let col of config.columns; let i = index" [style.width]="col.width ? col.width : 'inherit'"
+              scope="col" class="h6">
+              {{col.header | titlecase}}
+            </th>
+            <th *ngFor="let nestedcol of config.nestedColumns; let i = index"
+              [style.width]="nestedcol.width ? nestedcol.width : 'inherit'" scope="col" class="h6">
+              {{nestedcol.header | titlecase}}
+            </th>
+            <!--button col-->
+            <th [style.width]="'1%'"></th>
+          </ng-container>
+          <ng-template #normalth>
+            <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value" class="h6"
+              [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'" [sortBy]="col.field"
+              scope="col" (click)="setSortField(col.header)">
+              {{col.header | titlecase}} <mdb-icon fas
+                [icon]="getSortField(col.header) ? toggleButton ? 'angle-down' : 'angle-up' : ''">
+              </mdb-icon>
+            </th>
+            <!--button col-->
+            <th [style.width]="'1%'"></th>
+          </ng-template>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let customer of config.value">
+          <ng-container *ngIf="customer.Policies; else normaltd">
+            <tr mdbTableCol>
+              <td [attr.rowspan]="customer.Policies.length" *ngFor="let col of config.columns"
+                [style.width]="col.width ? col.width : 'inherit'" class="h6 text-muted"
+                [ngClass]="setPercentColor(customer[col.field], col.isPercent)"
+                [ngStyle]="col.currency? {'text-align':'right'} : col.style">
+                <span *ngIf="checkNumeric(customer[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? 
+                  (col.currency)? (customer[col.field]| number:col.currency) : (customer[col.field] | date: col.dateFormat) :
+                  (customer[col.field])}}<span *ngIf="checkNumeric(customer[col.field]) && (col.isPercent)">%</span>
+              </td>
+              <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
+              <td *ngFor="let col of config.nestedColumns" [style.width]="col.width ? col.width : 'inherit'" class="h6 text-muted"
+              [ngClass]="setPercentColor(customer.Policies[0][col.field], col.isPercent)">
+              <span *ngIf="checkNumeric(customer.Policies[0][col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? 
+                (col.currency)? (customer.Policies[0][col.field] | number:col.currency) : (customer.Policies[0][col.field] | date: col.dateFormat) :
+                (customer.Policies[0][col.field])}}<span *ngIf="checkNumeric(customer.Policies[0][col.field]) && (col.isPercent)">%</span></td>
+              <td>
+                <button mdbBtn class="round" [style.width]="'120px'" type="button" [color]="buttonColor" size="sm"
+                  mdbWavesEffect (click)="onButtonClick(customer.Policies[0], customer)">{{ buttonText }}</button>
+              </td>
+            </tr>
+            <ng-container *ngFor="let rowData of customer.Policies; let i= index;">
+              <tr mdbTableCol *ngIf="i!=0">
+                <td *ngFor="let nestedcol of config.nestedColumns"
+                  [style.width]="nestedcol.width ? nestedcol.width : 'inherit'"
+                  [ngClass]="setPercentColor(rowData[nestedcol.field], nestedcol.isPercent)"
+                  class="h6 text-muted"
+                  [ngStyle]="nestedcol.currency? {'text-align':'right'} : nestedcol.style">
+                  <span *ngIf="checkNumeric(rowData[nestedcol.field]) && (nestedcol.currency)">S$</span>{{ (nestedcol.currency || nestedcol.dateFormat )? 
+                    (nestedcol.currency)? (rowData[nestedcol.field] | number:nestedcol.currency) : (rowData[nestedcol.field] | date: nestedcol.dateFormat) :
+                    (rowData[nestedcol.field])}}<span *ngIf="checkNumeric(rowData[nestedcol.field]) && (nestedcol.isPercent)">%</span>
+                </td>
+                <td [style.width]="'110px'">
+                  <button mdbBtn class="round" [style.width]="'120px'" type="button" [color]="buttonColor" size="sm"
+                    mdbWavesEffect (click)="onButtonClick(rowData, customer)">{{ buttonText }}</button>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+
+          <ng-template #normaltd>
+            <tr mdbTableCol>
+              <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
+              [ngClass]="setPercentColor(customer[col.field], col.isPercent)" class="h6"
+                [ngStyle]="col.currency? {'text-align':'right'} : col.style" [attr.id]="col.field">
+                <span *ngIf="checkNumeric(customer[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )?
+                   (col.currency)? (customer[col.field] | number:col.currency) : 
+                   (customer[col.field] | date: col.dateFormat) :(customer[col.field])}}<span *ngIf="checkNumeric(customer[col.field]) && (col.isPercent)">%</span>
+              </td>
+              <td>
+                <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor" size="sm"
+                  mdbWavesEffect (click)="onButtonClickNormal(customer)">{{ buttonText }}</button>
+              </td>
+            </tr>
+          </ng-template>
+        </ng-container>
+
+      </tbody>
+      <tfoot class="w-100">
+        <tr>
+          <td *ngIf="config.nestedColumns; else normal"
+            [attr.colspan]="config.columns.length + config.nestedColumns.length +1">
+            <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end" [searchDataSource]="config.value">
+            </mdb-table-pagination>
+          </td>
+          <ng-template #normal>
+            <td [attr.colspan]="config.columns.length +1">
+              <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end" [searchDataSource]="config.value">
+              </mdb-table-pagination>
+            </td>
+          </ng-template>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
