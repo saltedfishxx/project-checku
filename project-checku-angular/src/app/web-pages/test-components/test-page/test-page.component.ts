@@ -12,6 +12,36 @@ export class TestPageComponent implements OnInit {
   testConfig: TableConfig = new TableConfig();
   modalRef: MDBModalRef;
 
+  testData1: any = [{
+    "NRIC": "S123456E",
+    "Name": "Checken nugget",
+    "SignatureMatch": "0.99",
+    "Policies": [
+      { "Match": "0.98", "PolicyNo": "12736821736", "PremiumType": "Premium" },
+      { "Match": "0.68", "PolicyNo": "12736213121736", "PremiumType": "Premium" }
+    ]
+  },
+  {
+    "NRIC": "S0987665V",
+    "Name": "Ducky",
+    "SignatureMatch": "0.99",
+    "Policies": [
+      { "Match": "0.98", "PolicyNo": "12736821736", "PremiumType": "Premium" },
+      { "Match": "0.68", "PolicyNo": "12736213121736", "PremiumType": "Premium" }
+    ]
+  }];
+
+  testData2: any = [{
+    "NRIC": "xxxxxx",
+    "Name": "xxxxxx",
+    "SignatureMatch": "0.99",
+  },
+  {
+    "NRIC": "xxxxxx",
+    "Name": "xxxxxx",
+    "SignatureMatch": "0.99"
+  }];
+
   constructor(private modalService: MDBModalService) { }
 
   ngOnInit() {
@@ -55,40 +85,20 @@ export class TestPageComponent implements OnInit {
 
     this.testConfig.hoverable = true;
     this.testConfig.hasBorders = true;
+    this.testConfig.hasButton = true;
+    this.testConfig.hasCheckBox = true;
     this.testConfig.columns = cols;
     // this.testConfig.nestedColumns = nestedCols;
-    // this.testConfig.value = [{
-    //   "NRIC": "S123456E",
-    //   "Name": "Checken nugget",
-    //   "SignatureMatch": "0.99",
-    //   "Policies": [
-    //     { "Match": "0.98", "PolicyNo": "12736821736", "PremiumType": "Premium" },
-    //     { "Match": "0.68", "PolicyNo": "12736213121736", "PremiumType": "Premium" }
-    //   ]
-    // },
-    // {
-    //   "NRIC": "S0987665V",
-    //   "Name": "Ducky",
-    //   "SignatureMatch": "0.99",
-    //   "Policies": [
-    //     { "Match": "0.98", "PolicyNo": "12736821736", "PremiumType": "Premium" },
-    //     { "Match": "0.68", "PolicyNo": "12736213121736", "PremiumType": "Premium" }
-    //   ]
-    // }]
+    //this.testConfig.value = this.testData1;
 
-    this.testConfig.value = [{
-      "NRIC": "xxxxxx",
-      "Name": "xxxxxx",
-      "SignatureMatch": "0.99",
-    },
-    {
-      "NRIC": "xxxxxx",
-      "Name": "xxxxxx",
-      "SignatureMatch": "0.99"
-    }]
+    this.testConfig.value = this.testData2;
   }
 
-  onClick(event){
+  onClick(event) {
+    console.log(event);
+  }
+
+  onChecked(event) {
     console.log(event);
   }
 

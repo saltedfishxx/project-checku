@@ -165,6 +165,18 @@ export class DatatableComponent implements OnInit {
 
     }
   }
+
+    //checkbox events
+    @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();
+    onRowSelect(event){
+      this.rowSelect.emit(event);
+    }
+  
+    selectAll : boolean = false;
+    onSelectAll(event){
+      console.log(event)
+      this.selectAll = event.checked;
+    }
 }
 
 /**
@@ -252,7 +264,8 @@ export class TableConfig {
   hoverable: boolean = false;
   hasStripes: boolean = false;
   hasBorders: boolean = false;
-
+  hasButton: boolean = false;
+  hasCheckBox: boolean = false;
   // when parent element width < minWidth, display horizontal scroll bar
   minWidth: string = '640px'; // only applicable when table is scrollable
   //to modify rows per page options

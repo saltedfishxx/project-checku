@@ -8,18 +8,20 @@
           <label for="search-input">Search</label>
         </div>
       </div> -->
-        <table mdbTable #tableEl="mdbTable" 
-        [stickyHeader]="config.stickyHeader" 
-        [hover]="config.hoverable && !config.nestedColumns" 
-        [striped]="config.isStripe"
-        responsive="true"
-        class="z-depth-1">
+        <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader"
+            [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe" responsive="true"
+            class="z-depth-1">
             <thead class="sticky-top bg-white">
                 <tr>
-                    <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value" [style.cursor]="'pointer'"
-                        [style.width]="col.width ? col.width : 'inherit'" [sortBy]="col.field" scope="col"
-                        (click)="setSortField(col.header)">
-                        {{col.header | titlecase}} <mdb-icon fas [icon]="getSortField(col.header) ? toggleButton ? 'angle-down' : 'angle-up' : ''">
+                    <!--checkbox col-->
+                    <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
+                        <mdb-checkbox default="true" (change)="onSelectAll($event)"></mdb-checkbox>
+                    </th>
+                    <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value"
+                        [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'"
+                        [sortBy]="col.field" scope="col" (click)="setSortField(col.header)">
+                        {{col.header | titlecase}} <mdb-icon fas
+                            [icon]="getSortField(col.header) ? toggleButton ? 'angle-down' : 'angle-up' : ''">
                         </mdb-icon>
                     </th>
                 </tr>
@@ -28,6 +30,11 @@
                 <tr mdbTableCol (rowCreated)="onRowCreate($event)" (rowRemoved)="onRowRemove($event)"
                     *ngFor="let rowData of config.value; let i = index">
                     <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
+                    <!--checkbox cell-->
+                    <td *ngIf="config.hasCheckBox">
+                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event)" default="true">
+                        </mdb-checkbox>
+                    </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
                         [ngStyle]="col.currency? {'text-align':'right'} : col.style">
                         <div *ngIf="col.isStatus; else noStatus">
@@ -37,11 +44,11 @@
                                     <div>
                                         <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
                                             <div class="progress-bar animated slideInLeft"
-                                            [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
+                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
                                             'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
-                                            'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}"
-                                            role="progressbar" [style.width]="checkProgess(rowData[col.field])">
-                                        </div>
+                                            'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                                [style.width]="checkProgess(rowData[col.field])">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -61,8 +68,8 @@
                                             <div class="progress-bar animated slideInLeft"
                                                 [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
                                                 'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
-                                                'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}"
-                                                role="progressbar" [style.width]="checkProgess(rowData[col.field])">
+                                                'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                                [style.width]="checkProgess(rowData[col.field])">
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +86,8 @@
             <tfoot class="w-100">
                 <tr>
                     <td [attr.colspan]="config.columns.length">
-                        <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end" [searchDataSource]="config.value">
+                        <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end"
+                            [searchDataSource]="config.value">
                         </mdb-table-pagination>
                     </td>
                 </tr>

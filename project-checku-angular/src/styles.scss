@@ -27,6 +27,7 @@ html, body {
 }
 
 //overwrite primary color
+//button color
 $primary-color: #6770E2;
 .btn.btn-primary {
     background-color: #6770E2!important;
@@ -35,9 +36,20 @@ $primary-color: #6770E2;
 button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary {
     color: #6770E2 !important;
 }
-
+//add round to button
 .btn.round {
     border-radius: 5px;
+}
+
+//checkbox color
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #6770E2!important;
+    border-color: #6770E2!important;
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+    background-color: #6770E2 !important;
+    border-color: #6770E2 !important;
 }
 
 //overwrite strip color

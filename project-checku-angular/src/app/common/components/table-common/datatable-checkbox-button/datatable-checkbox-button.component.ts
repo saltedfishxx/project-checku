@@ -14,14 +14,15 @@ export class DatatableCheckboxButtonComponent extends DatatableComponent impleme
 
   @Input() buttonText: string = "";
   @Input() buttonColor: string = "";
+  selectAll : boolean = false;
 
   ngOnInit() {
   }
 
-  setPercentColor(data, isPercent){
-    if(isPercent == true){
+  setPercentColor(data, isPercent) {
+    if (isPercent == true) {
       let value = parseFloat(data);
-      if(value > 0.8)
+      if (value > 0.8)
         return "text-success";
       else if (value < 0.8 && value > 0.6)
         return "text-warning";
@@ -30,15 +31,27 @@ export class DatatableCheckboxButtonComponent extends DatatableComponent impleme
     }
   }
 
+
+  //button events
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
   onButtonClick(rowData, customer) {
-      this.clicked.emit({rowData, customer});
-
+    this.clicked.emit({ rowData, customer });
   }
 
   onButtonClickNormal(customer) {
     this.clicked.emit(customer);
+  }
 
-}
+
+  //checkbox events
+  @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();
+  onRowSelect(event){
+    this.rowSelect.emit(event);
+  }
+
+  onSelectAll(event){
+    console.log(event)
+    this.selectAll = event.checked;
+  }
 
 }
