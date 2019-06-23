@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TableConfig } from 'src/app/common/components/table-common/datatable/datatable.component';
-import { FluidModalService } from 'src/app/common/components/fluid-modal/fluid-modal.service';
-import { ConfirmDialogService } from 'src/app/common/components/confirm-dialog/confirm-dialog.service';
+import { FluidModalService } from '@fluidModalService';
+import { ConfirmDialogService } from '@confirmDialogSerivce';
 
 @Component({
   selector: 'app-test-page',
@@ -79,6 +79,20 @@ export class TestPageComponent implements OnInit {
     }
   ];
 
+  dropdown : any = [
+    {
+      id: 1,
+      name: 'Details',
+      icon: 'info-circle',
+      iconColor: 'info'
+    },
+    {
+      id: 2,
+      name: 'Move to Successful Payments',
+      icon: 'exchange-alt',
+      iconColor: 'success'
+    }
+  ]
   constructor(private fluidModalService: FluidModalService,
               private confirmDialogService : ConfirmDialogService) { }
 
@@ -90,6 +104,8 @@ export class TestPageComponent implements OnInit {
     //this.testConfig.hasStripes = true;
     this.testConfig.hasButton = true;
     //this.testConfig.hasCheckBox = true;
+    this.testConfig.hasHamburger = true;
+    this.testConfig.dropdownList = this.dropdown;
     this.testConfig.columns = this.cols;
     this.testConfig.nestedColumns = this.nestedCols;
     this.testConfig.value = this.testData1;
@@ -129,6 +145,11 @@ export class TestPageComponent implements OnInit {
 
   //on checkbox click
   onChecked(event) {
+    console.log(event);
+  }
+
+  //dropdown event
+  dropdownSelected(event){
     console.log(event);
   }
 

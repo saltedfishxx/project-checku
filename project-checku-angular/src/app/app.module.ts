@@ -19,6 +19,7 @@ import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
 import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
 import { FluidModalComponent } from './common/components/fluid-modal/fluid-modal.component';
+import { HamburgerDropdownComponent } from './common/components/hamburger-dropdown/hamburger-dropdown.component';
  
 
 @NgModule({
@@ -34,7 +35,8 @@ import { FluidModalComponent } from './common/components/fluid-modal/fluid-modal
     ImageCheckboxComponent,
     TestPageComponent,
     ConfirmDialogComponent,
-    FluidModalComponent
+    FluidModalComponent,
+    HamburgerDropdownComponent
   ],
   imports: [
     BrowserModule,

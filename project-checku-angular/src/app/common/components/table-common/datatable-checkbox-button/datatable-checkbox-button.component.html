@@ -121,13 +121,13 @@
       <tfoot class="w-100">
         <tr>
           <td *ngIf="config.nestedColumns; else normal"
-            [attr.colspan]="config.hasCheckBox ? config.hasButton? 
+            [attr.colspan]="(config.hasCheckBox || config.hasButton) ? (config.hasCheckBox && config.hasButton) ? 
             (config.columns.length + config.nestedColumns.length + 2): (config.columns.length + config.nestedColumns.length + 1) : (config.columns.length + config.nestedColumns.length)">
             <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end" [searchDataSource]="config.value">
             </mdb-table-pagination>
           </td>
           <ng-template #normal>
-            <td [attr.colspan]="config.hasCheckBox ? config.hasButton? (config.columns.length + 2) : 
+            <td [attr.colspan]="(config.hasCheckBox || config.hasButton) ? (config.hasCheckBox && config.hasButton) ?  (config.columns.length + 2) : 
             (config.columns.length + 1) : (config.columns.length)">
               <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end" [searchDataSource]="config.value">
               </mdb-table-pagination>

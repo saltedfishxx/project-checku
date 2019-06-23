@@ -243,6 +243,12 @@ export class DatatableComponent implements OnInit {
 
     this.rowSelect.emit(this.selectedRows);
   }
+
+  //dropdown event
+  @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
+  onItemSelected(id){
+    this.itemClick.emit(id);
+  }
 }
 
 /**
@@ -326,12 +332,14 @@ export class TableConfig {
   displayFilters: boolean = true;
   sortOrder: number = 1; // 1 if is asc, -1 otherwise
   disable: boolean = false;
-  clickable: boolean = false; // if the overall row is clickable or not
+  
   hoverable: boolean = false;
   hasStripes: boolean = false;
   hasBorders: boolean = false;
   hasButton: boolean = false;
   hasCheckBox: boolean = false;
+  hasHamburger: boolean = false;
+  dropdownList : any[] = [];
   // when parent element width < minWidth, display horizontal scroll bar
   minWidth: string = '640px'; // only applicable when table is scrollable
   //to modify rows per page options

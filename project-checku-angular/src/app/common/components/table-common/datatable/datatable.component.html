@@ -15,7 +15,8 @@
                 <tr>
                     <!--checkbox col-->
                     <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
-                        <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)"></mdb-checkbox>
+                        <mdb-checkbox default="true" [checked]="allChecked"
+                            (change)="onSelectAll($event, config.value)"></mdb-checkbox>
                     </th>
                     <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value"
                         [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'" class="h6"
@@ -25,7 +26,9 @@
                         </mdb-icon>
                     </th>
                     <!--button col-->
-                    <th *ngIf="config.hasButton" [style.width]="'1%'">
+                    <th *ngIf="config.hasButton" [style.width]="'1%'"></th>
+                    <!--hamburger col-->
+                    <th *ngIf="config.hasHamburger" [style.width]="'1%'"></th>
                 </tr>
             </thead>
             <tbody #row>
@@ -34,7 +37,8 @@
                     <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
                     <!--checkbox cell-->
                     <td *ngIf="config.hasCheckBox">
-                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)" default="true">
+                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)"
+                            default="true">
                         </mdb-checkbox>
                     </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
@@ -90,12 +94,18 @@
                         <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor"
                             size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData)">{{ buttonText }}</button>
                     </td>
+                    <!-- hamburger cell-->
+                    <td *ngIf="config.hasHamburger">
+                        <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)"></hamburger-dropdown>
+                    </td>
                 </tr>
             </tbody>
             <tfoot class="w-100">
                 <tr>
-                    <td [attr.colspan]="config.hasCheckBox ? config.hasButton? (config.columns.length + 2) : 
-                    (config.columns.length + 1) : (config.columns.length)">
+                    <td [attr.colspan]="(config.hasCheckBox || config.hasButton || config.hasHamburger) ? 
+                    ((config.hasCheckBox && config.hasButton) || (config.hasHamburger && config.hasCheckBox) || (config.hasHamburger && config.hasButton)) ? 
+                    (config.hasButton && config.hasHamburger && config.hasCheckBox ) ? (config.columns.length + 3)  : (config.columns.length + 2) : (config.columns.length + 1) : 
+                    (config.columns.length)">
                         <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end"
                             [searchDataSource]="config.value">
                         </mdb-table-pagination>

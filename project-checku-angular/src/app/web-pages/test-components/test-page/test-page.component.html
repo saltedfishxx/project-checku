@@ -5,7 +5,7 @@
     </div>
     <div class="row h-50">
         <datatable [config]="testConfig" [buttonText]="'Details'" [buttonColor]="'primary'"
-        (clicked)="onClickDetails($event)" (rowSelect)="onChecked($event)" class="col-12 my-auto" ></datatable>
+        (clicked)="onClickDetails($event)" (rowSelect)="onChecked($event)" (itemClick)="dropdownSelected($event)" class="col-12 my-auto" ></datatable>
 </div>
 
 </div>

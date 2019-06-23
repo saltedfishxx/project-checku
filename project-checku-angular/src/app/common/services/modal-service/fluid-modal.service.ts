@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
-import { FluidModalComponent } from './fluid-modal.component';
+import { FluidModalComponent } from '../../components/fluid-modal/fluid-modal.component';
 
 @Injectable({
   providedIn: 'root'

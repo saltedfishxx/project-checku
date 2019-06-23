@@ -1,0 +1,10 @@
+<div class="btn-group" mdbDropdown placement="left" (isOpenChange)="isOpenChange($event)" [style.cursor]="'pointer'">
+  <mdb-icon fas [icon]="icon" mdbDropdownToggle class="waves-effect p-2"  [ngClass]="{'text-primary': isOpened == true}"
+            mdbWavesEffect></mdb-icon>
+  <div class="dropdown-menu dropdown-menu-right animated fadeIn faster" >
+    <ng-container *ngFor="let list of config.dropdownList">
+        <a class="dropdown-item" href="javascript:void(0);" (click)="onItemSelected(list.id)" ><mdb-icon *ngIf="list.icon" fas [icon]="list.icon" [ngClass]="setIconColor(list.iconColor)" class="mr-1"></mdb-icon>{{ list.name }}</a>
+    </ng-container>
+    
+  </div>
+</div>
