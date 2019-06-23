@@ -17,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
-import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
+import { FluidModalComponent } from './common/components/fluid-modal/fluid-modal.component';
  
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.c
     SideBarComponent,
     ImageCheckboxComponent,
     TestPageComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    FluidModalComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,7 @@ import { ConfirmDialogComponent } from './common/confirm-dialog/confirm-dialog.c
     MDBBootstrapModule,
     ConfirmDialogComponent
   ],
-  entryComponents: [ConfirmDialogComponent],    
+  entryComponents: [ConfirmDialogComponent, FluidModalComponent],    
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: APIInterceptor,

@@ -1,7 +1,11 @@
 <div class="w-100 h-100">
-    <div class="row h-100">
+    <div class="row h-50">
             <datatable-checkbox-button [config]="testConfig" [buttonText]="'Send SMS'" [buttonColor]="'primary'"
             (clicked)="onClick($event)" (rowSelect)="onChecked($event)" class="col-12 my-auto" ></datatable-checkbox-button>
     </div>
+    <div class="row h-50">
+        <datatable [config]="testConfig" [buttonText]="'Details'" [buttonColor]="'primary'"
+        (clicked)="onClickDetails($event)" (rowSelect)="onChecked($event)" class="col-12 my-auto" ></datatable>
+</div>
 
 </div>

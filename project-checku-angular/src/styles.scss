@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 html, body {
     height:100%;
+    width: 100%
 }
 .background-gradient {
     background-repeat: no-repeat;
@@ -31,6 +32,7 @@ html, body {
 $primary-color: #6770E2;
 .btn.btn-primary {
     background-color: #6770E2!important;
+    
 }
 
 button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary {
@@ -55,4 +57,16 @@ button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-
 //overwrite strip color
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: #f5f5f5 !important;
+}
+
+//modal css overwrite
+.modal-dialog.modal-notify.modal-primary .modal-header {
+    background: #6770E2 !important;
+    color: white !important
+}
+.modal-dialog.modal-notify.modal-primary .modal-header .close {
+    color: white !important;
+}
+.modal-open{
+    overflow: hidden !important;
 }
