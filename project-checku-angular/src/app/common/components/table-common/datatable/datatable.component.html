@@ -1,5 +1,5 @@
-<div class="container bg-white">
-    <div class="row">
+<div class="container">
+    <div class="row table-responsive">
         <!-- for keyword search-->
         <!-- <div class="col-md-6 mx-auto">
         <div class="md-form">
@@ -8,22 +8,24 @@
           <label for="search-input">Search</label>
         </div>
       </div> -->
-        <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader"
+        <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader" [bordered]="config.hasBorders"
             [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe" responsive="true"
             class="z-depth-1">
-            <thead class="sticky-top bg-white">
+            <thead class="sticky-top blue-grey lighten-5">
                 <tr>
                     <!--checkbox col-->
                     <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
-                        <mdb-checkbox default="true" (change)="onSelectAll($event)"></mdb-checkbox>
+                        <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)"></mdb-checkbox>
                     </th>
                     <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value"
-                        [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'"
+                        [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'" class="h6"
                         [sortBy]="col.field" scope="col" (click)="setSortField(col.header)">
                         {{col.header | titlecase}} <mdb-icon fas
                             [icon]="getSortField(col.header) ? toggleButton ? 'angle-down' : 'angle-up' : ''">
                         </mdb-icon>
                     </th>
+                    <!--button col-->
+                    <th *ngIf="config.hasButton" [style.width]="'1%'">
                 </tr>
             </thead>
             <tbody #row>
@@ -32,11 +34,11 @@
                     <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
                     <!--checkbox cell-->
                     <td *ngIf="config.hasCheckBox">
-                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event)" default="true">
+                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)" default="true">
                         </mdb-checkbox>
                     </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
-                        [ngStyle]="col.currency? {'text-align':'right'} : col.style">
+                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="h6 text-muted">
                         <div *ngIf="col.isStatus; else noStatus">
                             <div *ngIf="col.hasBar; else noBar">
                                 <div class="d-flex align-items-center">
@@ -76,16 +78,24 @@
                                 </div>
                             </div>
                             <ng-template #noBar>
-                                <span
-                                    *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :(rowData[col.field])}}
+                                <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? 
+                                        (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
+                                        (rowData[col.field])}}<span
+                                    *ngIf="checkNumeric(rowData[col.field]) && (col.isPercent)">%</span>
                             </ng-template>
                         </ng-template>
+                    </td>
+                    <!--button cell-->
+                    <td *ngIf="config.hasButton">
+                        <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor"
+                            size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData)">{{ buttonText }}</button>
                     </td>
                 </tr>
             </tbody>
             <tfoot class="w-100">
                 <tr>
-                    <td [attr.colspan]="config.columns.length">
+                    <td [attr.colspan]="config.hasCheckBox ? config.hasButton? (config.columns.length + 2) : 
+                    (config.columns.length + 1) : (config.columns.length)">
                         <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end"
                             [searchDataSource]="config.value">
                         </mdb-table-pagination>

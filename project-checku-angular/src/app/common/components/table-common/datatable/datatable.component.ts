@@ -13,7 +13,7 @@ export class DatatableComponent implements OnInit {
   onChangeSubscription: Subscription;
   toggleButton: boolean = false;
   selectedSortHeader: any;
-  
+
   constructor() { }
 
   ngOnInit() {
@@ -50,12 +50,12 @@ export class DatatableComponent implements OnInit {
     }
   }
 
-  setSortField(header){
+  setSortField(header) {
     this.selectedSortHeader = header;
     this.toggleButton = !this.toggleButton;
   }
 
-  getSortField(header){
+  getSortField(header) {
     return this.selectedSortHeader == header;
   }
 
@@ -83,7 +83,7 @@ export class DatatableComponent implements OnInit {
 
         this.filter();
 
-  
+
       });
 
     }
@@ -150,12 +150,12 @@ export class DatatableComponent implements OnInit {
 
   //Check if value passed in is numeric
   checkNumeric(value) {
-    return /\d+(\.\d*)?|\.\d+/g.test(value) && value != null && value !='';
+    return /\d+(\.\d*)?|\.\d+/g.test(value) && value != null && value != '';
   }
 
   //Check progress bar status
-  checkProgess(value){
-    switch(parseFloat(value)){
+  checkProgess(value) {
+    switch (parseFloat(value)) {
       case 1:
         return '30%';
       case 2:
@@ -166,17 +166,83 @@ export class DatatableComponent implements OnInit {
     }
   }
 
-    //checkbox events
-    @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();
-    onRowSelect(event){
-      this.rowSelect.emit(event);
+  //button events
+  @Input() buttonText: string = "";
+  @Input() buttonColor: string = "";
+
+  //button events
+  @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
+
+  onButtonClickNormal(rowData) {
+    this.clicked.emit(rowData);
+  }
+
+
+  //checkbox events
+  @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();
+  selectedRows: any[] = [];
+  allChecked: boolean = false;
+  onRowSelect(event, rowData, rowIndex, allData) {
+    let checkBoxId = rowIndex;
+    let isChecked = event.checked;
+    console.log("checkbox data: " + checkBoxId + isChecked);
+
+    if (this.selectedRows.length > 0) {
+      if (this.selectedRows.length == allData.length) {
+        this.allChecked = true;
+        for (let i in this.selectedRows) {
+          let index: number = parseInt(i);
+          if (checkBoxId === this.selectedRows[i].id && isChecked === false) {
+            console.log("removing row to selected rows");
+            this.selectedRows.splice(index, 1);
+            this.allChecked = false;
+          }
+        }
+      } else {
+        for (let i in this.selectedRows) {
+          let index: number = parseInt(i);
+          if (checkBoxId === this.selectedRows[i].id && isChecked === false) {
+            console.log("removing row to selected rows");
+            this.selectedRows.splice(index, 1);
+          }
+          else {
+            this.selectedRows.push({ id: checkBoxId, rowData: rowData });
+            if (this.selectedRows.length == allData.length)
+              this.allChecked = true;
+            else
+              this.allChecked = false;
+          }
+        }
+      }
+    } else {
+      console.log("adding row to selected rows");
+      this.selectedRows.push({ id: checkBoxId, rowData: rowData });
+      if (this.selectedRows.length == allData.length)
+        this.allChecked = true;
+      else
+        this.allChecked = false;
     }
-  
-    selectAll : boolean = false;
-    onSelectAll(event){
-      console.log(event)
-      this.selectAll = event.checked;
+
+    this.rowSelect.emit(this.selectedRows);
+  }
+
+  selectAll: boolean = false;
+  onSelectAll(event, allData) {
+    console.log(event)
+    this.selectAll = event.checked;
+    this.allChecked = event.checked;
+
+    if (this.selectAll) {
+      allData.forEach((item, index) => {
+        this.selectedRows.push({ id: index, rowData: item });
+      });
+    } else {
+      this.selectedRows = [];
     }
+
+
+    this.rowSelect.emit(this.selectedRows);
+  }
 }
 
 /**
