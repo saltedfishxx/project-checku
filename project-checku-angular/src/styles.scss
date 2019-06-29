@@ -35,6 +35,15 @@ $primary-color: #6770E2;
     
 }
 
+.btn {
+    text-transform: capitalize !important;
+    font-size: 1em !important;
+}
+
+.btn.btn-sm {
+    font-size: 0.8em !important;
+}
+
 button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary, .fas.text-primary {
     color: #6770E2 !important;
 }
