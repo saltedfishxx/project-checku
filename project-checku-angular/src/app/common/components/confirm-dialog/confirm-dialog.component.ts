@@ -18,6 +18,7 @@ export class ConfirmDialogComponent {
 
     onPositiveClick() {
       this.action.next(true);
+      this.modalRef.hide();
   }
 }
 

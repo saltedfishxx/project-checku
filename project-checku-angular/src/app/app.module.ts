@@ -15,6 +15,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APIInterceptor } from './common/services/APIInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
 import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
@@ -40,6 +41,7 @@ import { HamburgerDropdownComponent } from './common/components/hamburger-dropdo
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -52,7 +54,8 @@ import { HamburgerDropdownComponent } from './common/components/hamburger-dropdo
     FormsModule,
     ReactiveFormsModule,
     MDBBootstrapModule,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    BrowserAnimationsModule
   ],
   entryComponents: [ConfirmDialogComponent, FluidModalComponent],    
   providers: [{

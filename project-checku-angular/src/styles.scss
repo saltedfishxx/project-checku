@@ -44,10 +44,29 @@ $primary-color: #6770E2;
     font-size: 0.8em !important;
 }
 
+.btn.btn-outline-primary {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
+.btn.btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
+.btn.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary.active {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
 button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary, .fas.text-primary {
     color: #6770E2 !important;
 }
-//add round to button
+
+//add round radius to button
 .btn.round {
     border-radius: 5px;
 }

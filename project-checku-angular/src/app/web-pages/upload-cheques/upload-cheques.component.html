@@ -1,10 +1,97 @@
-<div>
-  <div class="container">
-    <!--header-->
-    <div></div>
-    <!-- container for img upload -->
-    <div *ngIf="expression" </div> </div> <label mdbBtn for="file-selector" class="btn round" color="primary" size="sm"
-      class="waves-light" mdbWavesEffect>
-      <input id="file-selector" type="file" class="d-none" (change)="onSelectFile($event)" multiple>
-      <mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload Files
-      </label>
+<div class="h-100">
+  <div class="row">
+    <div class="col-3">
+      << Back </div> </div> <div class="row">
+        <div class="container bg-white shadow my-5">
+          <!--header-->
+          <div class="d-flex flex-row">
+            <div class="mr-auto p-2">
+              <h3 class="text-primary m-3">Upload New Cheques</h3>
+            </div>
+            <div class="p-2 my-3">
+              <button mdbBtn *ngIf="chequeList.length != 0" (click)="selectAllRows()" color="primary" outline="true" class="btn round" size="sm" mdbWavesEffect>
+                <mdb-icon fas [icon]="selectAll ? 'times' : 'check'" class="mr-1"></mdb-icon>
+                 <ng-container *ngIf="selectAll; else select">
+                    Deselect All
+                 </ng-container>
+                 <ng-template #select>
+                    Select All
+                 </ng-template>
+              </button>
+            </div>
+            <div class="p-2 my-3">
+              <button mdbBtn color="primary" (click)="confirmProcess()" [disabled]="chequeList.length == 0" class="btn round" size="sm" mdbWavesEffect>
+                <i class="far fa-arrow-alt-circle-right mr-1"></i>Process</button>
+            </div>
+          </div>
+          <hr class="m-0">
+          <!-- container for img upload -->
+          <div *ngIf="chequeList.length == 0; else hasFiles" id="drop-area" (drop)="drop($event)"
+            class="d-flex flex-row align-items-center justify-content-md-center" [style.height]="'30em'">
+            <div class="text-center">
+              <div class="justify-content-center">
+                <i class="fas fa-folder-open fa-6x grey-text"></i>
+                <div class="text-center mb-4">No folders found. Start uploading now!</div>
+                <label mdbBtn for="file-selector" class="btn round" color="default" size="sm" mdbWavesEffect>
+                  <input id="file-selector" type="file" class="d-none" #folderInput type="file"
+                    (change)="filesPicked(folderInput.files)" multiple webkitDirectory>
+                  <mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload Files
+                </label>
+              </div>
+            </div>
+          </div>
+          <ng-template #hasFiles>
+              <div class="row">
+               <!--folder list-->
+               <div class="col-6 d-flex flex-row my-4" [style.height]="'30em'" [style.overflow-y]="'auto'">
+                  <div class="list-group w-100" >
+                    <ng-container *ngFor="let folder of chequeList" class="card">
+                      <div class="d-flex flex-row align-items-center list-group-item p-0" [ngClass]="checkSelected(folder)">
+                        <mdb-checkbox [checked]="selectAll" #checkbox (change)="onRowSelect($event, folder)" default="true" class="ml-4">
+                        </mdb-checkbox>
+                        <div mdbBtn class="text-left z-depth-0" block="true" (click)="viewFolder(folder)" mdbWavesEffect>
+                          <mdb-icon fas icon="folder grey-text" class="mr-1"></mdb-icon>{{folder.folderName}}
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <!--image view-->
+                <div class="col-6 text-center p-4">
+                  <div *ngIf="selectedFolder != null; else noSelected" class=" z-depth-1 py-2">
+                    <div>{{ selectedFolder.folderName }}</div>
+                      <img  [src]="selectedFolder.front.url" class="animated fadeIn faster" height="220">
+                      <img  [src]="selectedFolder.back.url" class="animated fadeIn faster" height="220">
+                  </div>
+                  <ng-template #noSelected>
+                      <div class="d-flex flex-row align-items-center justify-content-center z-depth-1 py-2 h-100">
+                        <div>
+                            <mdb-icon far icon="image" size="6x" class="grey-text"></mdb-icon>
+                            <div class="text-center mb-4 grey-text">Select a folder to view its image</div>
+                        </div>
+                         
+                        </div>
+                  </ng-template>
+                 
+                </div>
+              </div>
+
+            <!--bottom buttons-->
+            <div class="d-flex flex-row justify-content-end">
+                <div class="p-2 my-3">
+                  <button mdbBtn color="danger" (click)="deleteRows()" [disabled]="selectedRows.length == 0" class="btn round" size="sm" mdbWavesEffect>
+                    <mdb-icon fas icon="trash-alt" class="mr-1"></mdb-icon>Delete<span *ngIf="selectedRows.length > 0">({{ selectedRows.length }})</span>
+                  </button>
+                </div>
+                <div class="p-2 my-3">
+                    <label mdbBtn for="file-selector" class="btn round" color="default" size="sm" mdbWavesEffect>
+                        <input id="file-selector" type="file" class="d-none" #folderInput type="file"
+                          (change)="filesPicked(folderInput.files)" multiple webkitDirectory>
+                        <mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload
+                      </label>
+                </div>
+              </div>
+          </ng-template>
+        </div>
+    </div>
+  </div>
