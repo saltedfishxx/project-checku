@@ -100,7 +100,7 @@ export class TestPageComponent implements OnInit {
 
 
     this.testConfig.hoverable = true;
-    //this.testConfig.hasBorders = true;
+    this.testConfig.hasBorders = true;
     //this.testConfig.hasStripes = true;
     this.testConfig.hasButton = true;
     //this.testConfig.hasCheckBox = true;

@@ -199,6 +199,8 @@ export class UploadChequesComponent implements OnInit {
     }
     this.api.processScannedCheques(data).then(response => {
       console.log(response);
+      //route to review page
+      
       //reset
       this.reset();
     },
