@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'side-bar',
@@ -7,15 +8,20 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  tab: number;
+  tab: number = 2;
   ngOnInit() {
   }
 
   @Output() changeTabs = new EventEmitter<any>();
-  changeTab(selectNum){
+  changeTab(selectNum) {
     this.tab = selectNum;
     this.changeTabs.emit(selectNum);
+  }
+
+  onBack() {
+    this.tab = 0;
+    this.router.navigate(['/home']);
   }
 }

@@ -21,6 +21,9 @@ import { TestPageComponent } from './web-pages/test-components/test-page/test-pa
 import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
 import { FluidModalComponent } from './common/components/fluid-modal/fluid-modal.component';
 import { HamburgerDropdownComponent } from './common/components/hamburger-dropdown/hamburger-dropdown.component';
+import { ReviewChequesComponent } from './web-pages/process-cheques/review-cheques/review-cheques.component';
+import { RejectChequesComponent } from './web-pages/process-cheques/reject-cheques/reject-cheques.component';
+import { SuccessChequesComponent } from './web-pages/process-cheques/success-cheques/success-cheques.component';
  
 
 @NgModule({
@@ -37,7 +40,10 @@ import { HamburgerDropdownComponent } from './common/components/hamburger-dropdo
     TestPageComponent,
     ConfirmDialogComponent,
     FluidModalComponent,
-    HamburgerDropdownComponent
+    HamburgerDropdownComponent,
+    ReviewChequesComponent,
+    RejectChequesComponent,
+    SuccessChequesComponent
   ],
   imports: [
     BrowserModule,

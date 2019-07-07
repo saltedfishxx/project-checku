@@ -167,7 +167,7 @@ export class DatatableComponent implements OnInit {
 
   //dropdown event
   @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
-  onItemSelected(id){
+  onItemSelected(id) {
     this.itemClick.emit(id);
   }
 }
@@ -180,14 +180,15 @@ export class TableConfig {
   value: any[];
   valueBkup: any[]; // Backup value field when applying filter. Input not required
   disable: boolean = false;
-  
+  showPagination: boolean = true;
+
   hoverable: boolean = false;
   hasStripes: boolean = false;
   hasBorders: boolean = false;
   hasButton: boolean = false;
   hasCheckBox: boolean = false;
   hasHamburger: boolean = false;
-  dropdownList : any[] = [];
+  dropdownList: any[] = [];
 
   private onChangeSource = new BehaviorSubject(null);
   private onChange$ = this.onChangeSource.asObservable();

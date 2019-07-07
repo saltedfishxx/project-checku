@@ -1,0 +1,141 @@
+<div class="d-flex row justify-content-md-center mt-4 mx-1">
+  <!-- Card -->
+  <div class="col-3 mx-2" *ngFor="let card of cardList">
+    <mdb-card>
+      <mdb-card-body class="px-0 py-2 mx-2">
+        <div class="row px-2 align-items-center justify-content-center h-auto">
+          <div class="col-9 p-0 grey-text">
+            <p class="mb-0 small">
+              {{ card.title }}
+            </p>
+            <h4 class="mb-0 text-dark"><b>{{ card.count }}</b></h4>
+          </div>
+          <div class=" col-2 p-0">
+            <mdb-icon fas [icon]="checkIcon(card)" [size]="card.icon != 'review' ? '2x' : 'lg'"
+              [ngClass]="{'text-danger': card.icon == 'reject', 'text-success' :  card.icon == 'success', 'text-white circle bg-warning' : card.icon == 'review'}">
+            </mdb-icon>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+</div>
+<!-- Card end-->
+<!--paginator-->
+<div class="d-flex row justify-content-md-center mt-4 mx-1">
+  <div class="col-9 px-0 mt-2">
+    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+      <button mdbBtn type="button" color="white" size="sm" class="waves-light p-2" mdbWavesEffect>
+        <mdb-icon fas icon="chevron-left" class="px-1"></mdb-icon>
+      </button>
+      <p class="bg-white m-0 small pt-2 text-center" [style.width]="'100px'">{{currentPage}} of
+        {{ reviewCheques.length}}</p>
+      <button mdbBtn type="button" color="white" size="sm" class="waves-light p-2" mdbWavesEffect>
+        <mdb-icon fas icon="chevron-right" class="px-1"></mdb-icon>
+      </button>
+    </div>
+  </div>
+</div>
+<!--paginator end-->
+<!--REVIEW CHEQUES START-->
+<!--cheque details-->
+<div class="d-flex row justify-content-md-center mt-4 mx-1">
+  <div class="col-9 row justify-content-md-between p-0">
+    <div class="col-6 pl-0">
+      <mdb-card>
+        <mdb-card-header class="bg-white">
+          <div class="row justify-content-md-between align-items-center">
+            <h5 class="m-0 pl-2 ">Cheque Details</h5>
+            <button mdbBtn class="bg-transparent z-depth-0 p-0 m-0 waves-light" mdbWavesEffect>
+              <span class="small text-primary m-0">Edit</span>
+              <mdb-icon fas icon="edit" class="px-1 text-primary"></mdb-icon>
+            </button>
+          </div>
+        </mdb-card-header>
+        <mdb-card-body class="px-0 py-4" [style.height]="'250px'">
+          <form [formGroup]="chequeDetailsForm">
+            <div class="d-flex justify-content-md-between mx-2">
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="text" name="policyNo" formControlName="policyNo" id="policyNo" [class]="chequeDetailsForm.get('policyNo').value == 'NOT PROVIDED' ? 
+                    'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="policyNo">Policy No</label>
+              </div>
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="text" name="premiumType" formControlName="premiumType" id="premiumType" [class]="chequeDetailsForm.get('premiumType').value == 'NOT PROVIDED' ?
+                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="premiumType">Premium Type</label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-md-between mx-2">
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="text" name="custName" formControlName="custName" id="custName" [class]="chequeDetailsForm.get('custName').value == 'NOT PROVIDED' ?
+                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="custName">Customer Name</label>
+              </div>
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="tel" name="contact" formControlName="contact" id="contact" [class]="chequeDetailsForm.get('contact').value == 'NOT PROVIDED' ? 
+                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="contact">Contact</label>
+              </div>
+            </div>
+            <div class="d-flex justify-content-md-between mx-2">
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="text" name="amount" formControlName="amount" id="amount" [class]="chequeDetailsForm.get('amount').value == 'NOT PROVIDED' ? 
+                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="amount">Amount</label>
+              </div>
+              <div class="md-form form-sm mx-2 my-2 w-50">
+                <input mdbInput type="text" name="date" formControlName="date" id="date" [class]="chequeDetailsForm.get('date').value == 'NOT PROVIDED' ? 
+                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                <label for="date">Date</label>
+              </div>
+            </div>
+          </form>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+    <div class="col-6 pr-0">
+      <mdb-card>
+        <mdb-card-header class="bg-white">
+          <div class="row justify-content-md-between align-items-center">
+            <h5 class="m-0 pl-2 ">Scanned Cheque</h5>
+            <div class="d-flex mr-2">
+              <p class="m-0 pr-2 small pt-1 text-primary">Front</p>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitches">
+                <label class="custom-control-label small pt-1 text-primary" for="customSwitches">Back</label>
+              </div>
+            </div>
+          </div>
+        </mdb-card-header>
+        <mdb-card-body class="px-0 py-2" [style.height]="'250px'">
+          <div class="d-flex justify-content-md-center p-3">
+            <img src="./assets/img/cheques/1. sample check dh.jpg" width="100%" />
+            <!-- <img [src]="reviewCheques[currentPage].chequeDetail.imageFront" width="310" /> -->
+          </div>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+  </div>
+</div>
+<!--prediction results-->
+<div class="d-flex row justify-content-md-center mt-4 mb-4 mx-1">
+  <mdb-card class="w-75">
+    <mdb-card-header class="bg-white">
+      <div class="row justify-content-md-between align-items-center">
+        <h5 class="m-0 pl-2 ">Prediction Results</h5>
+      </div>
+    </mdb-card-header>
+    <mdb-card-body class="px-0 ml-4 py-4 h-auto">
+      <div class="d-flex justify-content-md-center row">
+        <div class="w-100 mx-2">
+          <datatable-checkbox-button buttonText="Send SMS" buttonColor="primary" [config]="reviewTableConfig">
+          </datatable-checkbox-button>
+        </div>
+
+      </div>
+
+    </mdb-card-body>
+  </mdb-card>
+</div>
+<!--REVIEW CHEQUES END-->

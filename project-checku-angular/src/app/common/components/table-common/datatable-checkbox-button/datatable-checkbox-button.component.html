@@ -9,13 +9,15 @@
       </div>
     </div> -->
     <table mdbTable #tableEl="mdbTable" class="z-depth-1 bg-white w-100" [bordered]="config.hasBorders"
-       [striped]="config.hasStripes" [hover]="config.hoverable && !config.nestedColumns">
+      [ngStyle]="{'table-layout':'fixed'}" [striped]="config.hasStripes"
+      [hover]="config.hoverable && !config.nestedColumns" maxWidth="650" scrollX="true">
       <thead class="sticky-top blue-grey lighten-5">
         <tr>
           <ng-container *ngIf="config.nestedColumns; else normalth">
             <!--checkbox col-->
-            <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
-              <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)"></mdb-checkbox>
+            <th *ngIf="config.hasCheckBox" [style.width]="'50px'">
+              <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)">
+              </mdb-checkbox>
             </th>
             <th *ngFor="let col of config.columns; let i = index" [style.width]="col.width ? col.width : 'inherit'"
               scope="col" class="h6">
@@ -26,12 +28,13 @@
               {{nestedcol.header | titlecase}}
             </th>
             <!--button col-->
-            <th *ngIf="config.hasButton" [style.width]="'1%'"></th>
+            <th *ngIf="config.hasButton" [style.width]="'150px'"></th>
           </ng-container>
           <ng-template #normalth>
             <!--checkbox col-->
-            <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
-              <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)"></mdb-checkbox>
+            <th *ngIf="config.hasCheckBox" [style.width]="'50px'">
+              <mdb-checkbox default="true" [checked]="allChecked" (change)="onSelectAll($event, config.value)">
+              </mdb-checkbox>
             </th>
             <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value" class="h6"
               [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'" [sortBy]="col.field"
@@ -41,7 +44,7 @@
               </mdb-icon>
             </th>
             <!--button col-->
-            <th *ngIf="config.hasButton" [style.width]="'1%'"></th>
+            <th *ngIf="config.hasButton" [style.width]="'150px'"></th>
           </ng-template>
         </tr>
       </thead>
@@ -51,7 +54,8 @@
             <tr mdbTableCol>
               <!--checkbox cell-->
               <td *ngIf="config.hasCheckBox">
-                <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, customer, i, config.value)" default="true"></mdb-checkbox>
+                <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, customer, i, config.value)"
+                  default="true"></mdb-checkbox>
               </td>
               <td [attr.rowspan]="customer.Policies.length" *ngFor="let col of config.columns"
                 [style.width]="col.width ? col.width : 'inherit'" class="h6 text-muted"
@@ -98,7 +102,8 @@
             <tr mdbTableCol>
               <!--checkbox cell-->
               <td *ngIf="config.hasCheckBox">
-                <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, customer, i, config.value)" default="true"></mdb-checkbox>
+                <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, customer, i, config.value)"
+                  default="true"></mdb-checkbox>
               </td>
               <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
                 [ngClass]="setPercentColor(customer[col.field], col.isPercent)" class="h6 text-muted"
@@ -118,7 +123,7 @@
         </ng-container>
 
       </tbody>
-      <tfoot class="w-100">
+      <tfoot *ngIf="config.showPagination" class="w-100">
         <tr>
           <td *ngIf="config.nestedColumns; else normal"
             [attr.colspan]="(config.hasCheckBox || config.hasButton) ? (config.hasCheckBox && config.hasButton) ? 

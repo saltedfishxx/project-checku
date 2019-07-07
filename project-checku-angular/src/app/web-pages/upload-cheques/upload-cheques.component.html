@@ -1,10 +1,10 @@
 <div class="h-100">
   <div class="row justify-content-md-center">
-    <div class="col-11 m-4">
+    <div class="col-11 m-2">
       <div class="mx-2">
         <button class="btn btn-transparent text-white z-depth-0" mdbWavesEffect>
-            <mdb-icon fas icon="arrow-left" size="lg" class="mr-2"></mdb-icon>
-            <span class="h4-responsive">Back</span>
+          <mdb-icon fas icon="arrow-left" size="lg" class="mr-2"></mdb-icon>
+          <span class="h4-responsive">Back</span>
         </button>
       </div>
     </div>
@@ -51,7 +51,7 @@
       <ng-template #hasFiles>
         <div class="row">
           <!--folder list-->
-          <div class="col-6 d-flex flex-row my-4" [style.height]="'30em'" [style.overflow-y]="'auto'">
+          <div class="col-6 d-flex flex-row my-4" [style.height]="'50vh'" [style.overflow-y]="'auto'">
             <div class="list-group w-100">
               <ng-container *ngFor="let folder of chequeList" class="card">
                 <div class="d-flex flex-row align-items-center list-group-item p-0" [ngClass]="checkSelected(folder)">
@@ -69,8 +69,8 @@
           <div class="col-6 text-center p-4">
             <div *ngIf="selectedFolder != null; else noSelected" class=" z-depth-1 py-2">
               <div>{{ selectedFolder.folderName }}</div>
-              <img [src]="selectedFolder.front.url" class="fadeIn animated faster" height="220">
-              <img [src]="selectedFolder.back.url" class="animated fadeIn faster" height="220">
+              <img [src]="selectedFolder.front.url" class="fadeIn animated faster" [style.height]="'15vh'">
+              <img [src]="selectedFolder.back.url" class="animated fadeIn faster" [style.height]="'15vh'">
             </div>
             <ng-template #noSelected>
               <div class="d-flex flex-row align-items-center justify-content-center z-depth-1 py-2 h-100">

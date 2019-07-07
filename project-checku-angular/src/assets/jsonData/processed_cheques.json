@@ -1,0 +1,104 @@
+{
+    "data": {
+        "reviewCheques": [
+            {
+                "chequeDetail": {
+                    "policyNo": "123",
+                    "policyType": "APL",
+                    "customerName": "chicken negger",
+                    "contact": "99126969",
+                    "amount": "400",
+                    "date": "12/06/2019",
+                    "imageFront": "base64string",
+                    "imageBack": "base64string"
+                },
+                "prediction": [
+                    {
+                        "predictedNric": "S123456E",
+                        "predictedName": "Checken nugget",
+                        "signatureMatch": "0.99",
+                        "overallMatch": "0.98",
+                        "predictedPolicyNo": "12736821736",
+                        "predictedPolicyType": "Premium",
+                        "predictedPremiumType": "Housing"
+                    },
+                    {
+                        "predictedNric": "S123456E",
+                        "predictedName": "Checken nugget",
+                        "signatureMatch": "0.99",
+                        "overallMatch": "0.75",
+                        "predictedPolicyNo": "7564336345",
+                        "predictedPolicyType": "Premium",
+                        "predictedPremiumType": "Housing"
+                    }
+                ]
+            },
+            {
+                "chequeDetail": {
+                    "policyNo": "123",
+                    "policyType": "Premium",
+                    "customerName": "chicken duck",
+                    "contact": "99126969",
+                    "amount": "400",
+                    "date": "12/06/2019",
+                    "imageFront": "base64string",
+                    "imageBack": "base64string"
+                },
+                "prediction": [
+                    {
+                        "predictedNric": "S123456E",
+                        "predictedName": "duck nugget",
+                        "signatureMatch": "0.99",
+                        "overallMatch": "0.98",
+                        "predictedPolicyNo": "12736821736",
+                        "predictedPolicyType": "Premium",
+                        "predictedPremiumType": "Housing"
+                    },
+                    {
+                        "predictedNric": "S123456E",
+                        "predictedName": "duck nugget",
+                        "signatureMatch": "0.99",
+                        "overallMatch": "0.75",
+                        "predictedPolicyNo": "7564336345",
+                        "predictedPolicyType": "Premium",
+                        "predictedPremiumType": "HealthCare"
+                    }
+                ]
+            }
+        ],
+        "successfulCheques": [
+            {
+                "policyNo": "78654",
+                "policyType": "Apl",
+                "customerName": "chicken duck",
+                "contact": "99126969",
+                "amount": "400",
+                "date": "12/06/2019",
+                "imageFront": "base64string",
+                "imageBack": "base64string"
+            },
+            {
+                "policyNo": "123",
+                "policyType": "Apl",
+                "customerName": "duc duck",
+                "contact": "45745734756",
+                "amount": "400",
+                "date": "12/06/2019",
+                "imageFront": "base64string",
+                "imageBack": "base64string"
+            }
+        ],
+        "rejectedCheques": [
+            {
+                "imageFront": "base64string",
+                "imageBack": "base64string",
+                "rejectReason": "your mum say u faggot"
+            },
+            {
+                "imageFront": "base64string",
+                "imageBack": "base64string",
+                "rejectReason": "your dad say u weak"
+            }
+        ]
+    }
+}
