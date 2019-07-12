@@ -87,6 +87,19 @@ export class DatatableComponent implements OnInit {
     }
   }
 
+  //set styles for cells with percentage
+  setPercentColor(data, isPercent) {
+    if (isPercent == true) {
+      let value = parseFloat(data);
+      if (value > 0.8)
+        return "text-success";
+      else if (value < 0.8 && value > 0.6)
+        return "text-warning";
+      else
+        return "text-danger";
+    }
+  }
+
   //button events
   @Input() buttonText: string = "";
   @Input() buttonColor: string = "";
@@ -94,10 +107,19 @@ export class DatatableComponent implements OnInit {
   //button events
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
 
-  onButtonClickNormal(rowData) {
-    this.clicked.emit(rowData);
+  onButtonClickNormal(rowData, i) {
+    this.clicked.emit({ rowData, i });
   }
 
+  checkbuttonDisable(index) {
+    let id = this.buttonText + index;
+    for (let element of this.config.disableButtonsList) {
+      if (id == element) {
+        return true;
+      }
+    };
+
+  }
 
   //checkbox events
   @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();

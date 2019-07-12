@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row table-responsive">
+    <div class="row table-responsive bordered" id="scrollbar">
         <!-- for keyword search-->
         <!-- <div class="col-md-6 mx-auto">
         <div class="md-form">
@@ -9,8 +9,7 @@
         </div>
       </div> -->
         <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader" [bordered]="config.hasBorders"
-            [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe" responsive="true"
-            class="z-depth-1">
+            [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe">
             <thead class="sticky-top blue-grey lighten-5">
                 <tr>
                     <!--checkbox col-->
@@ -42,7 +41,8 @@
                         </mdb-checkbox>
                     </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
-                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="h6 text-muted">
+                        [ngClass]="setPercentColor(rowData[col.field], col.isPercent)"
+                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="text-muted">
                         <div *ngIf="col.isStatus; else noStatus">
                             <div *ngIf="col.hasBar; else noBar">
                                 <div class="d-flex align-items-center">
@@ -82,25 +82,26 @@
                                 </div>
                             </div>
                             <ng-template #noBar>
-                                <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? 
-                                        (col.currency)? (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
-                                        (rowData[col.field])}}<span
-                                    *ngIf="checkNumeric(rowData[col.field]) && (col.isPercent)">%</span>
+                                <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat || col.isPercent )? 
+                                        (col.currency || col.isPercent)? col.isPercent ? (rowData[col.field] | percent: '1.0-0') : (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
+                                        (rowData[col.field])}}
                             </ng-template>
                         </ng-template>
                     </td>
                     <!--button cell-->
                     <td *ngIf="config.hasButton">
                         <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor"
-                            size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData)">{{ buttonText }}</button>
+                            size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData, i)"
+                            [disabled]="checkbuttonDisable(i)">{{ buttonText }}</button>
                     </td>
                     <!-- hamburger cell-->
                     <td *ngIf="config.hasHamburger">
-                        <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)"></hamburger-dropdown>
+                        <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)">
+                        </hamburger-dropdown>
                     </td>
                 </tr>
             </tbody>
-            <tfoot class="w-100">
+            <tfoot class="w-100" *ngIf="config.showPagination">
                 <tr>
                     <td [attr.colspan]="(config.hasCheckBox || config.hasButton || config.hasHamburger) ? 
                     ((config.hasCheckBox && config.hasButton) || (config.hasHamburger && config.hasCheckBox) || (config.hasHamburger && config.hasButton)) ? 

@@ -24,6 +24,7 @@ import { HamburgerDropdownComponent } from './common/components/hamburger-dropdo
 import { ReviewChequesComponent } from './web-pages/process-cheques/review-cheques/review-cheques.component';
 import { RejectChequesComponent } from './web-pages/process-cheques/reject-cheques/reject-cheques.component';
 import { SuccessChequesComponent } from './web-pages/process-cheques/success-cheques/success-cheques.component';
+import { CardHeaderComponent } from './web-pages/process-cheques/card-header/card-header.component';
  
 
 @NgModule({
@@ -43,7 +44,8 @@ import { SuccessChequesComponent } from './web-pages/process-cheques/success-che
     HamburgerDropdownComponent,
     ReviewChequesComponent,
     RejectChequesComponent,
-    SuccessChequesComponent
+    SuccessChequesComponent,
+    CardHeaderComponent
   ],
   imports: [
     BrowserModule,

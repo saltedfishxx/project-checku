@@ -4,7 +4,7 @@
             {
                 "chequeDetail": {
                     "policyNo": "123",
-                    "policyType": "APL",
+                    "policyType": "",
                     "customerName": "chicken negger",
                     "contact": "99126969",
                     "amount": "400",

@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row table-responsive">
+  <div class="row table-responsive" id="scrollbar">
     <!-- for keyword search-->
     <!-- <div class="col-md-6 mx-auto">
       <div class="md-form">
@@ -58,7 +58,7 @@
                   default="true"></mdb-checkbox>
               </td>
               <td [attr.rowspan]="customer.Policies.length" *ngFor="let col of config.columns"
-                [style.width]="col.width ? col.width : 'inherit'" class="h6 text-muted"
+                [style.width]="col.width ? col.width : 'inherit'" class="text-muted"
                 [ngClass]="setPercentColor(customer[col.field], col.isPercent)"
                 [ngStyle]="col.currency? {'text-align':'right'} : col.style">
                 <span *ngIf="checkNumeric(customer[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )? 
@@ -82,7 +82,7 @@
               <tr mdbTableCol *ngIf="i!=0">
                 <td *ngFor="let nestedcol of config.nestedColumns"
                   [style.width]="nestedcol.width ? nestedcol.width : 'inherit'"
-                  [ngClass]="setPercentColor(rowData[nestedcol.field], nestedcol.isPercent)" class="h6 text-muted"
+                  [ngClass]="setPercentColor(rowData[nestedcol.field], nestedcol.isPercent)" class="text-muted"
                   [ngStyle]="nestedcol.currency? {'text-align':'right'} : nestedcol.style">
                   <span *ngIf="checkNumeric(rowData[nestedcol.field]) && (nestedcol.currency)">S$</span>{{ (nestedcol.currency || nestedcol.dateFormat )? 
                     (nestedcol.currency)? (rowData[nestedcol.field] | number:nestedcol.currency) : (rowData[nestedcol.field] | date: nestedcol.dateFormat) :
@@ -106,7 +106,7 @@
                   default="true"></mdb-checkbox>
               </td>
               <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
-                [ngClass]="setPercentColor(customer[col.field], col.isPercent)" class="h6 text-muted"
+                [ngClass]="setPercentColor(customer[col.field], col.isPercent)" class="text-muted"
                 [ngStyle]="col.currency? {'text-align':'right'} : col.style" [attr.id]="col.field">
                 <span *ngIf="checkNumeric(customer[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat )?
                    (col.currency)? (customer[col.field] | number:col.currency) : 
