@@ -4,6 +4,7 @@ import { ApiCallService } from '@apiService';
 import { TableConfig } from 'src/app/common/components/table-common/datatable/datatable.component';
 import { ProcessChequesService } from './process-cheques.service';
 import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-process-cheques',
@@ -12,10 +13,10 @@ import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 })
 export class ProcessChequesComponent implements OnInit {
 
-  constructor(private api: ApiCallService,
-    private processChqeSvc: ProcessChequesService) { }
+  constructor(private processChqeSvc: ProcessChequesService) { }
 
   currentPage: string;
+
   ngOnInit() {
     this.processChqeSvc.getCurrentPage().subscribe(page => {
       this.currentPage = page;

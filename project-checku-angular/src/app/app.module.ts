@@ -16,6 +16,8 @@ import { APIInterceptor } from './common/services/APIInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './web-pages/process-cheques/process-cheques.modules';
+import { ToastrModule } from 'ngx-toastr';
 
 import { TestPageComponent } from './web-pages/test-components/test-page/test-page.component';
 import { ConfirmDialogComponent } from './common/components/confirm-dialog/confirm-dialog.component';
@@ -25,7 +27,7 @@ import { ReviewChequesComponent } from './web-pages/process-cheques/review-chequ
 import { RejectChequesComponent } from './web-pages/process-cheques/reject-cheques/reject-cheques.component';
 import { SuccessChequesComponent } from './web-pages/process-cheques/success-cheques/success-cheques.component';
 import { CardHeaderComponent } from './web-pages/process-cheques/card-header/card-header.component';
- 
+
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { CardHeaderComponent } from './web-pages/process-cheques/card-header/car
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MDBBootstrapModule.forRoot()
+    SharedModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   exports: [
     LoginComponent,
@@ -65,13 +69,13 @@ import { CardHeaderComponent } from './web-pages/process-cheques/card-header/car
     ConfirmDialogComponent,
     BrowserAnimationsModule
   ],
-  entryComponents: [ConfirmDialogComponent, FluidModalComponent],    
+  entryComponents: [ConfirmDialogComponent, FluidModalComponent],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: APIInterceptor,
     multi: true,
-  }
-],
+  },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ProcessChequesService } from '../process-cheques.service';
 
 @Component({
@@ -8,14 +8,10 @@ import { ProcessChequesService } from '../process-cheques.service';
 })
 export class CardHeaderComponent implements OnInit {
   reviewCount: any;
-  reviewCheques: any[];
   rejectCount: any;
-  rejectCheques: any[];
   successCount: any;
-  successCheques: any[];
-  processedCheques: any;
 
-  constructor(private processChequeSvc: ProcessChequesService) { }
+  constructor(private processChqeSvc: ProcessChequesService) { }
 
   cardList: any[];
 
@@ -24,21 +20,26 @@ export class CardHeaderComponent implements OnInit {
   }
 
   getChequeCounts() {
-    this.processChequeSvc.getAllCheques().then(res => {
-      this.processedCheques = res;
-      this.reviewCheques = this.processedCheques['reviewCheques'];
-      this.rejectCheques = this.processedCheques['rejectedCheques'];
-      this.successCheques = this.processedCheques['successfulCheques']
+    this.processChqeSvc.getLatestCheque('review').subscribe((cheques: any[]) => {
+      this.reviewCount = cheques.length;
+      this.setCardList();
 
-      this.reviewCount = this.reviewCheques.length;
-      this.rejectCount = this.rejectCheques.length;
-      this.successCount = this.successCheques.length;
-
-      this.cardList = [
-        { icon: "reject", title: "To Reject", count: this.rejectCount },
-        { icon: "review", title: "To Review", count: this.reviewCount },
-        { icon: "success", title: "To Accept", count: this.successCount }];
     });
+    this.processChqeSvc.getLatestCheque('reject').subscribe((cheques: any[]) => {
+      this.rejectCount = cheques.length;
+      this.setCardList();
+    });
+    this.processChqeSvc.getLatestCheque('success').subscribe((cheques: any[]) => {
+      this.successCount = cheques.length;
+      this.setCardList();
+    });
+  }
+
+  setCardList() {
+    this.cardList = [
+      { icon: "reject", title: "To Reject", count: this.rejectCount },
+      { icon: "review", title: "To Review", count: this.reviewCount },
+      { icon: "success", title: "To Accept", count: this.successCount }];
   }
 
   checkIcon(card) {

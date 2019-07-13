@@ -1,6 +1,9 @@
 <div class="row h-100 w-100 m-0">
   <side-bar class="col-2 px-0 slideInLeft animated faster" (changeTabs)="changePage($event)"></side-bar>
   <div class="container col-10 px-0 pt-4 h-100 fadeInUp animated faster" id="scrollbar" [style.overflow-y]="'auto'">
+    <div class="d-flex row justify-content-md-center mt-4 mx-1">
+      <card-header class="w-75 m-auto"></card-header>
+    </div>
     <ng-container [ngSwitch]="currentPage">
       <ng-container *ngSwitchCase="'reject'">
         <reject-cheques class="w-100"></reject-cheques>

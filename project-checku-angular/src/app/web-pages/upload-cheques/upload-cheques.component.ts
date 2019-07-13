@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common'
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@confirmDialogSerivce';
 import { ApiCallService } from '@apiService';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-upload-cheques',
@@ -16,7 +17,8 @@ export class UploadChequesComponent implements OnInit {
   constructor(
     private dp: DatePipe,
     private confirmDialogService: ConfirmDialogService,
-    private api: ApiCallService
+    private api: ApiCallService,
+    private toastSvc: ToastrService
   ) { }
 
   isUploaded: boolean = false;
@@ -140,7 +142,7 @@ export class UploadChequesComponent implements OnInit {
       if (!this.isUploaded) {
         //reject upload if foldername is the same
         console.log("folder with same name already exists.");
-        //TODO: add notifier
+        this.toastSvc.error("Cannot upload folder(s) with the same name", "Error", { positionClass: 'toast-bottom-left' });
         break;
       }
 
@@ -154,7 +156,7 @@ export class UploadChequesComponent implements OnInit {
       if (size > 10000) {
         //reject upload if foldername is the same
         console.log("file size is more than 10mb");
-        //TODO: add notifier
+        this.toastSvc.error("Cannot upload files more than 10MB", "Error", { positionClass: 'toast-bottom-left' });
         break;
       }
 
@@ -200,7 +202,7 @@ export class UploadChequesComponent implements OnInit {
     this.api.processScannedCheques(data).then(response => {
       console.log(response);
       //route to review page
-      
+
       //reset
       this.reset();
     },

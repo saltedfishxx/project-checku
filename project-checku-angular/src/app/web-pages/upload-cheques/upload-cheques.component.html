@@ -69,8 +69,8 @@
           <div class="col-6 text-center p-4">
             <div *ngIf="selectedFolder != null; else noSelected" class=" z-depth-1 py-2">
               <div>{{ selectedFolder.folderName }}</div>
-              <img [src]="selectedFolder.front.url" class="fadeIn animated faster" [style.height]="'15vh'">
-              <img [src]="selectedFolder.back.url" class="animated fadeIn faster" [style.height]="'15vh'">
+              <img [src]="selectedFolder.front.url" class="fadeIn animated faster" [style.height]="'10em'">
+              <img [src]="selectedFolder.back.url" class="animated fadeIn faster" [style.height]="'10em'">
             </div>
             <ng-template #noSelected>
               <div class="d-flex flex-row align-items-center justify-content-center z-depth-1 py-2 h-100">
@@ -97,7 +97,7 @@
             <label mdbBtn for="file-selector" class="btn round" color="default" size="sm" mdbWavesEffect>
               <input id="file-selector" type="file" class="d-none" #folderInput type="file"
                 (change)="filesPicked(folderInput.files)" multiple webkitDirectory>
-              <mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload
+              <mdb-icon fas icon="upload" class="mr-1"></mdb-icon>Upload More
             </label>
           </div>
         </div>

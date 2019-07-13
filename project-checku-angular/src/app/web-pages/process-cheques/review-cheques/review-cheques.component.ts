@@ -4,6 +4,7 @@ import { TableConfig } from 'src/app/common/components/table-common/datatable/da
 import { ApiCallService } from '@apiService';
 import { ProcessChequesService } from '../process-cheques.service';
 import { ConfirmDialogService } from '@confirmDialogSerivce';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'review-cheques',
@@ -13,15 +14,18 @@ import { ConfirmDialogService } from '@confirmDialogSerivce';
 export class ReviewChequesComponent implements OnInit {
 
   constructor(private processChequeSvc: ProcessChequesService,
-    private confirmDialogSvc: ConfirmDialogService) { }
+    private confirmDialogSvc: ConfirmDialogService,
+    private toastSvc: ToastrService) { }
 
   chequeDetailsForm: FormGroup;
   reviewCheques: any[] = [];
+  currentChequeReviewed: any;
   currentPage: any;
   formDisabled: boolean = false;
   isEditing: boolean = false;
   toggleChequeImg: boolean = false;
   disableButtons: any[] = [];
+  smsSent: boolean = false;
 
   reviewTableConfig: TableConfig = new TableConfig();
 
@@ -116,12 +120,14 @@ export class ReviewChequesComponent implements OnInit {
 
   loadReviewPage(pageToLoad) {
     this.currentPage = pageToLoad;
-    this.populateChequeForm(this.reviewCheques[pageToLoad - 1].chequeDetail);
+    this.currentChequeReviewed = this.reviewCheques[pageToLoad - 1];
+    this.populateChequeForm(this.currentChequeReviewed.chequeDetail);
     this.chequeDetailsForm.disable();
     this.formDisabled = true;
-    this.reviewTableConfig.value = this.reviewCheques[pageToLoad - 1].prediction;
+    this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
     this.reviewTableConfig.refresh();
   }
+
 
 
 
@@ -159,7 +165,7 @@ export class ReviewChequesComponent implements OnInit {
 
   onClickSend(event) {
     console.log(event);
-    let price = this.reviewCheques[this.currentPage - 1].chequeDetail.amount;
+    let price = this.currentChequeReviewed.chequeDetail.amount;
 
     let message = "The customer will receive the following message: \nDear " + event.rowData.predictedName + ",\nPlease verfiy that " +
       "you have made a payment of S$" + price + " to Prudential. To verify, " +
@@ -175,10 +181,40 @@ export class ReviewChequesComponent implements OnInit {
       if (send) {
         this.disableButtons.push('Send SMS' + event.i);
         this.reviewTableConfig.disableButtonsList = this.disableButtons;
-        this.reviewTableConfig.value = this.reviewCheques[this.currentPage - 1].prediction;
+        this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
         this.reviewTableConfig.refresh();
+        this.smsSent = true;
         //TODO: send sms + add record of person sent to server
+        this.toastSvc.success("SMS has been successfully sent!", "", { positionClass: 'toast-bottom-left' });
       }
     });
+  }
+
+
+  onFinishReview() {
+    let data = {
+      header: "Confirm Finish View",
+      description: "Finish reviewing this cheque?",
+      positive: "Yes",
+      negative: "Cancel"
+    }
+    this.confirmDialogSvc.openDialog(data).then(yes => {
+      //if confirm send
+      if (yes) {
+        this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);
+        this.loadReviewPage(1);
+        this.processChequeSvc.updateReviewCheques(this.reviewCheques);
+        //TODO: add record of cheque sent to server
+        this.toastSvc.success("Review for this cheque has been completed!", "", { positionClass: 'toast-bottom-left' });
+      }
+    });
+  }
+
+  onAccept() {
+
+  }
+
+  onReject() {
+
   }
 }

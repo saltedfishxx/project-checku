@@ -1,5 +1,4 @@
 <div class="d-flex row justify-content-md-center mt-4 mx-1">
-  <card-header class="w-75 m-auto"></card-header>
   <!--paginator-->
   <div class="row w-75 px-0 mt-4">
     <div class="col-3 px-0 btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -127,10 +126,16 @@
   <!--button actions-->
   <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
     <button mdbBtn class="round" [style.width]="'110px'" [style.height]="'40px'" type="button" color="danger" size="sm"
-      mdbWavesEffect (click)="onReject()">Reject</button>
-    <button mdbBtn class="round" [style.width]="'110px'" [style.height]="'40px'" type="button" color="success" size="sm"
-      mdbWavesEffect (click)="onAccept()">Accept</button>
+      mdbWavesEffect (click)="onReject()" [disabled]="smsSent">
+      <mdb-icon fas icon="times" size="lg" class="mr-1"></mdb-icon>Reject
+    </button>
+    <button mdbBtn class="round" [style.width]="'120px'" [style.height]="'40px'" type="button" color="success" size="sm"
+      mdbWavesEffect (click)="onAccept()" [disabled]="smsSent">
+      <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Accept
+    </button>
     <button mdbBtn class="round mr-0" [style.width]="'150px'" [style.height]="'40px'" type="button" color="warning"
-      size="sm" mdbWavesEffect (click)="onFinishReview()">Done Review</button>
+      size="sm" mdbWavesEffect (click)="onFinishReview()">
+      <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Done Review
+    </button>
   </div>
   <!--------------------------------REVIEW CHEQUES END-------------------------------------------->

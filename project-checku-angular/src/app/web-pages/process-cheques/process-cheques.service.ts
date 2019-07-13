@@ -16,9 +16,9 @@ export class ProcessChequesService {
   reviewCheques: any[];
   rejectCheques: any[];
   successCheques: any[];
-  reviewCount: number;
-  rejectCount: number;
-  successCount: number;
+  rejectChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  reviewChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  successChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   getAllCheques() {
     return new Promise((resolve, reject) => {
@@ -34,7 +34,11 @@ export class ProcessChequesService {
         this.processedCheques = res.data;
         this.reviewCheques = this.processedCheques['reviewCheques'];
         this.rejectCheques = this.processedCheques['rejectedCheques'];
-        this.successCheques = this.processedCheques['successfulCheques']
+        this.successCheques = this.processedCheques['successfulCheques'];
+
+        this.updateRejectCheques(this.reviewCheques);
+        this.updateReviewCheques(this.rejectCheques);
+        this.updateSuccessCheques(this.successCheques);
 
         console.log(this.processedCheques);
         switch (tab) {
@@ -59,6 +63,29 @@ export class ProcessChequesService {
 
   getCurrentPage() {
     return this.tabSource;
+  }
+
+  updateReviewCheques(reviewCheques) {
+    this.reviewChequesSubj.next(reviewCheques);
+  }
+
+  updateRejectCheques(rejectCheques) {
+    this.rejectChequesSubj.next(rejectCheques);
+  }
+
+  updateSuccessCheques(successCheques) {
+    this.successChequesSubj.next(successCheques);
+  }
+
+  getLatestCheque(type) {
+    switch (type) {
+      case 'review':
+        return this.reviewChequesSubj.asObservable();
+      case 'reject':
+        return this.rejectChequesSubj.asObservable();
+      case 'success':
+        return this.successChequesSubj.asObservable();
+    }
   }
 
 }
