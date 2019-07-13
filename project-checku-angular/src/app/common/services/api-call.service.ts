@@ -8,7 +8,7 @@ import { URLS } from '@urls';
 })
 export class ApiCallService {
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   //GET
   getRecords(requestUrl) {
@@ -17,22 +17,22 @@ export class ApiCallService {
       this.http.get(requestUrl).subscribe(response => {
         resolve(response);
       },
-      errorResponse => {
-        reject(errorResponse);
-      });
+        errorResponse => {
+          reject(errorResponse);
+        });
     });
   }
 
   //POST
-  login(requestUrl, data){
+  login(requestUrl, data) {
     return new Promise((resolve, reject) => {
 
       this.http.post(requestUrl, data).subscribe(response => {
         resolve(response);
       },
-      errorResponse => {
-        reject(errorResponse);
-      });
+        errorResponse => {
+          reject(errorResponse);
+        });
     });
   }
 
@@ -42,9 +42,9 @@ export class ApiCallService {
       this.http.post(URLS.POST_SCANNED_CHEQUES, data).subscribe(response => {
         resolve(response);
       },
-      errorResponse => {
-        reject(errorResponse);
-      });
+        errorResponse => {
+          reject(errorResponse);
+        });
     });
   }
 
@@ -54,9 +54,9 @@ export class ApiCallService {
       this.http.post(requestUrl, data).subscribe(response => {
         resolve(response);
       },
-      errorResponse => {
-        reject(errorResponse);
-      });
+        errorResponse => {
+          reject(errorResponse);
+        });
     });
   }
 

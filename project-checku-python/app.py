@@ -14,10 +14,12 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-#use CORS to enable CORS policy and have access control
+# use CORS to enable CORS policy and have access control
 CORS(app)
 
-#default response    
+# default response
+
+
 @app.route("/")
 def main():
     return "Hello test"
@@ -33,100 +35,111 @@ def getPendingRecords():
 @app.route('/getHoldingRec', methods=['GET'])
 def getHoldingRecords():
     # returns reponse
-    return jsonify({'data':"get holding record is called."})
+    return jsonify({'data': "get holding record is called."})
 
 
 @app.route('/getSuccessRec', methods=['GET'])
 def getSuccessRecords():
     # returns reponse
-    return jsonify({'data':"get success record is called."})
+    return jsonify({'data': "get success record is called."})
 
 
 @app.route('/getRejectedRec', methods=['GET'])
 def getRejectedRecords():
     # returns reponse
-    return jsonify({'data':"get rejected record is called."})
-
+    return jsonify({'data': "get rejected record is called."})
 
 
 ######################## POST METHODS ################################
-#api call for login and authorisation
+# api call for login and authorisation
 @app.route('/login', methods=['POST'])
 def login():
-    #get requested data and convert to json
+    # get requested data and convert to json
     data = request.get_json()
 
     # received data looks something like this:
     # {'email': 'johnomari@gmail.com', 'password': 'nani'}
     # to get the property values, use .get('key')
-    email = data.get('email') 
+    email = data.get('email')
     password = data.get('password')
 
-    #have a separate method to search through database and check for login credentials
+    # have a separate method to search through database and check for login credentials
     isAuthenticated = checkLogin(email, password)
 
     # when returning response, remeber to convert to json
     # returns reponse
     if(isAuthenticated):
-        return jsonify({'data':"post scanned chqe is called. User is authenticated. Email is " + email 
-        + " and password is " + password })
+        return jsonify({'isAuthenticated': 'true', 'data': "post scanned chqe is called. User is authenticated. Email is " + email
+                        + " and password is " + password})
     else:
-        return jsonify({'data':"Invalid login credentials" })
+        return jsonify({'data': "Invalid login credentials"})
+
+# api call to get the confirm rejected cheques and add to database
 
 
-#api call to get the scanned cheques and add to database
-@app.route('/postScannedChqe', methods=['POST'])
-def scanRecords():
-    # returns reponse
-    return jsonify({'data':"post scanned chqe is called."})
-
-
-#api call to get the confirm rejected cheques and add to database
 @app.route('/postRejectedChqe', methods=['POST'])
 def addRejectedCheques():
     # returns reponse
-    return jsonify({'data':"post rejected chqe is called."})
+    return jsonify({'data': "post rejected chqe is called."})
 
 
-#api call to get the cheques that have been reviewed and add to database
+# api call to get the cheques that have been reviewed and add to database
 @app.route('/postReviewChqe', methods=['POST'])
 def addReviewCheques():
     # returns reponse
-    return jsonify({'data':"post review chqe is called."})
+    return jsonify({'data': "post review chqe is called."})
 
 
-#api call to send sms to customers
+# api call to send sms to customers
 @app.route('/postSms', methods=['POST'])
 def sendSms():
     # returns reponse
-    return jsonify({'data':"post sms is called."})
+    return jsonify({'data': "post sms is called."})
 
 
-#api call to get the confirm success cheques and add to database
+# api call to get the confirm success cheques and add to database
 @app.route('/postSuccessChqe', methods=['POST'])
 def addSuccessCheques():
     # returns reponse
-    return jsonify({'data':"post success chqe is called."})
+    return jsonify({'data': "post success chqe is called."})
 
-#region OCR
-@app.route('/ocr')
+# api call to process cheques through OCR
+
+
+@app.route('/processCheques', methods=['POST'])
 def scanCheque():
-    ocr.ocr('../samplecheck1.jpg')
-#endregion
+    # data in string format and you have to parse into list
+    # e.g. data received [ {"back": { "name" : ...}, "front: {..}"}, {"back": {...}, "front: {..}"}]
+    chequeList = request.get_json()["data"]
+
+    # FOR TESTING PURPOSES: check file name
+    print("No. of cheques recevied " + len(chequeList))
+    for cheque in chequeList:
+        print("front cheque file name: " + cheque["front"]["name"])
+        print("back cheque file name: " + cheque["back"]["name"])
+
+    # run ocr method while passing in received data
+    ocr.ocr('../samplecheck1.jpg')  # TODO: pass in chequeList and run OCR
+
+    # FOR TESTING PURPOSES: return dataDict to check if request is received from front end
+    return jsonify({'data received': chequeList})
+
 
 ######################## HELPER METHODS ################################
+
+
 def checkLogin(email, password):
     # TODO: search in db to check if email password exists and is correct
-    return True
-
+    if email == "wakanda" and password == "jesus":
+        return True
 
 
 if __name__ == '__main__':
-    #run ml_model.py
+    # run ml_model.py
     # ml_model.createML()
 
-    # Load "model.pkl"  
-    # lr = pickle.load(open("model.p", "rb"))  
+    # Load "model.pkl"
+    # lr = pickle.load(open("model.p", "rb"))
     # print('Model loaded')
     # # Load "model_columns.pkl"
     # model_columns = pickle.load(open("model_columns.p", "rb"))

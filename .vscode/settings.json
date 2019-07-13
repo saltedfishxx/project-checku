@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\clair\\AppData\\Local\\Programs\\Python\\Python36\\python.exe"
+    "python.pythonPath": "D:\\Microsoft Visual Studio\\Shared\\Python36_64\\python.exe",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.pep8Enabled": true
 }

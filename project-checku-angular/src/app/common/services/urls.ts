@@ -2,7 +2,7 @@ export const URLS = {
 
     //base url
 
-    APP_HOST: "http://localhost:4200/",
+    APP_HOST: "http://localhost:5000/",
 
     //get url methods
     GET_PENDING_REC: "getPendingRec",
@@ -12,7 +12,7 @@ export const URLS = {
 
     //post url methods
     POST_LOGIN: "login",
-    POST_SCANNED_CHEQUES: "postScannedChqe",
+    POST_SCANNED_CHEQUES: "processCheques",
     POST_REJECTED_CHEQUES: "postRejectedChqe",
     POST_REVIEW_CHEQUES: "postReviewChqe",
     POST_SMS: "postSms",

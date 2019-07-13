@@ -3,6 +3,7 @@ import { ApiCallService } from '@apiService';
 import { URLS } from '@urls';
 
 import { FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private apiService: ApiCallService) { }
+  constructor(private apiService: ApiCallService,
+    private router: Router) { }
 
   loginForm: FormGroup;
 
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onSubmit(){
+  onSubmit() {
     console.log(this.loginForm.get('email').value);
     console.log(this.loginForm.get('password').value);
 
@@ -31,8 +33,12 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.get('password').value
     }
 
-    this.apiService.login(URLS.POST_LOGIN, postData).then(data => {
+    this.apiService.login(URLS.POST_LOGIN, postData).then((data: any) => {
       console.log(data);
+      let isAuth = data.isAuthenticated;
+      if (isAuth) {
+        this.router.navigate(["/upload"]);
+      }
     }).catch(error => {
       console.log(error);
     });
