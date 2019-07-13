@@ -17,7 +17,7 @@ def ocr(link):
   # Define config parameters.
   # '-l eng'  for using the English language
   # '--oem 1' for using LSTM OCR Engine
-  config = ('-l eng --oem 1 --psm 3')
+  config = ('-l eng --oem 1 --psm 11')
  
   # Read image from disk
   im = cv2.imread(imPath, cv2.IMREAD_COLOR)
@@ -26,4 +26,4 @@ def ocr(link):
   text = pytesseract.image_to_string(im, config=config)
  
   # Print recognized text
-  return text
+  print(text)

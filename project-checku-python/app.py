@@ -111,7 +111,7 @@ def addSuccessCheques():
 #region OCR
 @app.route('/ocr')
 def scanCheque():
-    return ocr.ocr('../samplecheck1.jpg')
+    ocr.ocr('../samplecheck1.jpg')
 #endregion
 
 ######################## HELPER METHODS ################################
