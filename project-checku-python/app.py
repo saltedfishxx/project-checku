@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, jsonify
-import pytest
+# import pytest
 import os
 import sys
 # import pickle
@@ -7,6 +7,7 @@ import sys
 # import pandas as pd
 # import numpy as np
 # import ml_model
+import ocr
 
 from flask import request
 from flask_cors import CORS
@@ -107,11 +108,17 @@ def addSuccessCheques():
     # returns reponse
     return jsonify({'data':"post success chqe is called."})
 
+#region OCR
+@app.route('/ocr')
+def scanCheque():
+    ocr.ocr('../samplecheck1.jpg')
+#endregion
 
 ######################## HELPER METHODS ################################
 def checkLogin(email, password):
     # TODO: search in db to check if email password exists and is correct
     return True
+
 
 
 if __name__ == '__main__':
@@ -129,5 +136,3 @@ if __name__ == '__main__':
     port = int(os.getenv("PORT", 5000))
     # Run the app, listening on all IPs with our chosen port number
     app.run(host="localhost", port=port, debug=True)
-
-
