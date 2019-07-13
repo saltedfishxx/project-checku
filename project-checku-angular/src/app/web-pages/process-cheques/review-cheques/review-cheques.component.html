@@ -1,4 +1,4 @@
-<div class="d-flex row justify-content-md-center mt-4 mx-1">
+<div class="d-flex row justify-content-md-center mt-4 mx-1 fadeIn animated faster">
   <!--paginator-->
   <div class="row w-75 px-0 mt-4">
     <div class="col-3 px-0 btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -15,127 +15,143 @@
     </div>
   </div>
   <!--paginator end-->
-  <!---------------------------------------REVIEW CHEQUES START-------------------------------->
-  <!--cheque details-->
-  <div class="d-flex w-75 row justify-content-md-center mt-4">
-    <div class="row justify-content-md-between p-0">
-      <div class="col-6">
-        <mdb-card>
-          <mdb-card-header class="bg-white">
-            <div class="row justify-content-md-between align-items-center">
-              <h5 class="m-0 pl-2 ">Cheque Details</h5>
-              <button mdbBtn (click)="isEditing ? onEditDone() : onEdit()"
-                class="bg-transparent z-depth-0 p-0 m-0 waves-light" mdbWavesEffect>
-                <span class="small text-primary m-0">{{ isEditing ? 'Done' : 'Edit'}}</span>
-                <mdb-icon fas [icon]="isEditing ? 'check' : 'edit'" class="px-1 text-primary"></mdb-icon>
-              </button>
-            </div>
-          </mdb-card-header>
-          <mdb-card-body class="px-0 py-4" [style.height]="'250px'">
-            <form [formGroup]="chequeDetailsForm">
-              <div class="d-flex justify-content-md-between mx-2">
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="policyNo"
-                    formControlName="policyNo" id="policyNo" [class]="chequeDetailsForm.get('policyNo').value == 'NOT PROVIDED' ? 
-                    'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="policyNo">Policy No</label>
-                </div>
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text"
-                    name="policyType" formControlName="policyType" id="policyType" [class]="chequeDetailsForm.get('policyType').value == 'NOT PROVIDED' ?
-                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="policyType">Policy Type</label>
-                </div>
-              </div>
-              <div class="d-flex justify-content-md-between mx-2">
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="custName"
-                    formControlName="custName" id="custName" [class]="chequeDetailsForm.get('custName').value == 'NOT PROVIDED' ?
-                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="custName">Customer Name</label>
-                </div>
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="tel" name="contact"
-                    formControlName="contact" id="contact" [class]="chequeDetailsForm.get('contact').value == 'NOT PROVIDED' ? 
-                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="contact">Contact</label>
-                </div>
-              </div>
-              <div class="d-flex justify-content-md-between mx-2">
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="amount"
-                    formControlName="amount" id="amount" [class]="chequeDetailsForm.get('amount').value == 'NOT PROVIDED' ? 
-                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="amount">Amount</label>
-                </div>
-                <div class="md-form form-sm mx-2 my-2 w-50">
-                  <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="date"
-                    formControlName="date" id="date" [class]="chequeDetailsForm.get('date').value == 'NOT PROVIDED' ? 
-                     'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                  <label for="date">Date</label>
-                </div>
-              </div>
-            </form>
-          </mdb-card-body>
-        </mdb-card>
-      </div>
-      <!--cheque image card-->
-      <div class="col-6">
-        <mdb-card>
-          <mdb-card-header class="bg-white">
-            <div class="row justify-content-md-between align-items-center">
-              <h5 class="m-0 pl-2 ">Scanned Cheque</h5>
-              <div class="d-flex mr-2">
-                <p class="m-0 pr-2 small pt-1 text-primary">Front</p>
-                <div class="custom-control custom-switch">
-                  <input type="checkbox" [(ngModel)]="toggleChequeImg" class="custom-control-input" id="customSwitches">
-                  <label class="custom-control-label small pt-1 text-primary" for="customSwitches">Back</label>
-                </div>
-              </div>
-            </div>
-          </mdb-card-header>
-          <mdb-card-body class="px-0 py-2" [style.height]="'250px'">
-            <div class="d-flex justify-content-md-center p-3">
-              <img
-                [src]="toggleChequeImg ? './assets/img/cheques/sample check dh back.jpg' : './assets/img/cheques/1. sample check dh.jpg'"
-                width="100%" />
-              <!-- <img [src]="reviewCheques[currentPage].chequeDetail.imageFront" width="310" /> -->
-            </div>
-          </mdb-card-body>
-        </mdb-card>
-      </div>
-      <!--cheque image card end-->
+  <!--No cheques for review-->
+  <ng-container *ngIf="reviewCheques.length < 1; else showReview">
+    <div class="d-flex w-75 row justify-content-md-center mt-4">
+      <mdb-card [style.minWidth]="'950px'">
+        <mdb-card-body class="px-0 ml-4 py-4 h-auto">
+          <div class="text-center my-4">
+            <mdb-icon fas icon="clipboard-check" size="4x" class="grey-text"></mdb-icon>
+            <h4 class="mt-2">Hurray! There are currently no cheques pending for review!</h4>
+          </div>
+        </mdb-card-body>
+      </mdb-card>
     </div>
-  </div>
-  <!--prediction results-->
-  <div class="d-flex w-75 row justify-content-md-center mt-4 mb-4 mx-1">
-    <mdb-card>
-      <mdb-card-header class="bg-white">
-        <div class="row justify-content-md-between align-items-center">
-          <h5 class="m-0 pl-2 ">Prediction Results</h5>
+  </ng-container>
+  <ng-template #showReview>
+    <!---------------------------------------REVIEW CHEQUES START-------------------------------->
+    <!--cheque details-->
+    <div class="d-flex w-75 row justify-content-md-center mt-4">
+      <div class="row justify-content-md-between p-0">
+        <div class="col-6">
+          <mdb-card [style.minWidth]="'460px'">
+            <mdb-card-header class="bg-white">
+              <div class="row justify-content-md-between align-items-center">
+                <h5 class="m-0 pl-2 ">Cheque Details</h5>
+                <button mdbBtn (click)="isEditing ? onEditDone() : onEdit()"
+                  class="bg-transparent z-depth-0 p-0 m-0 waves-light" mdbWavesEffect>
+                  <span class="small text-primary m-0">{{ isEditing ? 'Done' : 'Edit'}}</span>
+                  <mdb-icon fas [icon]="isEditing ? 'check' : 'edit'" class="px-1 text-primary"></mdb-icon>
+                </button>
+              </div>
+            </mdb-card-header>
+            <mdb-card-body class="px-0 py-4" [style.height]="'250px'">
+              <form [formGroup]="chequeDetailsForm">
+                <div class="d-flex justify-content-md-between mx-2">
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text"
+                      name="policyNo" formControlName="policyNo" id="policyNo" [class]="chequeDetailsForm.get('policyNo').value == 'NOT PROVIDED' ? 
+                      'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="policyNo">Policy No</label>
+                  </div>
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text"
+                      name="policyType" formControlName="policyType" id="policyType" [class]="chequeDetailsForm.get('policyType').value == 'NOT PROVIDED' ?
+                       'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="policyType">Policy Type</label>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-md-between mx-2">
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text"
+                      name="custName" formControlName="custName" id="custName" [class]="chequeDetailsForm.get('custName').value == 'NOT PROVIDED' ?
+                       'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="custName">Customer Name</label>
+                  </div>
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="tel" name="contact"
+                      formControlName="contact" id="contact" [class]="chequeDetailsForm.get('contact').value == 'NOT PROVIDED' ? 
+                       'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="contact">Contact</label>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-md-between mx-2">
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="amount"
+                      formControlName="amount" id="amount" [class]="chequeDetailsForm.get('amount').value == 'NOT PROVIDED' ? 
+                       'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="amount">Amount</label>
+                  </div>
+                  <div class="md-form form-sm mx-2 my-2 w-50">
+                    <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text" name="date"
+                      formControlName="date" id="date" [class]="chequeDetailsForm.get('date').value == 'NOT PROVIDED' ? 
+                       'form-control form-control-sm text-danger': 'form-control form-control-sm'">
+                    <label for="date">Date</label>
+                  </div>
+                </div>
+              </form>
+            </mdb-card-body>
+          </mdb-card>
         </div>
-      </mdb-card-header>
-      <mdb-card-body class="px-0 ml-4 py-4 h-auto">
-        <datatable buttonText="Send SMS" buttonColor="primary" (clicked)="onClickSend($event)"
-          [config]="reviewTableConfig">
-        </datatable>
-      </mdb-card-body>
-    </mdb-card>
-  </div>
-  <!--prediction results end-->
-  <!--button actions-->
-  <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
-    <button mdbBtn class="round" [style.width]="'110px'" [style.height]="'40px'" type="button" color="danger" size="sm"
-      mdbWavesEffect (click)="onReject()" [disabled]="smsSent">
-      <mdb-icon fas icon="times" size="lg" class="mr-1"></mdb-icon>Reject
-    </button>
-    <button mdbBtn class="round" [style.width]="'120px'" [style.height]="'40px'" type="button" color="success" size="sm"
-      mdbWavesEffect (click)="onAccept()" [disabled]="smsSent">
-      <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Accept
-    </button>
-    <button mdbBtn class="round mr-0" [style.width]="'150px'" [style.height]="'40px'" type="button" color="warning"
-      size="sm" mdbWavesEffect (click)="onFinishReview()">
-      <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Done Review
-    </button>
-  </div>
-  <!--------------------------------REVIEW CHEQUES END-------------------------------------------->
+        <!--cheque image card-->
+        <div class="col-6">
+          <mdb-card [style.minWidth]="'460px'">
+            <mdb-card-header class="bg-white">
+              <div class="row justify-content-md-between align-items-center">
+                <h5 class="m-0 pl-2 ">Scanned Cheque</h5>
+                <div class="d-flex mr-2">
+                  <p class="m-0 pr-2 small pt-1 text-primary">Front</p>
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" [(ngModel)]="toggleChequeImg" class="custom-control-input"
+                      id="customSwitches">
+                    <label class="custom-control-label small pt-1 text-primary" for="customSwitches">Back</label>
+                  </div>
+                </div>
+              </div>
+            </mdb-card-header>
+            <mdb-card-body class="px-0 py-2" [style.height]="'250px'">
+              <div class="d-flex justify-content-md-center p-3">
+                <img *ngIf="currentPage != 0"
+                  [src]="toggleChequeImg ? currentChequeReviewed.chequeDetail.imageFront : currentChequeReviewed.chequeDetail.imageBack"
+                  width="100%" />
+                <!-- <img [src]="reviewCheques[currentPage].chequeDetail.imageFront" width="310" /> -->
+              </div>
+            </mdb-card-body>
+          </mdb-card>
+        </div>
+        <!--cheque image card end-->
+      </div>
+    </div>
+    <!--prediction results-->
+    <div class="d-flex w-75 row justify-content-md-center mt-4 mb-4 mx-1">
+      <mdb-card [style.minWidth]="'950px'">
+        <mdb-card-header class="bg-white">
+          <div class="row justify-content-md-between align-items-center">
+            <h5 class="m-0 pl-2 ">Prediction Results</h5>
+          </div>
+        </mdb-card-header>
+        <mdb-card-body class="px-0 ml-4 py-4 h-auto">
+          <datatable buttonText="Send SMS" buttonColor="primary" (clicked)="onClickSend($event)"
+            [config]="reviewTableConfig">
+          </datatable>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+    <!--prediction results end-->
+    <!--button actions-->
+    <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
+      <button mdbBtn class="round" [style.width]="'110px'" [style.height]="'40px'" type="button" color="danger"
+        size="sm" mdbWavesEffect (click)="onReject()" [disabled]="smsSent">
+        <mdb-icon fas icon="times" size="lg" class="mr-1"></mdb-icon>Reject
+      </button>
+      <button mdbBtn class="round" [style.width]="'120px'" [style.height]="'40px'" type="button" color="success"
+        size="sm" mdbWavesEffect (click)="onAccept()" [disabled]="smsSent">
+        <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Accept
+      </button>
+      <button mdbBtn class="round mr-0" [style.width]="'150px'" [style.height]="'40px'" type="button" color="warning"
+        size="sm" mdbWavesEffect (click)="onFinishReview()">
+        <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Done Review
+      </button>
+    </div>
+    <!--------------------------------REVIEW CHEQUES END-------------------------------------------->
+  </ng-template>

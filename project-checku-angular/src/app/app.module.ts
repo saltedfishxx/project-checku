@@ -27,6 +27,7 @@ import { ReviewChequesComponent } from './web-pages/process-cheques/review-chequ
 import { RejectChequesComponent } from './web-pages/process-cheques/reject-cheques/reject-cheques.component';
 import { SuccessChequesComponent } from './web-pages/process-cheques/success-cheques/success-cheques.component';
 import { CardHeaderComponent } from './web-pages/process-cheques/card-header/card-header.component';
+import { LoadingComponent } from './common/components/loading/loading.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { CardHeaderComponent } from './web-pages/process-cheques/card-header/car
     ReviewChequesComponent,
     RejectChequesComponent,
     SuccessChequesComponent,
-    CardHeaderComponent
+    CardHeaderComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

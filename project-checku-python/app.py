@@ -113,7 +113,7 @@ def scanCheque():
     chequeList = request.get_json()["data"]
 
     # FOR TESTING PURPOSES: check file name
-    print("No. of cheques recevied " + len(chequeList))
+    print("No. of cheques recevied " + str(len(chequeList)))
     for cheque in chequeList:
         print("front cheque file name: " + cheque["front"]["name"])
         print("back cheque file name: " + cheque["back"]["name"])

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TableConfig } from 'src/app/common/components/table-common/datatable/datatable.component';
-import { ApiCallService } from '@apiService';
 import { ProcessChequesService } from '../process-cheques.service';
 import { ConfirmDialogService } from '@confirmDialogSerivce';
 import { ToastrService } from 'ngx-toastr';
@@ -37,10 +36,15 @@ export class ReviewChequesComponent implements OnInit {
   }
 
   getProcessedCheques() {
-    this.processChequeSvc.getProcessedCheques('review').then((cheques: any) => {
+    this.processChequeSvc.getLatestCheque('review').subscribe((cheques: any[]) => {
       this.reviewCheques = cheques;
+      //load page with first cheque in view
+      if (this.reviewCheques.length > 0) {
+        this.loadReviewPage(1);
+      } else {
+        this.loadReviewPage(0);
+      }
 
-      this.loadReviewPage(1);
     });
   }
 
@@ -120,12 +124,23 @@ export class ReviewChequesComponent implements OnInit {
 
   loadReviewPage(pageToLoad) {
     this.currentPage = pageToLoad;
-    this.currentChequeReviewed = this.reviewCheques[pageToLoad - 1];
-    this.populateChequeForm(this.currentChequeReviewed.chequeDetail);
-    this.chequeDetailsForm.disable();
-    this.formDisabled = true;
-    this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
-    this.reviewTableConfig.refresh();
+    //if no more cheques for review
+    if (this.currentPage == 0) {
+      this.initChequeForm();
+      this.chequeDetailsForm.disable();
+      this.formDisabled = true;
+      this.initReviewTable();
+      this.reviewTableConfig.value = [];
+      this.reviewTableConfig.refresh();
+    } else {
+      this.currentChequeReviewed = this.reviewCheques[pageToLoad - 1];
+      this.populateChequeForm(this.currentChequeReviewed.chequeDetail);
+      this.chequeDetailsForm.disable();
+      this.formDisabled = true;
+      this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
+      this.reviewTableConfig.refresh();
+    }
+
   }
 
 
@@ -149,6 +164,7 @@ export class ReviewChequesComponent implements OnInit {
     //TODO: verify form input if its not null, else submit to server to process cheque again
   }
 
+  //Navigation for paginator events
   onNextPage() {
     if (this.currentPage < this.reviewCheques.length) {
       console.log("Next Cheque");
@@ -163,6 +179,7 @@ export class ReviewChequesComponent implements OnInit {
     }
   }
 
+  //Button event when user clicks send SMS button
   onClickSend(event) {
     console.log(event);
     let price = this.currentChequeReviewed.chequeDetail.amount;
@@ -190,7 +207,7 @@ export class ReviewChequesComponent implements OnInit {
     });
   }
 
-
+  //Button event when user finishes reviewing the current cheque
   onFinishReview() {
     let data = {
       header: "Confirm Finish View",
@@ -201,20 +218,64 @@ export class ReviewChequesComponent implements OnInit {
     this.confirmDialogSvc.openDialog(data).then(yes => {
       //if confirm send
       if (yes) {
-        this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);
-        this.loadReviewPage(1);
-        this.processChequeSvc.updateReviewCheques(this.reviewCheques);
-        //TODO: add record of cheque sent to server
+        this.addChequeRecord('review');
         this.toastSvc.success("Review for this cheque has been completed!", "", { positionClass: 'toast-bottom-left' });
       }
     });
   }
 
+  //Button event when user wants to accept current cheque
   onAccept() {
-
+    let data = {
+      header: "Confirm Accept",
+      description: "Confirm moving this cheque as successful payment?",
+      positive: "Yes",
+      negative: "Cancel"
+    }
+    this.confirmDialogSvc.openDialog(data).then(yes => {
+      //if confirm send
+      if (yes) {
+        this.addChequeRecord('success');
+        this.toastSvc.success("Cheque has been moved to successful payments!", "", { positionClass: 'toast-bottom-left' });
+      }
+    });
   }
 
+  //Button event when user wants to reject current cheque
   onReject() {
+    let data = {
+      header: "Confirm Reject",
+      description: "Confirm moving this cheque as rejected payments?",
+      positive: "Yes",
+      negative: "Cancel"
+    }
+    this.confirmDialogSvc.openDialog(data).then(yes => {
+      //if confirm send
+      if (yes) {
+        this.addChequeRecord('reject');
+        this.toastSvc.success("Cheque has been moved to rejected payments!", "", { positionClass: 'toast-bottom-left' });
+      }
+    });
+  }
 
+  addChequeRecord(type) {
+    if (this.reviewCheques.length > 1) {
+      this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);
+      this.loadReviewPage(1);
+      this.processChequeSvc.updateReviewCheques(this.reviewCheques);
+    } else {
+      this.loadReviewPage(0);
+      this.processChequeSvc.updateReviewCheques([]);
+    }
+
+    //TODO: add record of cheque sent to server
+    switch (type) {
+      case 'review':
+        break;
+      case 'reject':
+        break;
+      case 'success':
+        break;
+    }
   }
 }

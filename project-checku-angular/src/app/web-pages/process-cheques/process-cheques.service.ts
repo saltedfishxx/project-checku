@@ -20,15 +20,7 @@ export class ProcessChequesService {
   reviewChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   successChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  getAllCheques() {
-    return new Promise((resolve, reject) => {
-      this.api.getRecords('./assets/jsonData/processed_cheques.json').then((res: any) => {
-        resolve(res.data);
-      });
-    });
-  }
-
-  getProcessedCheques(tab) {
+  getProcessedCheques() {
     return new Promise((resolve, reject) => {
       this.api.getRecords('./assets/jsonData/processed_cheques.json').then((res: any) => {
         this.processedCheques = res.data;
@@ -36,22 +28,13 @@ export class ProcessChequesService {
         this.rejectCheques = this.processedCheques['rejectedCheques'];
         this.successCheques = this.processedCheques['successfulCheques'];
 
-        this.updateRejectCheques(this.reviewCheques);
-        this.updateReviewCheques(this.rejectCheques);
+        this.updateRejectCheques(this.rejectCheques);
+        this.updateReviewCheques(this.reviewCheques);
         this.updateSuccessCheques(this.successCheques);
 
+        console.log("@processChqe: received data: ");
         console.log(this.processedCheques);
-        switch (tab) {
-          case 'review':
-            resolve(this.reviewCheques);
-            break;
-          case 'reject':
-            resolve(this.rejectCheques);
-            break;
-          case 'success':
-            resolve(this.successCheques);
-            break;
-        }
+        resolve(true);
       });
     });
 

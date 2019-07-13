@@ -1,9 +1,5 @@
 export const URLS = {
 
-    //base url
-
-    APP_HOST: "http://localhost:5000/",
-
     //get url methods
     GET_PENDING_REC: "getPendingRec",
     GET_HOLDING_REC: "getHoldingRec",
