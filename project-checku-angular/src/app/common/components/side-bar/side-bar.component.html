@@ -1,3 +1,37 @@
-<p>
-  side-bar works!
-</p>
+<nav class="navbar navbar-nav d-block bg-white h-100 shadow pr-0" id="sidenav-main">
+  <div class="w-100 d-block h-25">
+    <a href="javascript:void(0);" class="nav-item my-1 nav-link" (click)="onBack()">
+      <div class="pl-4 ml-4 mt-2">
+        <mdb-icon fas icon="long-arrow-alt-left" class="text-gray"></mdb-icon>
+        <span class="pl-4">Back</span>
+      </div>
+    </a>
+  </div>
+  <!-- User -->
+  <ul class="nav d-block  mt-5 pt-5">
+    <li class="nav-item my-1" (click)="changeTab(1)" [ngClass]="tab == 1 ? 'active': ''">
+      <a href="javascript:void(0);" class="nav-link">
+        <div class="text-center">
+          <mdb-icon fas icon="times" class="text-danger mr-1"></mdb-icon>
+          <span>To Reject</span>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item my-1" (click)="changeTab(2)" [ngClass]="tab == 2 ? 'active': ''">
+      <a href="javascript:void(0);" class="nav-link">
+        <div class="text-center ">
+          <mdb-icon fas icon="ellipsis-h" class="text-warning mr-1"></mdb-icon>
+          <span>To Review</span>
+        </div>
+      </a>
+    </li>
+    <li class="nav-item my-1" (click)="changeTab(3)" [ngClass]="tab == 3 ? 'active': ''">
+      <a href="javascript:void(0);" class="nav-link">
+        <div class="text-center ">
+          <mdb-icon fas icon="check" class="text-success mr-1"></mdb-icon>
+          <span>To Accept</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+</nav>

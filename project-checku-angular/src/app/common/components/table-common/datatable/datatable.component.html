@@ -1,3 +1,118 @@
-<p>
-  datatable works!
-</p>
+<div class="container">
+    <div class="row table-responsive bordered" id="scrollbar">
+        <!-- for keyword search-->
+        <!-- <div class="col-md-6 mx-auto">
+        <div class="md-form">
+          <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchItems()" id="search-input"
+                 mdbInput>
+          <label for="search-input">Search</label>
+        </div>
+      </div> -->
+        <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader" [bordered]="config.hasBorders"
+            [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe">
+            <thead class="sticky-top blue-grey lighten-5">
+                <tr>
+                    <!--checkbox col-->
+                    <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
+                        <mdb-checkbox default="true" [checked]="allChecked"
+                            (change)="onSelectAll($event, config.value)"></mdb-checkbox>
+                    </th>
+                    <th *ngFor="let col of config.columns; let i = index" [mdbTableSort]="config.value"
+                        [style.cursor]="'pointer'" [style.width]="col.width ? col.width : 'inherit'" class="h6"
+                        [sortBy]="col.field" scope="col" (click)="setSortField(col.header)">
+                        {{col.header | titlecase}} <mdb-icon fas
+                            [icon]="getSortField(col.header) ? toggleButton ? 'angle-down' : 'angle-up' : ''">
+                        </mdb-icon>
+                    </th>
+                    <!--button col-->
+                    <th *ngIf="config.hasButton" [style.width]="'1%'"></th>
+                    <!--hamburger col-->
+                    <th *ngIf="config.hasHamburger" [style.width]="'1%'"></th>
+                </tr>
+            </thead>
+            <tbody #row>
+                <tr mdbTableCol (rowCreated)="onRowCreate($event)" (rowRemoved)="onRowRemove($event)"
+                    *ngFor="let rowData of config.value; let i = index">
+                    <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
+                    <!--checkbox cell-->
+                    <td *ngIf="config.hasCheckBox">
+                        <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)"
+                            default="true">
+                        </mdb-checkbox>
+                    </td>
+                    <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
+                        [ngClass]="setPercentColor(rowData[col.field], col.isPercent)"
+                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="text-muted">
+                        <div *ngIf="col.isStatus; else noStatus">
+                            <div *ngIf="col.hasBar; else noBar">
+                                <div class="d-flex align-items-center">
+                                    <span class="mr-2">{{rowData[col.field]}}/3</span>
+                                    <div>
+                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
+                                            <div class="progress-bar animated slideInLeft"
+                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
+                                            'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
+                                            'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                                [style.width]="checkProgess(rowData[col.field])">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #noBar>
+                                <mdb-icon fas icon="circle" size="xs" class="animated bounceIn" [ngClass]="{'text-warning': rowData[col.field] == 'pending', 'text-success': rowData[col.field] == 'verified', 
+                                    'text-danger': rowData[col.field] == 'unverified'}"></mdb-icon>
+                                {{rowData[col.field]}}
+                            </ng-template>
+                        </div>
+                        <ng-template #noStatus>
+                            <div *ngIf="col.hasBar; else noBar">
+                                <div class="d-flex align-items-center">
+                                    <span class="mr-2">{{rowData[col.field]}}/3</span>
+                                    <div>
+                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
+                                            <div class="progress-bar animated slideInLeft"
+                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
+                                                'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
+                                                'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                                [style.width]="checkProgess(rowData[col.field])">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #noBar>
+                                <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat || col.isPercent )? 
+                                        (col.currency || col.isPercent)? col.isPercent ? (rowData[col.field] | percent: '1.0-0') : (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
+                                        (rowData[col.field])}}
+                            </ng-template>
+                        </ng-template>
+                    </td>
+                    <!--button cell-->
+                    <td *ngIf="config.hasButton">
+                        <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor"
+                            size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData, i)"
+                            [disabled]="checkbuttonDisable(i)">{{ buttonText }}</button>
+                    </td>
+                    <!-- hamburger cell-->
+                    <td *ngIf="config.hasHamburger">
+                        <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)">
+                        </hamburger-dropdown>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot class="w-100" *ngIf="config.showPagination">
+                <tr>
+                    <td [attr.colspan]="(config.hasCheckBox || config.hasButton || config.hasHamburger) ? 
+                    ((config.hasCheckBox && config.hasButton) || (config.hasHamburger && config.hasCheckBox) || (config.hasHamburger && config.hasButton)) ? 
+                    (config.hasButton && config.hasHamburger && config.hasCheckBox ) ? (config.columns.length + 3)  : (config.columns.length + 2) : (config.columns.length + 1) : 
+                    (config.columns.length)">
+                        <mdb-table-pagination [tableEl]="tableEl" paginationAlign="end"
+                            [searchDataSource]="config.value">
+                        </mdb-table-pagination>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

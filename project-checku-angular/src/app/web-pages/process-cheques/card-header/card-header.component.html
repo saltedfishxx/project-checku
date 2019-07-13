@@ -1,0 +1,23 @@
+<!-- Card -->
+<div class="row justify-content-center">
+  <div class="col-4" *ngFor="let card of cardList">
+    <mdb-card>
+      <mdb-card-body class="px-0 py-2 mx-2">
+        <div class="row px-2 align-items-center justify-content-center h-auto">
+          <div class="col-9 p-0 grey-text">
+            <p class="mb-0 small">
+              {{ card.title }}
+            </p>
+            <h4 class="mb-0 text-dark"><b>{{ card.count }}</b></h4>
+          </div>
+          <div class=" col-2 p-0">
+            <mdb-icon fas [icon]="checkIcon(card)" [size]="card.icon != 'review' ? '2x' : 'lg'"
+              [ngClass]="{'text-danger': card.icon == 'reject', 'text-success' :  card.icon == 'success', 'text-white circle bg-warning' : card.icon == 'review'}">
+            </mdb-icon>
+          </div>
+        </div>
+      </mdb-card-body>
+    </mdb-card>
+  </div>
+</div>
+<!-- Card end-->

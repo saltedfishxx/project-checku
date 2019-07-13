@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-side-bar',
+  selector: 'side-bar',
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.scss']
 })
 export class SideBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
+  tab: number = 2;
   ngOnInit() {
   }
 
+  @Output() changeTabs = new EventEmitter<any>();
+  changeTab(selectNum) {
+    this.tab = selectNum;
+    this.changeTabs.emit(selectNum);
+  }
+
+  onBack() {
+    this.tab = 0;
+    this.router.navigate(['/home']);
+  }
 }

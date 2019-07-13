@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { reject } from 'q';
+import { URLS } from '@urls';
+
 
 @Injectable({
   providedIn: 'root'
@@ -35,10 +36,10 @@ export class ApiCallService {
     });
   }
 
-  processScannedCheques(requestUrl, data) {
+  processScannedCheques(data) {
     return new Promise((resolve, reject) => {
 
-      this.http.post(requestUrl, data).subscribe(response => {
+      this.http.post(URLS.POST_SCANNED_CHEQUES, data).subscribe(response => {
         resolve(response);
       },
       errorResponse => {

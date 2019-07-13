@@ -1,0 +1,42 @@
+{
+    "data": [
+        {
+            "folderName": "cheque2",
+            "back": {
+                "date": "30/06/2019 02:11:17",
+                "folderName": "cheque2",
+                "name": "sample check back 1.jpg",
+                "size": "196",
+                "type": "image/jpeg",
+                "url": "base64string"
+            },
+            "front": {
+                "date": "30/06/2019 02:11:21",
+                "folderName": "cheque2",
+                "name": "sample check 1.jpg",
+                "size": "344",
+                "type": "image/jpeg",
+                "url": "base64string"
+            }
+        },
+        {
+            "folderName": "cheque1",
+            "back": {
+                "date": "30/06/2019 02:11:17",
+                "folderName": "cheque1",
+                "name": "sample1 back.jpg",
+                "size": "196",
+                "type": "image/jpeg",
+                "url": "base64string"
+            },
+            "front": {
+                "date": "30/06/2019 02:11:21",
+                "folderName": "cheque1",
+                "name": "sample1.jpg",
+                "size": "344",
+                "type": "image/jpeg",
+                "url": "base64string"
+            }
+        }
+    ]
+}

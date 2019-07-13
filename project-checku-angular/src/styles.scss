@@ -1,0 +1,178 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+    height:100%;
+    width: 100%;
+}
+
+a {
+    color: #969FAA !important;
+}
+
+a:hover, a:focus {
+    color: #5A6978 !important;
+}
+
+
+.nav-item.active {
+    background-color: #F8F9FE !important;
+    border-left: 5px solid #6770E2 !important;
+}
+
+.logoFont {
+    font-family: 'Cardo', serif;
+}
+
+.material-icons.logo{
+    font-size: 8em;
+}
+.background-gradient {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background: rgb(103,112,226);
+    background: linear-gradient(180deg, rgba(103,112,226,1) 0%, rgba(103,112,226,1) 0%, rgba(103,112,226,1) 36%, rgba(161,134,224,1) 77%, rgba(197,172,255,1) 100%);
+    height: 100%;
+    width: 100%;
+}
+
+.strip {
+    background: #6770E2;
+    position: relative;
+    min-height:300px;
+    overflow:hidden;
+}
+.strip::after {
+  content: '';
+  position: absolute;
+  bottom: -35%; left: 0; right: 0;
+  height:100%;
+  background:#F8F9FE;
+  z-index: -1;
+}
+
+//overwrite primary color
+//button color
+$primary-color: #6770E2;
+.text-primary.small {
+    color: #6770E2 !important;  
+}
+.btn.btn-primary {
+    background-color: #6770E2!important;
+    
+}
+
+.btn {
+    text-transform: capitalize !important;
+    font-size: 1em !important;
+}
+
+.btn.btn-sm {
+    font-size: 0.8em !important;
+}
+
+.btn.btn-outline-primary {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
+.btn.btn-outline-primary:not([disabled]):not(.disabled):active, .btn-outline-primary:not([disabled]):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
+.btn.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary:active:focus, .btn-outline-primary.active {
+    border: 2px solid #6770E2 !important;
+    background-color: transparent !important;
+    color: #6770E2 !important;
+}
+
+button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-primary, .fas.text-primary {
+    color: #6770E2 !important;
+}
+
+//add round radius to button
+.btn.round {
+    border-radius: 5px;
+}
+
+//checkbox color
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #6770E2!important;
+    border-color: #6770E2!important;
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+    background-color: #6770E2 !important;
+    border-color: #6770E2 !important;
+}
+
+//overwrite strip color
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f5f5f5 !important;
+}
+
+table thead th {
+    vertical-align: 0 !important;
+}
+
+.bordered {
+    border: 1px solid #dee2e6 !important;
+}
+
+//form input css overwrite
+.md-form label {
+    color: #6770E2 !important;
+}
+input.disabled {
+    cursor: not-allowed !important;
+    border-bottom: 0px !important;
+}
+
+//modal css overwrite
+.modal-dialog.modal-notify.modal-primary .modal-header {
+    background: #6770E2 !important;
+    color: white !important
+}
+.modal-dialog.modal-notify.modal-primary .modal-header .close {
+    color: white !important;
+}
+.modal-open{
+    overflow: hidden !important;
+}
+
+
+//icon for review icon
+mdb-icon.circle{
+    border-radius: 50% !important;
+    margin: 3px !important;
+    width: 32px;
+    height: 32px;
+}
+
+mdb-icon.circle .fa-ellipsis-h {
+    margin: 8px 5px !important;
+}
+
+
+//scrollbar style
+ #scrollbar::-webkit-scrollbar-track
+ {
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+     background-color: #F5F5F5;
+     border-radius: 10px;
+ }
+ 
+ #scrollbar::-webkit-scrollbar
+ {
+     width: 8px;
+     height: 8px;
+     border-radius: 10px;
+     background-color: #F5F5F5;
+ }
+ 
+ #scrollbar::-webkit-scrollbar-thumb
+ {
+     border-radius: 10px;
+     background-color: rgba(30, 31, 46, 0.603);
+ }
