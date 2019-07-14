@@ -1,16 +1,11 @@
 
 # coding: utf-8
 
-# <h1>Table of Contents<span class="tocSkip"></span></h1>
-# <div class="toc"><ul class="toc-item"><li><span><a href="#Import-Modules" data-toc-modified-id="Import-Modules-1">Import Modules</a></span></li><li><span><a href="#Create-example-JsonChequeDetails" data-toc-modified-id="Create-example-JsonChequeDetails-2">Create example JsonChequeDetails</a></span></li><li><span><a href="#AI-Function" data-toc-modified-id="AI-Function-3">AI Function</a></span></li><li><span><a href="#Create-sqlconn" data-toc-modified-id="Create-sqlconn-4">Create sqlconn</a></span></li><li><span><a href="#Create-comp-for-comparison-vectors" data-toc-modified-id="Create-comp-for-comparison-vectors-5">Create comp for comparison vectors</a></span></li><li><span><a href="#Clean-prefixes/titles-e.g.-Mr,-Ms,-Mrs,-Mrs." data-toc-modified-id="Clean-prefixes/titles-e.g.-Mr,-Ms,-Mrs,-Mrs.-6">Clean prefixes/titles e.g. Mr, Ms, Mrs, Mrs.</a></span></li></ul></div>
-
 # ### Import Modules
 # 
 
-# In[3]:
 
-
-'RecordLinkage for AI matching'
+#RecordLinkage for AI matching'
 import sys
 get_ipython().system('{sys.executable} -m pip install --user recordlinkage')
 import recordlinkage as rl
@@ -18,29 +13,27 @@ from recordlinkage.preprocessing import clean, phonetic
 from recordlinkage.index import Block
 from recordlinkage.index import Full
 
-'Regex for cleaning data'
+#Regex for cleaning data'
 import re
 
 
-'Read records from database'
+#Read records from database'
 import pyodbc
 import platform
 
-'Create dataframe'
+#Create dataframe'
 import json
 import pandas as pd
 import numpy as np
 # set seed for reproducibility
 np.random.seed(0)
 
-'Create or Load Pickle'
+#Create or Load Pickle'
 import pickle
 
 
 # ### Create example JsonChequeDetails
 # 
-
-# In[13]:
 
 
 jsondata_dict = {"chequeDetail":{
@@ -49,36 +42,33 @@ jsondata_dict = {"chequeDetail":{
 "customerName": "Fu Di Hai",
 "contact": "96488339",
 "amount": "900",
-"date": "12/06/2019",
-"hasSignature": False,
+"date": None,
 "imageFront": "base64string",
-"imageBack": "base64string"}}
+"imageBack": "base64string",
+"addressee" : "prudential assurance company",
+"signatureExists": False}}
 
 jsondata = json.dumps(jsondata_dict, indent=4)
 #print(jsondata)
 
 
-# In[10]:
-
-
 jsondata_dict = {"chequeDetail":{
-"policyNo": "",
+"policyNo": None,
 "premiumType": "Premium",
 "customerName": "Johnathan Joestar",
 "contact": "99126969",
-"amount": "400",
+"amount": 400,
 "date": "12/06/2019",
-"hasSignature": False,
 "imageFront": "base64string",
-"imageBack": "base64string"}}
+"imageBack": "base64string",
+"addressee" : "prudential assurance company",
+"signatureExists": False}}
 
 jsondata = json.dumps(jsondata_dict, indent=4)
 #print(jsondata)
 
 
 # ### AI Function
-
-# In[18]:
 
 
 def getAIResult(JsonChequeDetails):
@@ -99,7 +89,7 @@ def getAIResult(JsonChequeDetails):
     jdata = json.loads(JsonChequeDetails)
     json_df = pd.DataFrame(jdata)
     json_df = json_df.T
-    df = json_df.drop(columns=['premiumType','date', 'imageFront', 'imageBack'])
+    df = json_df.drop(columns=['premiumType','date', 'imageFront', 'imageBack', 'addressee', 'signatureExists'])
     #Rename columns
     df.rename(columns={
                 'customerName':'name',
@@ -227,8 +217,7 @@ def createSqlConn():
     return sql_conn
 
 
-
-# ### Create pickle models if doesn't exist
+# ### Create/Load Pickle Models
 
 
 def create_pickle_models(hasPolicy, hasContact):    
@@ -281,7 +270,6 @@ def pickleExists(path):
         return True
     except IOError:
         return False
-
 
 
 # pickle_models(True, False)
