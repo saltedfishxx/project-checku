@@ -49,7 +49,20 @@ def ocr(frontLink,backLink):
     amt=re.findall(r"\d*\.\d+|\d+", amt)[0]
     print(amt)
 
-
+    #region bottom stuff
+    chequeNo=None
+    bankNo=None
+    accountNo=None
+    branchNo=None
+    bottomData=frontDataTxt[-2]
+    chequeNo=''.join(bottomData[6:14].split(' '))
+    bankNo=''.join(bottomData[16:21].split(' '))
+    branchNo=''.join(bottomData[21:24].split(' '))
+    accountNo=''.join(bottomData[-13:-1].replace('.','').split(' '))
+    print(chequeNo)
+    print(bankNo)
+    print(accountNo)
+    print(branchNo)
     with io.open(backImg, 'rb') as image_file:
         content = image_file.read()
     image = vision.types.Image(content=content)
@@ -69,6 +82,9 @@ def ocr(frontLink,backLink):
         else:
             print('boopbeep')
     print(contact)
+
+
+
     # tessaract
     # config = ('-l eng --oem 1 --psm 11')
 
@@ -89,6 +105,10 @@ def ocr(frontLink,backLink):
         "contact":contact,
         "amount":amt,
         "date":None, #halp
+        "chequeNo":chequeNo
+        "bankNo":bankNo
+        "accountNo":accountNo
+        "branchNo":branchNo,
         "imageFront":frontLink,
         "imageBack":backLink,
         "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
