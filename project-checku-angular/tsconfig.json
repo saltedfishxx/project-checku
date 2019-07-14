@@ -4,11 +4,21 @@
     "baseUrl": "./",
     "paths": {
       //"@example-import":["example.ts"]
-      "@urls" : ["src/app/common/services/urls"],
-      "@apiService": ["src/app/common/services/api-call.service"],
-      "@confirmDialogSerivce": ["src/app/common/services/modal-service/confirm-dialog.service"],
-      "@fluidModalService": ["src/app/common/services/modal-service/fluid-modal.service"]
-      
+      "@urls": [
+        "src/app/common/services/urls"
+      ],
+      "@apiService": [
+        "src/app/common/services/api-call.service"
+      ],
+      "@confirmDialogSerivce": [
+        "src/app/common/services/modal-service/confirm-dialog.service"
+      ],
+      "@fluidModalService": [
+        "src/app/common/services/modal-service/fluid-modal.service"
+      ],
+      "@loadingScreenService": [
+        "src/app/common/services/loading-screen.service"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

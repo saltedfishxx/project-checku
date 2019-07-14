@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { URLS } from '@urls';
 import { Observable } from 'rxjs';
-import { LoadingScreenService } from './loading-screen.service';
+import { LoadingScreenService } from '@loadingScreenService';
 import { finalize } from 'rxjs/operators';
 
 @Injectable()

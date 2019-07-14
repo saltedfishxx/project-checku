@@ -1,17 +1,34 @@
 <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header py-2">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100 text-white" id="myModalLabel"><strong>{{content.heading}}</strong></h4>
     </div>
     <div class="modal-body" style="white-space: pre-line;">
-        <p>{{ content.description }}</p>
+        <ng-container *ngIf="content.imageFront || content.imageBack; else noImg">
+            <div class="d-flex row justify-content-center align-items-center">
+                <img *ngIf="content.imageFront" [src]="content.imageFront" class="mx-2 z-depth-1"
+                    [style.width]="'400px'">
+                <img *ngIf="content.imageBack" [src]="content.imageBack" class="mx-2 z-depth-1" [style.width]="'400px'">
+            </div>
+            <div class="d-flex row justify-content-center align-items-center mt-4">
+                <p>{{ content.description }}</p>
+            </div>
+        </ng-container>
+        <ng-template #noImg>
+            <p>{{ content.description }}</p>
+        </ng-template>
+
     </div>
-    <div class="modal-footer justify-content-center">
-        <button type="button" mdbBtn color="primary" class="waves-light" aria-label="Close"
-            *ngIf="content.negativeLabel" (click)="modalRef.hide()" mdbWavesEffect>{{ content.negativeLabel}}</button>
-        <button type="button" mdbBtn color="primary" class="relative waves-light" *ngIf="content.positiveLabel"
-            (click)="onPositiveClick()" mdbWavesEffect>{{ content.positiveLabel}}</button>
-    </div>
+    <ng-container *ngIf="content.postiveLabel">
+        <div class="modal-footer justify-content-center">
+            <button type="button" mdbBtn color="primary" class="waves-light" aria-label="Close"
+                *ngIf="content.negativeLabel" (click)="modalRef.hide()"
+                mdbWavesEffect>{{ content.negativeLabel}}</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" *ngIf="content.positiveLabel"
+                (click)="onPositiveClick()" mdbWavesEffect>{{ content.positiveLabel}}</button>
+        </div>
+    </ng-container>
+
 </div>

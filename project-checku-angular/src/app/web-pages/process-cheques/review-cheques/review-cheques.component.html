@@ -1,6 +1,6 @@
 <div class="d-flex row justify-content-md-center mt-4 mx-1 fadeIn animated faster">
   <!--paginator-->
-  <div class="row w-75 px-0 mt-4">
+  <div class="row w-75 px-0 mt-4" *ngIf="reviewCheques.length != 0">
     <div class="col-3 px-0 btn-group btn-group-sm" role="group" aria-label="Basic example">
       <button mdbBtn (click)="onPreviousPage()" type="button" color="white" size="sm" class="waves-light p-2"
         mdbWavesEffect [disabled]="currentPage == 1">

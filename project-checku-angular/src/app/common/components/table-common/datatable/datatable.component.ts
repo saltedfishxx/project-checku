@@ -116,13 +116,15 @@ export class DatatableComponent implements OnInit {
   }
 
   checkbuttonDisable(index) {
-    let id = this.buttonText + index;
+    let id = this.buttonText + index + this.config.currentPage;
+    let isDisabled = false;
     for (let element of this.config.disableButtonsList) {
       if (id == element) {
-        return true;
+        isDisabled = true;
+        break;
       }
     };
-
+    return isDisabled;
   }
 
   //checkbox events
@@ -220,9 +222,11 @@ export class TableConfig {
   hasCheckBox: boolean = false;
   hasHamburger: boolean = false;
   dropdownList: any[] = [];
+  currentPage: any = 0;
 
   private onChangeSource = new BehaviorSubject(null);
   private onChange$ = this.onChangeSource.asObservable();
+
   /**
    * call refresh() after TableConfig's fields are all updated to refresh datatable
    */

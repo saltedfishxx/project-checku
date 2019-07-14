@@ -38,6 +38,8 @@ export class ReviewChequesComponent implements OnInit {
   getProcessedReviewCheques() {
     this.processChequeSvc.getLatestCheque('review').subscribe((cheques: any[]) => {
       this.reviewCheques = cheques;
+      //add id to each cheque
+      this.addIndex("index", this.reviewCheques);
       //load page with first cheque in view
       if (this.reviewCheques.length > 0) {
         this.loadReviewPage(1);
@@ -134,6 +136,7 @@ export class ReviewChequesComponent implements OnInit {
       this.reviewTableConfig.refresh();
     } else {
       this.currentChequeReviewed = this.reviewCheques[pageToLoad - 1];
+      this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
       this.populateChequeForm(this.currentChequeReviewed.chequeDetail);
       this.chequeDetailsForm.disable();
       this.formDisabled = true;
@@ -176,13 +179,16 @@ export class ReviewChequesComponent implements OnInit {
   onNextPage() {
     if (this.currentPage < this.reviewCheques.length) {
       console.log("Next Cheque");
+      this.reviewTableConfig.refresh();
       this.loadReviewPage(this.currentPage + 1);
+
     }
   }
 
   onPreviousPage() {
     if (this.currentPage > 1) {
       console.log("Previous Cheque");
+      this.reviewTableConfig.refresh();
       this.loadReviewPage(this.currentPage - 1);
     }
   }
@@ -192,7 +198,7 @@ export class ReviewChequesComponent implements OnInit {
     console.log(event);
     let price = this.currentChequeReviewed.chequeDetail.amount;
 
-    let message = "The customer will receive the following message: \nDear " + event.rowData.predictedName + ",\nPlease verfiy that " +
+    let message = "The customer will receive the following message: \nDear " + event.rowData.name + ",\nPlease verfiy that " +
       "you have made a payment of S$" + price + " to Prudential. To verify, " +
       "please reply with your POLICY NUMBER.\nPlease ignore this message if you are not the intended recipient."
     let data = {
@@ -204,7 +210,8 @@ export class ReviewChequesComponent implements OnInit {
     this.confirmDialogSvc.openDialog(data).then(send => {
       //if confirm send
       if (send) {
-        this.disableButtons.push('Send SMS' + event.i);
+        this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
+        this.disableButtons.push('Send SMS' + event.i + this.currentChequeReviewed.index);
         this.reviewTableConfig.disableButtonsList = this.disableButtons;
         this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
         this.reviewTableConfig.refresh();
@@ -228,6 +235,7 @@ export class ReviewChequesComponent implements OnInit {
       if (yes) {
         this.addChequeRecord('review');
         this.toastSvc.success("Review for this cheque has been completed!", "");
+        this.smsSent = false;
       }
     });
   }
@@ -286,5 +294,11 @@ export class ReviewChequesComponent implements OnInit {
       this.loadReviewPage(0);
       this.processChequeSvc.updateReviewCheques([]);
     }
+  }
+
+  addIndex(indexFieldName: string, value) {
+    value.forEach((element, index) => {
+      element[indexFieldName] = index + 1;
+    });
   }
 }

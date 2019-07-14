@@ -28,7 +28,9 @@ export class FluidModalService {
           heading: data.header,
           description: data.description,
           positiveLabel: data.positive,
-          negativeLabel: data.negative
+          negativeLabel: data.negative,
+          imageFront: data.imageFront,
+          imageBack: data.imageBack
         }
       }
     }
