@@ -100,6 +100,7 @@ def getAIResult(JsonChequeDetails):
     #Convert cheque amount to float 
     #Ensure float (cheque) to float (db) matching
     df['remainingamount'] = float(df['remainingamount']) 
+    df["name"] = clean(df["name"].astype(str)) 
     df = clean_prefixes_and_symbols_from_name(df, 'name')
     
 
@@ -109,13 +110,13 @@ def getAIResult(JsonChequeDetails):
     
     customer_data = pd.read_sql(query, sql_conn)
     
-    #Clean data to be displayed to cust 'lowercase, trim etc.'
-    customer_data["name"] = clean(customer_data["name"].astype(str)) 
+    #Clean db data to be displayed to cust 'lowercase, trim etc.'
     customer_data['duedate'] = pd.Series(customer_data['duedate']).astype(str)
     customer_data.duedate= customer_data.duedate.str.replace('-','/',regex=True)
     
-    #Clean data to be used in AI prediction
+    #Clean db data to be used in AI prediction
     customer_data_df = customer_data
+    customer_data_df["name"] = clean(customer_data_df["name"].astype(str)) 
     customer_data_df["contact"] = clean(customer_data_df["contact"].astype(str)) 
     customer_data_df["policyno"] = clean(customer_data_df["policyno"].astype(str)) 
     customer_data_df['remainingamount'] = pd.Series(customer_data_df['remainingamount']).astype(float)
