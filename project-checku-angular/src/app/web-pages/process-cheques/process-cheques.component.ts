@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ApiCallService } from '@apiService';
-import { TableConfig } from 'src/app/common/components/table-common/datatable/datatable.component';
 import { ProcessChequesService } from './process-cheques.service';
-import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-process-cheques',
@@ -18,8 +13,14 @@ export class ProcessChequesComponent implements OnInit {
   currentPage: string;
 
   ngOnInit() {
-    this.processChqeSvc.getCurrentPage().subscribe(page => {
-      this.currentPage = page;
+
+    this.processChqeSvc.getProcessedCheques().then(isLoaded => {
+      if (isLoaded) {
+        console.log("@processChqe: retrieved processed cheques.");
+        this.processChqeSvc.getCurrentPage().subscribe(page => {
+          this.currentPage = page;
+        });
+      }
     });
   }
 

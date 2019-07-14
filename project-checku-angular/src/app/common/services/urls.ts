@@ -1,8 +1,6 @@
 export const URLS = {
-
-    //base url
-
-    APP_HOST: "http://localhost:5000/",
+    //determine to use replace data or data from server
+    stubData: false,
 
     //get url methods
     GET_PENDING_REC: "getPendingRec",

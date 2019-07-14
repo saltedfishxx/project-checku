@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfirmDialogService } from '@confirmDialogSerivce';
 import { ApiCallService } from '@apiService';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-cheques',
@@ -18,7 +19,8 @@ export class UploadChequesComponent implements OnInit {
     private dp: DatePipe,
     private confirmDialogService: ConfirmDialogService,
     private api: ApiCallService,
-    private toastSvc: ToastrService
+    private toastSvc: ToastrService,
+    private router: Router
   ) { }
 
   isUploaded: boolean = false;
@@ -199,12 +201,17 @@ export class UploadChequesComponent implements OnInit {
     let data = {
       data: this.chequeList
     }
-    this.api.processScannedCheques(data).then(response => {
+    this.api.processScannedCheques(data).then((response: any) => {
       console.log(response);
-      //route to review page
+      if (response.status == 200) {
+        //route to review page
+        this.router.navigate(['/process-cheques']);
+        //reset
+        this.reset();
+      }
 
-      //reset
-      this.reset();
+
+
     },
       error => {
         //TODO: add notifier

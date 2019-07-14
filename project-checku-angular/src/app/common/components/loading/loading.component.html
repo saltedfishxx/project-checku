@@ -1,0 +1,13 @@
+<div class="loading-screen-wrapper animated fadeIn faster" *ngIf="loading">
+  <div class="d-flex h-100 align-items-center justify-content-center">
+    <div class="lds-css ng-scope">
+      <div style="width:100%;height:100%" class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+      <div class="text-center text-muted h4">
+        <p class="loading" [style.color]="'#6770E2'">Loading</p>
+      </div>
+    </div>
+  </div>
+</div>
