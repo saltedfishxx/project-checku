@@ -45,6 +45,7 @@ pyzmq==17.1.2
 QtAwesome==0.4.4
 qtconsole==4.4.1
 QtPy==1.5.0
+recordlinkage==0.13.2
 requests==2.19.1
 rope==0.11.0
 ruamel-yaml==0.15.46
