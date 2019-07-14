@@ -82,14 +82,14 @@ def ocr(frontLink,backLink):
 
     chequeDetail={
         "policyNo":None,
-        "policyType":None,
+        "premiumType":None,
         "customerName":name,
         "contact":contact,
         "amount":amt,
         "date":None, #halp
         "imageFront":frontLink,
         "imageBack":backLink,
-        "adressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
+        "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
         "signatureExists":True #lmao
     }
 
