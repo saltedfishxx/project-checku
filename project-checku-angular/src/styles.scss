@@ -91,6 +91,10 @@ button.text-primary, h1.text-primary, h2.text-primary, h3.text-primary, h4.text-
     color: #6770E2 !important;
 }
 
+.btn-warning.disabled, .btn-warning:disabled{
+    color:white !important;
+}
+
 //add round radius to button
 .btn.round {
     border-radius: 5px;
@@ -159,15 +163,13 @@ mdb-icon.circle .fa-ellipsis-h {
  #scrollbar::-webkit-scrollbar-track
  {
      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-     background-color: #F5F5F5;
-     border-radius: 10px;
+     background-color: #F5F5F5;;
  }
  
  #scrollbar::-webkit-scrollbar
  {
      width: 8px;
      height: 8px;
-     border-radius: 10px;
      background-color: #F5F5F5;
  }
  

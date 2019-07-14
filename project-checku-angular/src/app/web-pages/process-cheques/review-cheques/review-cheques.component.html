@@ -22,7 +22,7 @@
         <mdb-card-body class="px-0 ml-4 py-4 h-auto">
           <div class="text-center my-4">
             <mdb-icon fas icon="clipboard-check" size="4x" class="grey-text"></mdb-icon>
-            <h4 class="mt-2">Hurray! There are currently no cheques pending for review!</h4>
+            <h4 class="mt-4">Hurray! There are currently no cheques pending for review!</h4>
           </div>
         </mdb-card-body>
       </mdb-card>
@@ -34,7 +34,7 @@
     <div class="d-flex w-75 row justify-content-md-center mt-4">
       <div class="row justify-content-md-between p-0">
         <div class="col-6">
-          <mdb-card [style.minWidth]="'460px'">
+          <mdb-card>
             <mdb-card-header class="bg-white">
               <div class="row justify-content-md-between align-items-center">
                 <h5 class="m-0 pl-2 ">Cheque Details</h5>
@@ -56,9 +56,9 @@
                   </div>
                   <div class="md-form form-sm mx-2 my-2 w-50">
                     <input [ngClass]="{'disabled' : formDisabled, '': !formDisabled}" mdbInput type="text"
-                      name="policyType" formControlName="policyType" id="policyType" [class]="chequeDetailsForm.get('policyType').value == 'NOT PROVIDED' ?
+                      name="premiumType" formControlName="premiumType" id="premiumType" [class]="chequeDetailsForm.get('premiumType').value == 'NOT PROVIDED' ?
                        'form-control form-control-sm text-danger': 'form-control form-control-sm'">
-                    <label for="policyType">Policy Type</label>
+                    <label for="premiumType">Premium Type</label>
                   </div>
                 </div>
                 <div class="d-flex justify-content-md-between mx-2">
@@ -95,7 +95,7 @@
         </div>
         <!--cheque image card-->
         <div class="col-6">
-          <mdb-card [style.minWidth]="'460px'">
+          <mdb-card>
             <mdb-card-header class="bg-white">
               <div class="row justify-content-md-between align-items-center">
                 <h5 class="m-0 pl-2 ">Scanned Cheque</h5>
@@ -124,13 +124,13 @@
     </div>
     <!--prediction results-->
     <div class="d-flex w-75 row justify-content-md-center mt-4 mb-4 mx-1">
-      <mdb-card [style.minWidth]="'950px'">
+      <mdb-card class="w-100">
         <mdb-card-header class="bg-white">
           <div class="row justify-content-md-between align-items-center">
             <h5 class="m-0 pl-2 ">Prediction Results</h5>
           </div>
         </mdb-card-header>
-        <mdb-card-body class="px-0 ml-4 py-4 h-auto">
+        <mdb-card-body class="p-0 h-auto">
           <datatable buttonText="Send SMS" buttonColor="primary" (clicked)="onClickSend($event)"
             [config]="reviewTableConfig">
           </datatable>
@@ -140,18 +140,19 @@
     <!--prediction results end-->
     <!--button actions-->
     <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
-      <button mdbBtn class="round" [style.width]="'110px'" [style.height]="'40px'" type="button" color="danger"
-        size="sm" mdbWavesEffect (click)="onReject()" [disabled]="smsSent">
+      <button mdbBtn class="round" [style.height]="'40px'" type="button" color="danger" size="sm" mdbWavesEffect
+        (click)="onReject()" [disabled]="smsSent">
         <mdb-icon fas icon="times" size="lg" class="mr-1"></mdb-icon>Reject
       </button>
-      <button mdbBtn class="round" [style.width]="'120px'" [style.height]="'40px'" type="button" color="success"
-        size="sm" mdbWavesEffect (click)="onAccept()" [disabled]="smsSent">
+      <button mdbBtn class="round" [style.height]="'40px'" type="button" color="success" size="sm" mdbWavesEffect
+        (click)="onAccept()" [disabled]="smsSent">
         <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Accept
       </button>
-      <button mdbBtn class="round mr-0" [style.width]="'150px'" [style.height]="'40px'" type="button" color="warning"
-        size="sm" mdbWavesEffect (click)="onFinishReview()">
+      <button mdbBtn class="round mr-0" [style.height]="'40px'" type="button" color="warning" size="sm" mdbWavesEffect
+        (click)="onFinishReview()">
         <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Done Review
       </button>
     </div>
+    <!-- button actions end -->
     <!--------------------------------REVIEW CHEQUES END-------------------------------------------->
   </ng-template>

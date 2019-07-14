@@ -122,7 +122,7 @@ def scanCheque():
     ocr.ocr('../samplecheck1.jpg')  # TODO: pass in chequeList and run OCR
 
     # FOR TESTING PURPOSES: return dataDict to check if request is received from front end
-    return jsonify({'data received': chequeList})
+    return jsonify({'status': 200, 'data received': chequeList})
 
 
 ######################## HELPER METHODS ################################

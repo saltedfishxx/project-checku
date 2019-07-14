@@ -60,7 +60,10 @@ import { LoadingComponent } from './common/components/loading/loading.component'
     ReactiveFormsModule,
     SharedModule.forRoot(),
     MDBBootstrapModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-left',
+      timeOut: 2000
+    })
   ],
   exports: [
     LoginComponent,

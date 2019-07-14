@@ -60,6 +60,9 @@ export class DatatableComponent implements OnInit {
   }
 
   protected parseInput(inputValue: TableConfig) {
+    this.selectedRows = [];
+    this.selectAll = false;
+
     if (inputValue.value) {
       if (!inputValue.valueBkup) {
         // do not overwrite bkup value if there is existing
@@ -100,9 +103,10 @@ export class DatatableComponent implements OnInit {
     }
   }
 
-  //button events
+  //button properties
   @Input() buttonText: string = "";
   @Input() buttonColor: string = "";
+  @Input() buttonWidth: string = "110px";
 
   //button events
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
@@ -122,6 +126,10 @@ export class DatatableComponent implements OnInit {
   }
 
   //checkbox events
+  onRowRemove(event) {
+    console.log("row removed");
+  }
+
   @Output() rowSelect: EventEmitter<any> = new EventEmitter<any>();
   selectedRows: any[] = [];
   allChecked: boolean = false;
@@ -166,6 +174,7 @@ export class DatatableComponent implements OnInit {
         this.allChecked = false;
     }
 
+    console.log(this.selectedRows);
     this.rowSelect.emit(this.selectedRows);
   }
 

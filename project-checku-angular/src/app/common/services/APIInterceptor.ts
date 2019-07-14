@@ -9,7 +9,6 @@ import { finalize } from 'rxjs/operators';
 export class APIInterceptor implements HttpInterceptor {
   activeRequests: number = 0;
   APP_HOST = "http://localhost:5000/";
-  stubData: boolean = true;
 
   constructor(private loadingScreenService: LoadingScreenService) {
   }
@@ -27,7 +26,7 @@ export class APIInterceptor implements HttpInterceptor {
     });
 
     //FOR TESTING: uses local assets to subsitiute data received 
-    if (this.stubData) {
+    if (URLS.stubData) {
       this.APP_HOST = "http://localhost:4200/";
     }
 

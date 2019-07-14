@@ -1,4 +1,6 @@
 export const URLS = {
+    //determine to use replace data or data from server
+    stubData: true,
 
     //get url methods
     GET_PENDING_REC: "getPendingRec",

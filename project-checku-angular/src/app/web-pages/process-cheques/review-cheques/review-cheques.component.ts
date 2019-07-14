@@ -17,7 +17,7 @@ export class ReviewChequesComponent implements OnInit {
     private toastSvc: ToastrService) { }
 
   chequeDetailsForm: FormGroup;
-  reviewCheques: any[] = [];
+  reviewCheques: any = [];
   currentChequeReviewed: any;
   currentPage: any;
   formDisabled: boolean = false;
@@ -32,10 +32,10 @@ export class ReviewChequesComponent implements OnInit {
   ngOnInit() {
     this.initChequeForm();
     this.initReviewTable();
-    this.getProcessedCheques();
+    this.getProcessedReviewCheques();
   }
 
-  getProcessedCheques() {
+  getProcessedReviewCheques() {
     this.processChequeSvc.getLatestCheque('review').subscribe((cheques: any[]) => {
       this.reviewCheques = cheques;
       //load page with first cheque in view
@@ -51,7 +51,7 @@ export class ReviewChequesComponent implements OnInit {
   initChequeForm() {
     this.chequeDetailsForm = new FormGroup({
       policyNo: new FormControl('', []),
-      policyType: new FormControl('', []),
+      premiumType: new FormControl('', []),
       custName: new FormControl('', []),
       contact: new FormControl('', []),
       amount: new FormControl('', []),
@@ -62,7 +62,7 @@ export class ReviewChequesComponent implements OnInit {
   populateChequeForm(data) {
     this.chequeDetailsForm.patchValue({
       policyNo: data.policyNo ? data.policyNo : 'NOT PROVIDED',
-      policyType: data.policyType ? data.policyType : 'NOT PROVIDED',
+      premiumType: data.premiumType ? data.premiumType : 'NOT PROVIDED',
       custName: data.customerName ? data.customerName : 'NOT PROVIDED',
       contact: data.contact ? data.contact : 'NOT PROVIDED',
       amount: data.amount ? data.amount : 'NOT PROVIDED',
@@ -74,38 +74,38 @@ export class ReviewChequesComponent implements OnInit {
     let cols: any[] = [
       {
         header: 'Match',
-        field: 'overallMatch',
+        field: 'score',
         width: '10%',
         isPercent: true
       },
       {
         header: 'NRIC',
-        field: 'predictedNric',
+        field: 'nric',
         width: '20%'
       },
       {
         header: 'Name',
-        field: 'predictedName',
+        field: 'name',
         width: '20%'
+      },
+      {
+        header: 'Contact',
+        field: 'contact',
+        width: '10%'
       },
       {
         header: 'Policy No.',
-        field: 'predictedPolicyNo',
+        field: 'policyno',
         width: '20%',
       },
       {
-        header: 'Premium Type',
-        field: 'predictedPremiumType',
-        width: '20%'
-      },
-      {
         header: 'Policy Type',
-        field: 'predictedPolicyType',
+        field: 'policytype',
         width: '10%'
       },
       {
         header: 'Payment Due',
-        field: 'predictedPaymentDue',
+        field: 'duedate',
         width: '20%'
       },
       {
@@ -137,7 +137,15 @@ export class ReviewChequesComponent implements OnInit {
       this.populateChequeForm(this.currentChequeReviewed.chequeDetail);
       this.chequeDetailsForm.disable();
       this.formDisabled = true;
-      this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
+
+      let prediction: any = this.currentChequeReviewed.prediction;
+      if (this.currentChequeReviewed.chequeDetail.hasSignature) {
+        for (var i = 0; i < prediction.length; i++) {
+          prediction[i].signatureMatch = "0.99"; // Add "total": 2 to all objects in array
+        }
+      }
+
+      this.reviewTableConfig.value = prediction;
       this.reviewTableConfig.refresh();
     }
 
@@ -202,7 +210,7 @@ export class ReviewChequesComponent implements OnInit {
         this.reviewTableConfig.refresh();
         this.smsSent = true;
         //TODO: send sms + add record of person sent to server
-        this.toastSvc.success("SMS has been successfully sent!", "", { positionClass: 'toast-bottom-left' });
+        this.toastSvc.success("SMS has been successfully sent!", "");
       }
     });
   }
@@ -219,7 +227,7 @@ export class ReviewChequesComponent implements OnInit {
       //if confirm send
       if (yes) {
         this.addChequeRecord('review');
-        this.toastSvc.success("Review for this cheque has been completed!", "", { positionClass: 'toast-bottom-left' });
+        this.toastSvc.success("Review for this cheque has been completed!", "");
       }
     });
   }
@@ -236,7 +244,7 @@ export class ReviewChequesComponent implements OnInit {
       //if confirm send
       if (yes) {
         this.addChequeRecord('success');
-        this.toastSvc.success("Cheque has been moved to successful payments!", "", { positionClass: 'toast-bottom-left' });
+        this.toastSvc.success("Cheque has been moved to successful payments!", "");
       }
     });
   }
@@ -253,21 +261,12 @@ export class ReviewChequesComponent implements OnInit {
       //if confirm send
       if (yes) {
         this.addChequeRecord('reject');
-        this.toastSvc.success("Cheque has been moved to rejected payments!", "", { positionClass: 'toast-bottom-left' });
+        this.toastSvc.success("Cheque has been moved to rejected payments!", "");
       }
     });
   }
 
   addChequeRecord(type) {
-    if (this.reviewCheques.length > 1) {
-      this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);
-      this.loadReviewPage(1);
-      this.processChequeSvc.updateReviewCheques(this.reviewCheques);
-    } else {
-      this.loadReviewPage(0);
-      this.processChequeSvc.updateReviewCheques([]);
-    }
-
     //TODO: add record of cheque sent to server
     switch (type) {
       case 'review':
@@ -276,6 +275,16 @@ export class ReviewChequesComponent implements OnInit {
         break;
       case 'success':
         break;
+    }
+
+    //remove selected cheque from view
+    if (this.reviewCheques.length > 1) {
+      this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);
+      this.loadReviewPage(1);
+      this.processChequeSvc.updateReviewCheques(this.reviewCheques);
+    } else {
+      this.loadReviewPage(0);
+      this.processChequeSvc.updateReviewCheques([]);
     }
   }
 }

@@ -1,5 +1,5 @@
-<div class="container">
-    <div class="row table-responsive bordered" id="scrollbar">
+<div class="container p-0">
+    <div class="row table-responsive bordered m-0" id="scrollbar" [style.maxHeight]="'350px'">
         <!-- for keyword search-->
         <!-- <div class="col-md-6 mx-auto">
         <div class="md-form">
@@ -8,8 +8,8 @@
           <label for="search-input">Search</label>
         </div>
       </div> -->
-        <table mdbTable #tableEl="mdbTable" [stickyHeader]="config.stickyHeader" [bordered]="config.hasBorders"
-            [hover]="config.hoverable && !config.nestedColumns" [striped]="config.isStripe">
+        <table mdbTable #tableEl="mdbTable" [bordered]="config.hasBorders" [hover]="config.hoverable"
+            [striped]="config.isStripe" stickyHeader="true">
             <thead class="sticky-top blue-grey lighten-5">
                 <tr>
                     <!--checkbox col-->
@@ -35,7 +35,7 @@
                     *ngFor="let rowData of config.value; let i = index">
                     <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
                     <!--checkbox cell-->
-                    <td *ngIf="config.hasCheckBox">
+                    <td class="align-middle" *ngIf="config.hasCheckBox">
                         <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)"
                             default="true">
                         </mdb-checkbox>
@@ -82,20 +82,25 @@
                                 </div>
                             </div>
                             <ng-template #noBar>
-                                <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat || col.isPercent )? 
-                                        (col.currency || col.isPercent)? col.isPercent ? (rowData[col.field] | percent: '1.0-0') : (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
-                                        (rowData[col.field])}}
+                                <ng-container *ngIf="col.image == true; else noImg">
+                                    <img [style.width]="'200px'" [src]="rowData[col.field]">
+                                </ng-container>
+                                <ng-template #noImg>
+                                    <span *ngIf="checkNumeric(rowData[col.field]) && (col.currency)">S$</span>{{ (col.currency || col.dateFormat || col.isPercent )? 
+                                            (col.currency || col.isPercent)? col.isPercent ? (rowData[col.field] | percent: '1.0-0') : (rowData[col.field] | number:col.currency) : (rowData[col.field] | date: col.dateFormat) :
+                                            (rowData[col.field])}}
+                                </ng-template>
                             </ng-template>
                         </ng-template>
                     </td>
                     <!--button cell-->
-                    <td *ngIf="config.hasButton">
-                        <button mdbBtn class="round" [style.width]="'110px'" type="button" [color]="buttonColor"
+                    <td class="align-middle" *ngIf="config.hasButton">
+                        <button mdbBtn class="round" [style.width]="buttonWidth" type="button" [color]="buttonColor"
                             size="sm" mdbWavesEffect (click)="onButtonClickNormal(rowData, i)"
                             [disabled]="checkbuttonDisable(i)">{{ buttonText }}</button>
                     </td>
                     <!-- hamburger cell-->
-                    <td *ngIf="config.hasHamburger">
+                    <td class="align-middle" *ngIf="config.hasHamburger">
                         <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)">
                         </hamburger-dropdown>
                     </td>
