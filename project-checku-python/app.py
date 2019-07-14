@@ -117,9 +117,9 @@ def scanCheque():
     for cheque in chequeList:
         print("front cheque file name: " + cheque["front"]["name"])
         print("back cheque file name: " + cheque["back"]["name"])
+        ocr.ocr(cheque["front"]["url"],cheque["back"]["url"]) 
 
     # run ocr method while passing in received data
-    ocr.ocr('../samplecheck1.jpg')  # TODO: pass in chequeList and run OCR
 
     # FOR TESTING PURPOSES: return dataDict to check if request is received from front end
     return jsonify({'status': 200, 'data received': chequeList})
