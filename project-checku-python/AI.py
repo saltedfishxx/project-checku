@@ -7,7 +7,8 @@
 
 #RecordLinkage for AI matching'
 import sys
-get_ipython().system('{sys.executable} -m pip install --user recordlinkage')
+# from IPython import get_ipython
+# get_ipython().system('{sys.executable} -m pip install --user recordlinkage')
 import recordlinkage as rl
 from recordlinkage.preprocessing import clean, phonetic
 from recordlinkage.index import Block

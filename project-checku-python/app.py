@@ -8,7 +8,6 @@ import sys
 # import numpy as np
 # import ml_model
 import ocr
-
 from flask import request
 from flask_cors import CORS
 

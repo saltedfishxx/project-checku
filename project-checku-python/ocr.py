@@ -5,6 +5,8 @@ import base64
 import io
 from google.cloud import vision
 import re
+import AI
+import json
 
 def ocr(frontLink,backLink):
     imgstring = frontLink.replace('data:image/jpeg;base64,','')
@@ -80,7 +82,7 @@ def ocr(frontLink,backLink):
 
     # print("back"+backText)
 
-    chequeDetail={
+    chequeDetail={"chequeDetail":{
         "policyNo":None,
         "premiumType":None,
         "customerName":name,
@@ -92,5 +94,5 @@ def ocr(frontLink,backLink):
         "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
         "signatureExists":True #lmao
     }
-
-    return chequeDetail
+    }
+    return AI.getAIResult(json.dumps(chequeDetail))
