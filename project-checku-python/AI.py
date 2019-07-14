@@ -38,6 +38,10 @@ import pickle
 
 
 jsondata_dict = {"chequeDetail":{
+"chequeNo": "00022",
+"bankNo":"7214",
+"branchNo" : "021",
+"accountNo": "0302349182",
 "policyNo": "",
 "premiumType": "Premium",
 "customerName": "Fu Di Hai",
@@ -54,7 +58,11 @@ jsondata = json.dumps(jsondata_dict, indent=4)
 
 
 jsondata_dict = {"chequeDetail":{
-"policyNo": None,
+"chequeNo": "00022",
+"bankNo":"7214",
+"branchNo" : "021",
+"accountNo": "0302349182",
+"policyNo": "",
 "premiumType": "Premium",
 "customerName": "Johnathan Joestar",
 "contact": "99126969",
@@ -73,49 +81,60 @@ jsondata = json.dumps(jsondata_dict, indent=4)
 
 
 def getAIResult(JsonChequeDetails):
+    
 #Given JsonChequeDetails as:
 # {"chequeDetail":{
+# "chequeNo": "00022",
+# "bankNo":"7214",
+# "branchNo" : "021",
+# "accountNo": "0302349182",
 # "policyNo": "9812731823",
 # "premiumType": "Premium",
 # "customerName": "Johnathan Joestar",
-# "contact": "99126869",
-# "amount": "400",
+# "contact": "99126969",
+# "amount": 400,
 # "date": "12/06/2019",
-# "hasSignature": False,
 # "imageFront": "base64string",
-# "imageBack": "base64string"}}
+# "imageBack": "base64string",
+# "addressee" : "prudential assurance company",
+# "signatureExists": False}}
 
 
     #Get Cheque Details as df
     jdata = json.loads(JsonChequeDetails)
     json_df = pd.DataFrame(jdata)
     json_df = json_df.T
-    df = json_df.drop(columns=['premiumType','date', 'imageFront', 'imageBack', 'addressee', 'signatureExists'])
+    # df = json_df.drop(columns=['chequeNo','bankNo','branchNo','accountNo','premiumType','date', 'imageFront', 'imageBack', 'addressee', 'signatureExists'])
     #Rename columns
-    df.rename(columns={
+    json_df.rename(columns={
                 'customerName':'name',
                  'policyNo':'policyno',
                  'amount':'remainingamount'},
              inplace=True)
+    #Drop all columns but these
+    cols_to_keep = ['name','contact','policyno','remainingamount']
+    df = json_df.drop(json_df.columns.difference(cols_to_keep), 1)
+    #Clean cheque data
+    df["name"] = clean(df["name"].astype(str)) 
+    df = clean_prefixes_and_symbols_from_name(df, 'name')
     #Convert cheque amount to float 
     #Ensure float (cheque) to float (db) matching
     df['remainingamount'] = float(df['remainingamount']) 
-    df = clean_prefixes_and_symbols_from_name(df, 'name')
     
 
-    sql_conn = createSqlConn()
     #Get Cust Data df from db
-    query = "select customer.nric, name, contact, PolicyAccount.policyno, PolicyAccount.remainingamount,"    " policy.policytype, PolicyAccount.duedate from customer left join policyaccount on customer.nric = policyaccount.nric "    "left join policy on policyaccount.policytypeid = policy.policytypeid"
+    sql_conn = createSqlConn()
+    query = "select customer.nric, name, contact, PolicyAccount.policyno, PolicyAccount.remainingamount, policy.policytype, PolicyAccount.duedate from customer left join policyaccount on customer.nric = policyaccount.nric left join policy on policyaccount.policytypeid = policy.policytypeid"
     
     customer_data = pd.read_sql(query, sql_conn)
     
-    #Clean data to be displayed to cust 'lowercase, trim etc.'
-    customer_data["name"] = clean(customer_data["name"].astype(str)) 
+    #Clean db data to be displayed to cust 'lowercase, trim etc.'
     customer_data['duedate'] = pd.Series(customer_data['duedate']).astype(str)
     customer_data.duedate= customer_data.duedate.str.replace('-','/',regex=True)
     
-    #Clean data to be used in AI prediction
+    #Clean db data to be used in AI prediction
     customer_data_df = customer_data
+    customer_data_df["name"] = clean(customer_data_df["name"].astype(str)) 
     customer_data_df["contact"] = clean(customer_data_df["contact"].astype(str)) 
     customer_data_df["policyno"] = clean(customer_data_df["policyno"].astype(str)) 
     customer_data_df['remainingamount'] = pd.Series(customer_data_df['remainingamount']).astype(float)
@@ -213,7 +232,7 @@ def createSqlConn():
     driver = 'ODBC Driver 13 for SQL Server'
     server = platform.node() + '\SQLEXPRESS' #'LAPTOP-5F3VRSBM\SQLEXPRESS'
     db = 'Checku'
-    sql_conn = pyodbc.connect('DRIVER={'+driver+                              '};SERVER='+server+                              ';DATABASE='+db+                              ';Trusted_Connection=yes')
+    sql_conn = pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+db+';Trusted_Connection=yes')
     
     return sql_conn
 
