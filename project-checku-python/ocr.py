@@ -7,6 +7,8 @@ from google.cloud import vision
 import re
 import AI
 import json
+import jellyfish
+import pyodbc
 
 def ocr(frontLink,backLink):
     imgstring = frontLink.replace('data:image/jpeg;base64,','')
@@ -42,7 +44,16 @@ def ocr(frontLink,backLink):
     name=frontDataTxt[frontDataTxt.index("Toppan Security Printing Pte. Ltd.")-1]
     print(name)
 
-
+    #region addressee
+    addressee=False
+    for txt in frontDataTxt:
+        print(txt)
+        print(jellyfish.jaro_winkler(txt,"Prudential Assurance Company (S) P/L"))
+        if jellyfish.jaro_winkler(txt,"Prudential Assurance Company (S) P/L")>=0.7:
+            addressee=True
+            break
+    
+    print(addressee)
 
     #region get amount
     amt=[x for x in frontDataTxt if 'S$' in x][0]
@@ -105,14 +116,28 @@ def ocr(frontLink,backLink):
         "contact":contact,
         "amount":amt,
         "date":None, #halp
-        "chequeNo":chequeNo
-        "bankNo":bankNo
-        "accountNo":accountNo
+        "chequeNo":chequeNo,
+        "bankNo":bankNo,
+        "accountNo":accountNo,
         "branchNo":branchNo,
         "imageFront":frontLink,
         "imageBack":backLink,
-        "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
+        # "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
+        "addressee":addressee,
         "signatureExists":True #lmao
     }
     }
-    return AI.getAIResult(json.dumps(chequeDetail))
+    # return AI.getAIResult(json.dumps(chequeDetail))
+
+    # data to db
+    conn = AI.createSqlConn()
+
+    cursor = conn.cursor()
+
+    cursor.execute('''
+                    INSERT INTO Checku.dbo.Cheque (Name, Age, City)
+                    VALUES
+                    ('Bob',55,'Montreal'),
+                    ('Jenny',66,'Boston')
+                    ''')
+    conn.commit()
