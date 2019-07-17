@@ -42,7 +42,7 @@
                     </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
                         [ngClass]="setPercentColor(rowData[col.field], col.isPercent)"
-                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="text-muted">
+                        [ngStyle]="col.currency? {'text-align':'right'} : col.style" class="text-muted align-middle">
                         <div *ngIf="col.isStatus; else noStatus">
                             <div *ngIf="col.hasBar; else noBar">
                                 <div class="d-flex align-items-center">

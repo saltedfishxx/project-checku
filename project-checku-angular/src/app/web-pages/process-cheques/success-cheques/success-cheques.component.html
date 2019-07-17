@@ -31,11 +31,11 @@
 
         <!--button actions-->
         <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
-            <button mdbBtn class="round" [style.height]="'40px'" type="button" color="warning" size="sm" mdbWavesEffect
+            <!-- <button mdbBtn class="round" [style.height]="'40px'" type="button" color="warning" size="sm" mdbWavesEffect
                 (click)="onReview()" [disabled]="selectedRows.length == 0">
                 <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Move To Review<span
                     *ngIf="selectedRows.length > 0">({{ selectedRows.length }})</span>
-            </button>
+            </button> -->
             <button mdbBtn class="round mr-0" [style.height]="'40px'" type="button" color="success" size="sm"
                 mdbWavesEffect (click)="onAccept()" [disabled]="selectedRows.length == 0">
                 <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Confirm Accept<span

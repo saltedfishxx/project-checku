@@ -23,8 +23,8 @@ export class ReviewChequesComponent implements OnInit {
   formDisabled: boolean = false;
   isEditing: boolean = false;
   toggleChequeImg: boolean = false;
-  disableButtons: any[] = [];
   smsSent: boolean = false;
+  selectedRows: any[] = [];
 
   reviewTableConfig: TableConfig = new TableConfig();
 
@@ -112,16 +112,15 @@ export class ReviewChequesComponent implements OnInit {
       },
       {
         header: 'Sig. Match',
-        field: 'signatureMatch',
+        field: 'signatureExists',
         width: '15%',
         isPercent: true
       }
     ];
 
     this.reviewTableConfig.columns = cols;
-    this.reviewTableConfig.hasButton = true;
+    this.reviewTableConfig.hasCheckBox = true;
     this.reviewTableConfig.showPagination = false;
-    this.reviewTableConfig.disableButtonsList = [];
   }
 
   loadReviewPage(pageToLoad) {
@@ -153,8 +152,6 @@ export class ReviewChequesComponent implements OnInit {
     }
 
   }
-
-
 
 
   /**
@@ -193,49 +190,35 @@ export class ReviewChequesComponent implements OnInit {
     }
   }
 
-  //Button event when user clicks send SMS button
-  onClickSend(event) {
-    console.log(event);
-    let price = this.currentChequeReviewed.chequeDetail.amount;
-
-    let message = "The customer will receive the following message: \nDear " + event.rowData.name + ",\nPlease verfiy that " +
-      "you have made a payment of S$" + price + " to Prudential. To verify, " +
-      "please reply with your POLICY NUMBER.\nPlease ignore this message if you are not the intended recipient."
-    let data = {
-      header: "Send Verification SMS",
-      description: message,
-      positive: "Send",
-      negative: "Cancel"
-    }
-    this.confirmDialogSvc.openDialog(data).then(send => {
-      //if confirm send
-      if (send) {
-        this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
-        this.disableButtons.push('Send SMS' + event.i + this.currentChequeReviewed.index);
-        this.reviewTableConfig.disableButtonsList = this.disableButtons;
-        this.reviewTableConfig.value = this.currentChequeReviewed.prediction;
-        this.reviewTableConfig.refresh();
-        this.smsSent = true;
-        //TODO: send sms + add record of person sent to server
-        this.toastSvc.success("SMS has been successfully sent!", "");
-      }
-    });
+  //checkbox event 
+  onRowSelect(event) {
+    this.selectedRows = event;
+    console.log(this.selectedRows);
   }
 
   //Button event when user finishes reviewing the current cheque
   onFinishReview() {
+    let message = "Selected customers will receive the following message: \nDear Customer,\nPlease verfiy that " +
+      "you have made a payment of S$xxx to Prudential. To verify, " +
+      "please reply with your POLICY NUMBER.\nPlease ignore this message if you are not the intended recipient."
     let data = {
-      header: "Confirm Finish View",
-      description: "Finish reviewing this cheque?",
-      positive: "Yes",
+      header: "Send Verification SMS and Complete Review",
+      description: message,
+      positive: "Send and Finish Review",
       negative: "Cancel"
     }
-    this.confirmDialogSvc.openDialog(data).then(yes => {
+    this.confirmDialogSvc.openDialog(data).then(cfm => {
       //if confirm send
-      if (yes) {
+      if (cfm) {
+        this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
+        this.smsSent = true;
+        this.sendSms().then(status => {
+          if (status) {
+            this.reviewTableConfig.refresh();
+            this.toastSvc.success("SMS has been successfully sent!", "");
+          }
+        });
         this.addChequeRecord('review');
-        this.toastSvc.success("Review for this cheque has been completed!", "");
-        this.smsSent = false;
       }
     });
   }
@@ -274,10 +257,19 @@ export class ReviewChequesComponent implements OnInit {
     });
   }
 
+  sendSms() {
+    //TODO: send sms from selected Rows + add record of person sent to server
+    return new Promise(resolve => {
+      this.selectedRows = [];
+      resolve();
+    });
+  }
+
   addChequeRecord(type) {
     //TODO: add record of cheque sent to server
     switch (type) {
       case 'review':
+        this.toastSvc.success("Cheque has been successfully reviewed!", "");
         break;
       case 'reject':
         break;

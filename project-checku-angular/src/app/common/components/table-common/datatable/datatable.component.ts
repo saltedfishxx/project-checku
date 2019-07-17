@@ -60,8 +60,10 @@ export class DatatableComponent implements OnInit {
   }
 
   protected parseInput(inputValue: TableConfig) {
+    console.log("refreshed table");
     this.selectedRows = [];
     this.selectAll = false;
+    this.allChecked = false;
 
     if (inputValue.value) {
       if (!inputValue.valueBkup) {

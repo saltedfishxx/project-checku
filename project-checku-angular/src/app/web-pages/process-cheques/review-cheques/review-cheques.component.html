@@ -38,11 +38,11 @@
             <mdb-card-header class="bg-white">
               <div class="row justify-content-md-between align-items-center">
                 <h5 class="m-0 pl-2 ">Cheque Details</h5>
-                <button mdbBtn (click)="isEditing ? onEditDone() : onEdit()"
+                <!-- <button mdbBtn (click)="isEditing ? onEditDone() : onEdit()"
                   class="bg-transparent z-depth-0 p-0 m-0 waves-light" mdbWavesEffect>
                   <span class="small text-primary m-0">{{ isEditing ? 'Done' : 'Edit'}}</span>
                   <mdb-icon fas [icon]="isEditing ? 'check' : 'edit'" class="px-1 text-primary"></mdb-icon>
-                </button>
+                </button> -->
               </div>
             </mdb-card-header>
             <mdb-card-body class="px-0 py-4" [style.height]="'250px'">
@@ -131,8 +131,7 @@
           </div>
         </mdb-card-header>
         <mdb-card-body class="p-0 h-auto">
-          <datatable buttonText="Send SMS" buttonColor="primary" (clicked)="onClickSend($event)"
-            [config]="reviewTableConfig">
+          <datatable (rowSelect)="onRowSelect($event)" [config]="reviewTableConfig">
           </datatable>
         </mdb-card-body>
       </mdb-card>
@@ -140,17 +139,17 @@
     <!--prediction results end-->
     <!--button actions-->
     <div class="d-flex w-75 row justify-content-end mt-2 mb-4">
-      <button mdbBtn class="round" [style.height]="'40px'" type="button" color="danger" size="sm" mdbWavesEffect
+      <!-- <button mdbBtn class="round" [style.height]="'40px'" type="button" color="danger" size="sm" mdbWavesEffect
         (click)="onReject()" [disabled]="smsSent">
         <mdb-icon fas icon="times" size="lg" class="mr-1"></mdb-icon>Reject
       </button>
       <button mdbBtn class="round" [style.height]="'40px'" type="button" color="success" size="sm" mdbWavesEffect
         (click)="onAccept()" [disabled]="smsSent">
         <mdb-icon fas icon="check" size="lg" class="mr-1"></mdb-icon>Accept
-      </button>
+      </button> -->
       <button mdbBtn class="round mr-0" [style.height]="'40px'" type="button" color="warning" size="sm" mdbWavesEffect
-        (click)="onFinishReview()">
-        <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Done Review
+        (click)="onFinishReview()" [disabled]="this.selectedRows.length == 0">
+        <mdb-icon fas icon="ellipsis-h" size="lg" class="mr-1"></mdb-icon>Finish Review
       </button>
     </div>
     <!-- button actions end -->
