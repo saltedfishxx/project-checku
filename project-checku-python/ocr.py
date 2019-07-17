@@ -123,7 +123,7 @@ def ocr(frontLink,backLink):
         "imageFront":frontLink,
         "imageBack":backLink,
         # "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
-        "addressee":addressee,
+        "addresseeCorrect":addressee,
         "signatureExists":True #lmao
     }
     }
@@ -135,9 +135,9 @@ def ocr(frontLink,backLink):
     cursor = conn.cursor()
 
     cursor.execute('''
-                    INSERT INTO Checku.dbo.Cheque (Name, Age, City)
+                    INSERT INTO Checku.dbo.Cheque(ChequeName,Addressee,Amount,Date,Contact,BankBrNo,ChequeImgBack,ChequeImgFront,ChequeSignature,AccountNo,ChequeNo,BankNo)
                     VALUES
-                    ('Bob',55,'Montreal'),
-                    ('Jenny',66,'Boston')
-                    ''')
+                    (?,?,?,?,?,?,?,?,?,?,?,?)
+                    ''',
+                    name,addressee,amt,None,contact,branchNo,backLink,frontLink,None,accountNo,chequeNo,bankNo)
     conn.commit()
