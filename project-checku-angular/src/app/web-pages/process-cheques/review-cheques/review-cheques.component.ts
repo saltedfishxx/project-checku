@@ -112,7 +112,7 @@ export class ReviewChequesComponent implements OnInit {
       },
       {
         header: 'Sig. Match',
-        field: 'signatureExists',
+        field: 'signatureMatch',
         width: '15%',
         isPercent: true
       }
@@ -141,7 +141,7 @@ export class ReviewChequesComponent implements OnInit {
       this.formDisabled = true;
 
       let prediction: any = this.currentChequeReviewed.prediction;
-      if (this.currentChequeReviewed.chequeDetail.hasSignature) {
+      if (this.currentChequeReviewed.chequeDetail.signatureExists) {
         for (var i = 0; i < prediction.length; i++) {
           prediction[i].signatureMatch = "0.99"; // Add "total": 2 to all objects in array
         }
@@ -198,26 +198,42 @@ export class ReviewChequesComponent implements OnInit {
 
   //Button event when user finishes reviewing the current cheque
   onFinishReview() {
-    let message = "Selected customers will receive the following message: \nDear Customer,\nPlease verfiy that " +
-      "you have made a payment of S$xxx to Prudential. To verify, " +
-      "please reply with your POLICY NUMBER.\nPlease ignore this message if you are not the intended recipient."
-    let data = {
-      header: "Send Verification SMS and Complete Review",
-      description: message,
-      positive: "Send and Finish Review",
-      negative: "Cancel"
+    let message = "";
+    let data = {};
+    if (this.selectedRows.length > 0) {
+      message = "Selected customers will receive the following message: \nDear Customer,\nPlease verfiy that " +
+        "you have made a payment of S$xxx to Prudential. To verify, " +
+        "please reply with your POLICY NUMBER.\nPlease ignore this message if you are not the intended recipient."
+      data = {
+        header: "Send Verification SMS and Complete Review",
+        description: message,
+        positive: "Send and Finish Review",
+        negative: "Cancel"
+      }
+    } else {
+      message = "Confirm complete review without sending any SMS to possible customers?"
+      data = {
+        header: "Complete Review",
+        description: message,
+        positive: "Finish Review",
+        negative: "Cancel"
+      }
     }
+
     this.confirmDialogSvc.openDialog(data).then(cfm => {
       //if confirm send
       if (cfm) {
         this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
-        this.smsSent = true;
-        this.sendSms().then(status => {
-          if (status) {
-            this.reviewTableConfig.refresh();
-            this.toastSvc.success("SMS has been successfully sent!", "");
-          }
-        });
+        if (this.selectedRows.length > 0) {
+          this.smsSent = true;
+          this.sendSms().then(status => {
+            if (status) {
+              this.reviewTableConfig.refresh();
+              this.toastSvc.success("SMS has been successfully sent!", "");
+            }
+          });
+        }
+
         this.addChequeRecord('review');
       }
     });

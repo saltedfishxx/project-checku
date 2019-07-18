@@ -12,6 +12,12 @@ a:hover, a:focus {
     color: #5A6978 !important;
 }
 
+.nav-tabs .nav-link.active {
+    box-shadow: 0px 3px 0px #6770E2 inset !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    color: #495057 !important;
+}
 
 .nav-item.active {
     background-color: #F8F9FE !important;
@@ -22,8 +28,16 @@ a:hover, a:focus {
     font-family: 'Cardo', serif;
 }
 
+.logoFont.small {
+    font-size: 1.5em;
+}
+
 .material-icons.logo{
     font-size: 8em;
+}
+
+.material-icons.logo.small{
+    font-size: 3em;
 }
 .background-gradient {
     background-repeat: no-repeat;
@@ -47,6 +61,16 @@ a:hover, a:focus {
   height:100%;
   background:#F8F9FE;
   z-index: -1;
+}
+
+//badge style
+.process-badge{
+    position: relative;
+    right: 2%;
+    width: 28px;
+    height: 28px;
+    padding-top: 1rem !important;
+    bottom: 10px;
 }
 
 //overwrite primary color

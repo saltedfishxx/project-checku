@@ -1,0 +1,43 @@
+{
+    "data": [
+        {
+            "paymentId": "20",
+            "policyNo": "0987454356",
+            "policyType": "Health Insurance",
+            "premiumType": "APL",
+            "amount": "450",
+            "nric": "S1234567B",
+            "customerName": "De Yang Lim",
+            "paymentDate": "25/06/2019",
+            "dueDate": "30/06/2019",
+            "processedDate": "26/06/2019",
+            "reviewedBy": "Clera Xiao Liew"
+        },
+        {
+            "paymentId": "21",
+            "policyNo": "0987654323",
+            "policyType": "Health Insurance",
+            "premiumType": "APL Interest",
+            "amount": "650",
+            "nric": "S1876544B",
+            "customerName": "Yang De Lim",
+            "paymentDate": "28/08/2019",
+            "dueDate": "31/08/2019",
+            "processedDate": "30/08/2019",
+            "reviewedBy": "Clera Xiao Liew"
+        },
+        {
+            "paymentId": "22",
+            "policyNo": "2345678909",
+            "policyType": "Travel Insurance",
+            "premiumType": "Premium",
+            "amount": "450",
+            "nric": "S1265867B",
+            "customerName": "Lim Yang De",
+            "paymentDate": "25/06/2019",
+            "dueDate": "30/06/2019",
+            "processedDate": "26/06/2019",
+            "reviewedBy": "Clera Xiao Liew"
+        }
+    ]
+}

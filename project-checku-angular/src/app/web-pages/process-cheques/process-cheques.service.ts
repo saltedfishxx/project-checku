@@ -75,14 +75,17 @@ export class ProcessChequesService {
 
   //listener to update remainng processing cheques
   updateReviewCheques(reviewCheques) {
+    this.reviewCheques = reviewCheques
     this.reviewChequesSubj.next(reviewCheques);
   }
 
   updateRejectCheques(rejectCheques) {
+    this.rejectCheques = rejectCheques;
     this.rejectChequesSubj.next(rejectCheques);
   }
 
   updateSuccessCheques(successCheques) {
+    this.successCheques = successCheques;
     this.successChequesSubj.next(successCheques);
   }
 
@@ -97,6 +100,9 @@ export class ProcessChequesService {
     }
   }
 
-
+  setUnfinishedCheques() {
+    let count = this.successCheques.length + this.rejectCheques.length + this.reviewCheques.length;
+    localStorage.setItem("processCount", count.toString());
+  }
 
 }

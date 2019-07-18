@@ -30,7 +30,8 @@ export class FluidModalService {
           positiveLabel: data.positive,
           negativeLabel: data.negative,
           imageFront: data.imageFront,
-          imageBack: data.imageBack
+          imageBack: data.imageBack,
+          template: data.template
         }
       }
     }

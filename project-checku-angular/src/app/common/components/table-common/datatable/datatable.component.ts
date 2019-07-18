@@ -202,8 +202,8 @@ export class DatatableComponent implements OnInit {
 
   //dropdown event
   @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
-  onItemSelected(id) {
-    this.itemClick.emit(id);
+  onItemSelected(id, rowData) {
+    this.itemClick.emit({ id, rowData });
   }
 }
 
@@ -228,6 +228,7 @@ export class TableConfig {
 
   private onChangeSource = new BehaviorSubject(null);
   private onChange$ = this.onChangeSource.asObservable();
+  minWidth: string;
 
   /**
    * call refresh() after TableConfig's fields are all updated to refresh datatable

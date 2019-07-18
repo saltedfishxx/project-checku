@@ -1,4 +1,4 @@
-<div class="container p-0">
+<div class="p-0">
     <div class="row table-responsive bordered m-0" id="scrollbar" [style.maxHeight]="'350px'">
         <!-- for keyword search-->
         <!-- <div class="col-md-6 mx-auto">
@@ -9,7 +9,7 @@
         </div>
       </div> -->
         <table mdbTable #tableEl="mdbTable" [bordered]="config.hasBorders" [hover]="config.hoverable"
-            [striped]="config.isStripe" stickyHeader="true">
+            [striped]="config.isStripe" stickyHeader="true" [style.minWidth]="config.minWidth">
             <thead class="sticky-top blue-grey lighten-5">
                 <tr>
                     <!--checkbox col-->
@@ -48,11 +48,10 @@
                                 <div class="d-flex align-items-center">
                                     <span class="mr-2">{{rowData[col.field]}}/3</span>
                                     <div>
-                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
-                                            <div class="progress-bar animated slideInLeft"
-                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
-                                            'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
-                                            'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'8px'">
+                                            <div class="progress-bar animated slideInLeft" [ngClass]="{'bg-warning': rowData['smsStatus'] == 'pending', 
+                                            'bg-success': rowData['smsStatus'] == 'verified', 
+                                            'bg-danger': rowData['smsStatus'] == 'unverified'}" role="progressbar"
                                                 [style.width]="checkProgess(rowData[col.field])">
                                             </div>
                                         </div>
@@ -70,11 +69,10 @@
                                 <div class="d-flex align-items-center">
                                     <span class="mr-2">{{rowData[col.field]}}/3</span>
                                     <div>
-                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'10px'">
-                                            <div class="progress-bar animated slideInLeft"
-                                                [ngClass]="{'bg-warning': (rowData['status'] == 'pending' || rowData['verified'] == 'pending'), 
-                                                'bg-success': (rowData['status'] == 'verified' || rowData['verified'] == 'verified'), 
-                                                'bg-danger': (rowData['status'] == 'unverified' || rowData['verified'] == 'unverified')}" role="progressbar"
+                                        <div class="progress mb-0" [style.width]="'150px'" [style.height]="'8px'">
+                                            <div class="progress-bar animated slideInLeft" [ngClass]="{'bg-warning': rowData['smsStatus'] == 'pending', 
+                                            'bg-success': rowData['smsStatus'] == 'verified', 
+                                            'bg-danger': rowData['smsStatus'] == 'unverified'}" role="progressbar"
                                                 [style.width]="checkProgess(rowData[col.field])">
                                             </div>
                                         </div>
@@ -101,7 +99,8 @@
                     </td>
                     <!-- hamburger cell-->
                     <td class="align-middle" *ngIf="config.hasHamburger">
-                        <hamburger-dropdown icon="ellipsis-v" [config]="config" (itemClick)="onItemSelected($event)">
+                        <hamburger-dropdown icon="ellipsis-v" [config]="config"
+                            (itemClick)="onItemSelected($event, rowData)">
                         </hamburger-dropdown>
                     </td>
                 </tr>

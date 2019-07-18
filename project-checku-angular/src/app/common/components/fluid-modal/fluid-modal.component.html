@@ -6,18 +6,20 @@
         <h4 class="modal-title w-100 text-white" id="myModalLabel"><strong>{{content.heading}}</strong></h4>
     </div>
     <div class="modal-body" style="white-space: pre-line;">
-        <ng-container *ngIf="content.imageFront || content.imageBack; else noImg">
+        <ng-container *ngIf="(content.imageFront || content.imageBack) && !content.template; else noImg">
             <div class="d-flex row justify-content-center align-items-center">
-                <img *ngIf="content.imageFront" [src]="content.imageFront" class="mx-2 z-depth-1"
+                <img *ngIf="content.imageFront && !content.template" [src]="content.imageFront" class="mx-2 z-depth-1"
                     [style.width]="'400px'">
-                <img *ngIf="content.imageBack" [src]="content.imageBack" class="mx-2 z-depth-1" [style.width]="'400px'">
+                <img *ngIf="content.imageBack && !content.template" [src]="content.imageBack" class="mx-2 z-depth-1"
+                    [style.width]="'400px'">
             </div>
             <div class="d-flex row justify-content-center align-items-center mt-4">
                 <p>{{ content.description }}</p>
             </div>
         </ng-container>
         <ng-template #noImg>
-            <p>{{ content.description }}</p>
+            <p *ngIf="content.description">{{ content.description }}</p>
+            <div *ngIf="content.template" [innerHTML]="content.template"></div>
         </ng-template>
 
     </div>

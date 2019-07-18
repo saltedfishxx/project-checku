@@ -4,10 +4,7 @@ export const URLS = {
 
     //get url methods
     //main page api calls
-    GET_PENDING_REC: "getPendingRec",
-    GET_HOLDING_REC: "getHoldingRec",
-    GET_SUCCESS_REC: "getSuccessRec",
-    GET_REJECTED_REC: "getRejectedRec",
+    GET_RECORDS: "getRecords",
 
     //process cheque api calls
     GET_PROCESSED_CHEQUES: "getProcessCheques",
