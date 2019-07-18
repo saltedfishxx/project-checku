@@ -71,3 +71,41 @@ def getCheques(mainStatus):
     returnedJson = json.dumps(returnedJson)  
     return returnedJson
 
+def getProccessedCheques(mainStatus):
+    if mainStatus == "proccessReject":
+        query = "Select p.PaymentID as paymentId,c.ChequeImgFront as imageFront,c.ChequeImgBack as imageBack,p.RejectedReason as rejectReason from PaymentRecord p, Cheque c Where p.ChequeId=c.ChequeId And p.Status='rejected' And p.ReviewedAt IS NULL"
+    elif mainStatus == "proccessSuccess":
+        query = "Select p.PaymentID as paymentId, p.PolicyNo as policyNo, c.PremiumType as premiumType, c.ChequeName as customerName, c.Contact as contact, c.Amount as amount, c.Date as date, c.ChequeImgFront as imageFront,c.ChequeImgBack as imageBack from PaymentRecord p, Cheque c Where p.ChequeId=c.ChequeId And p.Status='successfull' And p.ReviewedAt IS NULL"
+    elif mainStatus == "proccessReview":
+        query = "Select p.PaymentID as paymentId, c.ChequeSignature as signatureExist, c.PolicyNo as policyNo, c.PremiumType as premiumType, c.ChequeName as customerName, c.Contact as contact, c.Amount as amount, c.Date as date, c.ChequeImgFront as imageFront,c.ChequeImgBack as imageBack from PaymentRecord p, Cheque c Where p.ChequeId=c.ChequeId And p.Status='holdingPending' And p.ReviewedAt IS NULL"
+    df = pd.read_sql(query, createSqlConn())
+    returnedJson = {"data":[]}  
+    if mainStatus == "getHoldingRec":
+        for i in df.index:
+
+            chequeDetail={"chequeDetail":{
+            "PaymentID":str(df.loc[i]["PaymentID"]),
+            "policyNo":str(df.loc[i]["policyNo"]),
+            "premiumType":str(df.loc[i]["premiumType"]),
+            "customerName":str(df.loc[i]["customerName"]),
+            "contact":str(df.loc[i]["contact"]),
+            "amount":str(df.loc[i]["amount"]),
+            "date":str(df.loc[i]["date"]), 
+            "chequeNo":str(df.loc[i]["chequeNo"]),
+            "bankNo":str(df.loc[i]["bankNo"]),
+            "accountNo":str(df.loc[i]["accountNo"]),
+            "branchNo":str(df.loc[i]["branchNo"]),
+            "imageFront":str(df.loc[i]["imageFront"]),
+            "imageBack":str(df.loc[i]["imageBack"]),
+            "addressee":str(df.loc[i]["addressee"]),
+            "signatureExists":str(df.loc[i]["signatureExists"]) #lmao
+                }
+            }
+            
+            jsondata = json.dumps(chequeDetail, indent=4)       
+            returnedJson["data"].append(json.loads(getAIResult(jsondata)))
+    else:
+        returnedJson = {"data" : df.to_dict(orient='records')}
+                                    
+    returnedJson = json.dumps(returnedJson)  
+    return returnedJson
