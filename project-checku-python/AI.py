@@ -309,7 +309,8 @@ def getAIResult(JsonChequeDetails):
         
     #Convert df to json
     customer_data_scored_svm_dict = customer_data_scored_svm.to_dict(orient='records')
-    prediction_result = {"chequeDetail": json.loads(JsonChequeDetails) ,"prediction" : customer_data_scored_svm_dict}
+    json_data_dict = json.loads(JsonChequeDetails)["chequeDetail"]
+    prediction_result = {"chequeDetail": json_data_dict, "prediction" : customer_data_scored_svm_dict}
     prediction_result = json.dumps(prediction_result, indent=4)
     
     
