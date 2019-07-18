@@ -10,7 +10,8 @@ import sys
 import ocr
 from flask import request
 from flask_cors import CORS
-
+import pyodbc
+import db
 
 app = Flask(__name__)
 # use CORS to enable CORS policy and have access control
@@ -27,6 +28,7 @@ def main():
 ######################### GET METHODS ################################
 @app.route('/getPendingRec', methods=['GET'])
 def getPendingRecords():
+
     # returns reponse
     return jsonify({'data': "get pending record is called."})
 
@@ -39,7 +41,6 @@ def getHoldingRecords():
 
 @app.route('/getSuccessRec', methods=['GET'])
 def getSuccessRecords():
-    # returns reponse
     return jsonify({'data': "get success record is called."})
 
 
@@ -116,7 +117,7 @@ def scanCheque():
     for cheque in chequeList:
         print("front cheque file name: " + cheque["front"]["name"])
         print("back cheque file name: " + cheque["back"]["name"])
-        ocr.ocr(cheque["front"]["url"],cheque["back"]["url"]) 
+        ocr.ocr(cheque["front"]["url"], cheque["back"]["url"])
 
     # run ocr method while passing in received data
 

@@ -10,15 +10,17 @@ import db
 import json
 import jellyfish
 import pyodbc
+from flask import Flask, request, jsonify
 
-def ocr(frontLink,backLink):
-    imgstring = frontLink.replace('data:image/jpeg;base64,','')
+
+def ocr(frontLink, backLink):
+    imgstring = frontLink.replace('data:image/jpeg;base64,', '')
     imgdata = base64.b64decode(str(imgstring))
     frontImg = 'front_image.jpeg'  # I assume you have a way of picking unique filenames
     with open(frontImg, 'wb') as f:
         f.write(imgdata)
 
-    imgstring = backLink.replace('data:image/jpeg;base64,','')
+    imgstring = backLink.replace('data:image/jpeg;base64,', '')
     imgdata = base64.b64decode(str(imgstring))
     backImg = 'back_image.jpeg'  # I assume you have a way of picking unique filenames
     with open(backImg, 'wb') as f:
@@ -33,44 +35,44 @@ def ocr(frontLink,backLink):
     response = client.document_text_detection(image=image)
 
     # print(response)
-    frontData=response
+    frontData = response
 
-    frontDataTxt=frontData.full_text_annotation.text.split('\n')
+    frontDataTxt = frontData.full_text_annotation.text.split('\n')
     print(frontDataTxt)
 
-    #region get date
-   
-    
-    #region get name
-    name=frontDataTxt[frontDataTxt.index("Toppan Security Printing Pte. Ltd.")-1]
+    # region get date
+
+    # region get name
+    name = frontDataTxt[frontDataTxt.index(
+        "Toppan Security Printing Pte. Ltd.")-1]
     print(name)
 
-    #region addressee
-    addressee=False
+    # region addressee
+    addressee = False
     for txt in frontDataTxt:
         print(txt)
-        print(jellyfish.jaro_winkler(txt,"Prudential Assurance Company (S) P/L"))
-        if jellyfish.jaro_winkler(txt,"Prudential Assurance Company (S) P/L")>=0.7:
-            addressee=True
+        print(jellyfish.jaro_winkler(txt, "Prudential Assurance Company (S) P/L"))
+        if jellyfish.jaro_winkler(txt, "Prudential Assurance Company (S) P/L") >= 0.7:
+            addressee = True
             break
-    
+
     print(addressee)
 
-    #region get amount
-    amt=[x for x in frontDataTxt if 'S$' in x][0]
-    amt=re.findall(r"\d*\.\d+|\d+", amt)[0]
+    # region get amount
+    amt = [x for x in frontDataTxt if 'S$' in x][0]
+    amt = re.findall(r"\d*\.\d+|\d+", amt)[0]
     print(amt)
 
-    #region bottom stuff
-    chequeNo=None
-    bankNo=None
-    accountNo=None
-    branchNo=None
-    bottomData=frontDataTxt[-2]
-    chequeNo=''.join(bottomData[6:14].split(' '))
-    bankNo=''.join(bottomData[16:21].split(' '))
-    branchNo=''.join(bottomData[21:24].split(' '))
-    accountNo=''.join(bottomData[-13:-1].replace('.','').split(' '))
+    # region bottom stuff
+    chequeNo = None
+    bankNo = None
+    accountNo = None
+    branchNo = None
+    bottomData = frontDataTxt[-2]
+    chequeNo = ''.join(bottomData[6:14].split(' '))
+    bankNo = ''.join(bottomData[16:21].split(' '))
+    branchNo = ''.join(bottomData[21:24].split(' '))
+    accountNo = ''.join(bottomData[-13:-1].replace('.', '').split(' '))
     print(chequeNo)
     print(bankNo)
     print(accountNo)
@@ -80,22 +82,18 @@ def ocr(frontLink,backLink):
     image = vision.types.Image(content=content)
 
     response = client.document_text_detection(image=image)
-    backData=response
+    backData = response
 
-    backDataTxt=backData.full_text_annotation.text.split('\n')
+    backDataTxt = backData.full_text_annotation.text.split('\n')
     print(backDataTxt)
 
-    #region get contact
-    contact=None
-    for x in backDataTxt: 
+    # region get contact
+    contact = None
+    for x in backDataTxt:
         if x.isdigit():
             print('beepboop')
-            contact=x
-        else:
-            print('boopbeep')
+            contact = x
     print(contact)
-
-
 
     # tessaract
     # config = ('-l eng --oem 1 --psm 11')
@@ -110,35 +108,66 @@ def ocr(frontLink,backLink):
 
     # print("back"+backText)
 
-    chequeDetail={"chequeDetail":{
-        "policyNo":None,
-        "premiumType":None,
-        "customerName":name,
-        "contact":contact,
-        "amount":amt,
-        "date":None, #halp
-        "chequeNo":chequeNo,
-        "bankNo":bankNo,
-        "accountNo":accountNo,
-        "branchNo":branchNo,
-        "imageFront":frontLink,
-        "imageBack":backLink,
+    chequeDetail = {"chequeDetail": {
+        "policyNo": None,
+        "premiumType": None,
+        "customerName": name,
+        "contact": contact,
+        "amount": amt,
+        "date": None,  # halp
+        "chequeNo": chequeNo,
+        "bankNo": bankNo,
+        "accountNo": accountNo,
+        "branchNo": branchNo,
+        "imageFront": frontLink,
+        "imageBack": backLink,
         # "addressee":"Prudential Assurance Company".lower() in frontData.full_text_annotation.text.lower(),
-        "addresseeCorrect":addressee,
-        "signatureExists":True #lmao
+        "addresseeCorrect": addressee,
+        "signatureExists": True  # lmao
     }
     }
-    # return AI.getAIResult(json.dumps(chequeDetail))
-
+    nric, policyNo, policyType, rejectedReason = None, None, None, None
+    status = 'holdingPending'
+    if addressee:
+        prediction = json.loads(AI.getAIResult(
+            json.dumps(chequeDetail))).get("prediction", [])
+        if len(prediction) == 1:
+            print(prediction)
+            nric = prediction[0].get("nric", None)
+            policyNo = prediction[0].get("policyno", None)
+            policyType = prediction[0].get("policytype", None)
+            status = 'successful'
+    else:
+        prediction = []
+        status = 'rejected'
+        rejectedReason = 'Incorrect Addressee'
     # data to db
-    conn = db.createSqlConn()
+    try:
+        conn = db.createSqlConn()
 
-    cursor = conn.cursor()
+        cursor = conn.cursor()
 
-    cursor.execute('''
-                    INSERT INTO Checku.dbo.Cheque(ChequeName,Addressee,Amount,Date,Contact,BankBrNo,ChequeImgBack,ChequeImgFront,ChequeSignature,AccountNo,ChequeNo,BankNo)
-                    VALUES
-                    (?,?,?,?,?,?,?,?,?,?,?,?)
-                    ''',
-                    name,addressee,amt,None,contact,branchNo,backLink,frontLink,None,accountNo,chequeNo,bankNo)
-    conn.commit()
+        cursor.execute('''
+                        INSERT INTO Checku.dbo.Cheque(ChequeName,Addressee,
+                        Amount,Date,Contact,BankBrNo,ChequeImgBack,ChequeImgFront,
+                        AccountNo,ChequeNo,BankNo, ChequeSignature)
+                        OUTPUT INSERTED.ChequeId as id
+                        VALUES
+                        (?,?,?,?,?,?,?,?,?,?,?,?)
+                        ''',
+                       name, addressee, amt, None, contact, branchNo, backLink, frontLink, accountNo, chequeNo, bankNo, 1)
+        cheque_id = -1
+        for id in cursor:
+            cheque_id = id[0]
+        cursor.execute('''
+                        INSERT INTO Checku.dbo.PaymentRecord(Status,
+                        ReviewedBy,ChequeId,NRIC,PolicyNo,PremiumType)
+                        VALUES
+                        (?,?,?,?,?,?)
+                        ''',
+                       status, 'wakanda', cheque_id, nric, policyNo, policyType)
+        conn.commit()
+    except Exception as err:
+        print(err)
+        return jsonify({'status': 400})
+    return jsonify({'status': 200})
