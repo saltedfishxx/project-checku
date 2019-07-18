@@ -1,6 +1,6 @@
 {
     "data": {
-        "reviewCheques": [
+        "data": [
             {
                 "chequeDetail": {
                     "hasSignature": true,

@@ -6,6 +6,7 @@ import io
 from google.cloud import vision
 import re
 import AI
+import db
 import json
 import jellyfish
 import pyodbc
@@ -130,7 +131,7 @@ def ocr(frontLink,backLink):
     # return AI.getAIResult(json.dumps(chequeDetail))
 
     # data to db
-    conn = AI.createSqlConn()
+    conn = db.createSqlConn()
 
     cursor = conn.cursor()
 
