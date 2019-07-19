@@ -169,5 +169,5 @@ def ocr(frontLink, backLink):
         conn.commit()
     except Exception as err:
         print(err)
-        return jsonify({'status': 400})
-    return jsonify({'status': 200})
+        return 400
+    return 200

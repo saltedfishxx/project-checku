@@ -63,12 +63,12 @@ export class ReviewChequesComponent implements OnInit {
 
   populateChequeForm(data) {
     this.chequeDetailsForm.patchValue({
-      policyNo: data.policyNo ? data.policyNo : 'NOT PROVIDED',
-      premiumType: data.premiumType ? data.premiumType : 'NOT PROVIDED',
-      custName: data.customerName ? data.customerName : 'NOT PROVIDED',
-      contact: data.contact ? data.contact : 'NOT PROVIDED',
-      amount: data.amount ? data.amount : 'NOT PROVIDED',
-      date: data.date ? data.date : 'NOT PROVIDED'
+      policyNo: data.policyNo != 'None' ? data.policyNo : 'NOT PROVIDED',
+      premiumType: data.premiumType != 'None' ? data.premiumType : 'NOT PROVIDED',
+      custName: data.customerName != 'None' ? data.customerName : 'NOT PROVIDED',
+      contact: data.contact != 'None' ? data.contact : 'NOT PROVIDED',
+      amount: data.amount != 'None' ? data.amount : 'NOT PROVIDED',
+      date: data.date != 'None' ? data.date : 'NOT PROVIDED'
     });
   }
 
@@ -211,7 +211,7 @@ export class ReviewChequesComponent implements OnInit {
         negative: "Cancel"
       }
     } else {
-      message = "Confirm complete review without sending any SMS to possible customers?"
+      message = "Confirm complete review without sending any SMS to possible customers!= 'None' ?"
       data = {
         header: "Complete Review",
         description: message,
@@ -260,7 +260,7 @@ export class ReviewChequesComponent implements OnInit {
   onAccept() {
     let data = {
       header: "Confirm Accept",
-      description: "Confirm moving this cheque as successful payment?",
+      description: "Confirm moving this cheque as successful payment!= 'None' ?",
       positive: "Yes",
       negative: "Cancel"
     }
@@ -277,7 +277,7 @@ export class ReviewChequesComponent implements OnInit {
   onReject() {
     let data = {
       header: "Confirm Reject",
-      description: "Confirm moving this cheque as rejected payments?",
+      description: "Confirm moving this cheque as rejected payments!= 'None' ?",
       positive: "Yes",
       negative: "Cancel"
     }

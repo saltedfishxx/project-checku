@@ -1,13 +1,13 @@
 export const URLS = {
     //determine to use replace data or data from server
-    stubData: true,
+    stubData: false,
 
     //get url methods
     //main page api calls
     GET_RECORDS: "getRecords",
 
     //process cheque api calls
-    GET_PROCESSED_CHEQUES: "getProcessCheques",
+    GET_PROCESSED_CHEQUES: "getProcessedCheques",
 
     //post url methods
     POST_LOGIN: "login",

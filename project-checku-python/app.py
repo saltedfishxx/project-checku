@@ -74,21 +74,6 @@ def login():
     else:
         return jsonify({'data': "Invalid login credentials"})
 
-# api call to get the confirm rejected cheques and add to database
-
-
-@app.route('/postRejectedChqe', methods=['POST'])
-def addRejectedCheques():
-    # returns reponse
-    return jsonify({'data': "post rejected chqe is called."})
-
-
-# api call to get the cheques that have been reviewed and add to database
-@app.route('/postReviewChqe', methods=['POST'])
-def addReviewCheques():
-    # returns reponse
-    return jsonify({'data': "post review chqe is called."})
-
 
 # api call to send sms to customers
 @app.route('/postSms', methods=['POST'])
@@ -97,32 +82,24 @@ def sendSms():
     return jsonify({'data': "post sms is called."})
 
 
-# api call to get the confirm success cheques and add to database
-@app.route('/postSuccessChqe', methods=['POST'])
-def addSuccessCheques():
-    # returns reponse
-    return jsonify({'data': "post success chqe is called."})
-
 # api call to process cheques through OCR
-
-
 @app.route('/processCheques', methods=['POST'])
 def scanCheque():
     # data in string format and you have to parse into list
     # e.g. data received [ {"back": { "name" : ...}, "front: {..}"}, {"back": {...}, "front: {..}"}]
     chequeList = request.get_json()["data"]
 
-    # FOR TESTING PURPOSES: check file name
+    status = 0
+    # run ocr method while passing in received data
     print("No. of cheques recevied " + str(len(chequeList)))
     for cheque in chequeList:
         print("front cheque file name: " + cheque["front"]["name"])
         print("back cheque file name: " + cheque["back"]["name"])
-        ocr.ocr(cheque["front"]["url"], cheque["back"]["url"])
-
-    # run ocr method while passing in received data
-
-    # FOR TESTING PURPOSES: return dataDict to check if request is received from front end
-    return jsonify({'status': 200, 'data received': chequeList})
+        status = ocr.ocr(cheque["front"]["url"], cheque["back"]["url"])
+        if(status == 400):
+            return jsonify({'status': status})
+            break
+    return jsonify({'status': status})
 
 
 @app.route('/getProcessedCheques', methods=['GET'])
@@ -130,13 +107,13 @@ def getProccessedCheques():
     status = request.args.get('status')
     print(status)
     if status == 'review':
-        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessReview")})
+        return db.getProccessedCheques("proccessReview")
     elif status == 'success':
-        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessSuccess")})
+        return db.getProccessedCheques("proccessSuccess")
     elif status == 'reject':
-        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessReject")})
+        return db.getProccessedCheques("proccessReject")
     else:
-        return jsonify({'status': 400, 'data received': 'Invalid status'})
+        return jsonify({'status': 400, 'data': 'Invalid status'})
 
 
 ######################## HELPER METHODS ################################

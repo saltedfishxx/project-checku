@@ -26,15 +26,17 @@ export class ProcessChequesService {
   getProcessedCheques() {
     return new Promise(resolve => {
       this.getReviewCheques().then((res: any) => {
-        this.reviewCheques = res.reviewCheques;
+        console.log("🤙 Received review cheques");
+        console.log(res);
+        this.reviewCheques = res.data;
         this.updateReviewCheques(this.reviewCheques);
       });
       this.getRejectCheques().then((res: any) => {
-        this.rejectCheques = res.rejectedCheques;
+        this.rejectCheques = res.data;
         this.updateRejectCheques(this.rejectCheques);
       });
       this.getSuccessCheques().then((res: any) => {
-        this.successCheques = res.successfulCheques;
+        this.successCheques = res.data;
         this.updateSuccessCheques(this.successCheques);
       });
 
@@ -42,11 +44,12 @@ export class ProcessChequesService {
     });
   }
 
+
   getReviewCheques() {
     if (URLS.stubData) {
       return this.api.getRecords('./assets/jsonData/processed_cheques_review.json')
     } else {
-      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/review")
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "?status=review")
     }
   }
 
@@ -54,7 +57,7 @@ export class ProcessChequesService {
     if (URLS.stubData) {
       return this.api.getRecords('./assets/jsonData/processed_cheques_reject.json')
     } else {
-      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/reject")
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "?status=reject")
     }
   }
 
@@ -62,21 +65,21 @@ export class ProcessChequesService {
     if (URLS.stubData) {
       return this.api.getRecords('./assets/jsonData/processed_cheques_success.json')
     } else {
-      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/success")
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "?status=success")
     }
   }
 
   /****** ADD TO DB METHODS  *******/
   addReviewCheques(data) {
-    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/review', data);
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '?status=review', data);
   }
 
   addRejectCheques(data) {
-    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/reject', data);
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '?status=reject', data);
   }
 
   addSuccessCheques(data) {
-    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/success', data);
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '?status=success', data);
   }
 
   sendSms(data) {

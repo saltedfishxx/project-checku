@@ -21,8 +21,8 @@ export class APIInterceptor implements HttpInterceptor {
     this.activeRequests++;
     let headers = new HttpHeaders({
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': '*',
-      'Access-Control-Allow-Headers': '*'
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
     });
 
     //FOR TESTING: uses local assets to subsitiute data received 
