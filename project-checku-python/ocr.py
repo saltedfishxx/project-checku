@@ -1,6 +1,5 @@
 import cv2
 import sys
-import pytesseract
 import base64
 import io
 from google.cloud import vision
@@ -155,7 +154,7 @@ def ocr(frontLink, backLink):
                         VALUES
                         (?,?,?,?,?,?,?,?,?,?,?,?)
                         ''',
-                       name, addressee, amt, None, contact, branchNo, backLink, frontLink, accountNo, chequeNo, bankNo, 1)
+                       name, addressee, amt, '2019-07-12', contact, branchNo, backLink, frontLink, accountNo, chequeNo, bankNo, 1)
         cheque_id = -1
         for id in cursor:
             cheque_id = id[0]
