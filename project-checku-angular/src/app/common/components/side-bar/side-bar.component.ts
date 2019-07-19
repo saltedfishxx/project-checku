@@ -21,7 +21,8 @@ export class SideBarComponent implements OnInit {
   }
 
   onBack() {
-    this.tab = 0;
+    this.tab = 2
+    this.changeTabs.emit(this.tab);
     this.router.navigate(['/home']);
   }
 }

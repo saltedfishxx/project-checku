@@ -60,8 +60,10 @@ export class DatatableComponent implements OnInit {
   }
 
   protected parseInput(inputValue: TableConfig) {
+    console.log("refreshed table");
     this.selectedRows = [];
     this.selectAll = false;
+    this.allChecked = false;
 
     if (inputValue.value) {
       if (!inputValue.valueBkup) {
@@ -116,13 +118,15 @@ export class DatatableComponent implements OnInit {
   }
 
   checkbuttonDisable(index) {
-    let id = this.buttonText + index;
+    let id = this.buttonText + index + this.config.currentPage;
+    let isDisabled = false;
     for (let element of this.config.disableButtonsList) {
       if (id == element) {
-        return true;
+        isDisabled = true;
+        break;
       }
     };
-
+    return isDisabled;
   }
 
   //checkbox events
@@ -166,13 +170,16 @@ export class DatatableComponent implements OnInit {
         }
       }
     } else {
-      console.log("adding row to selected rows");
-      this.selectedRows.push({ id: checkBoxId, rowData: rowData });
-      if (this.selectedRows.length == allData.length)
-        this.allChecked = true;
-      else
-        this.allChecked = false;
+      if (isChecked == true) {
+        console.log("adding row to selected rows");
+        this.selectedRows.push({ id: checkBoxId, rowData: rowData });
+        if (this.selectedRows.length == allData.length)
+          this.allChecked = true;
+        else
+          this.allChecked = false;
+      }
     }
+
 
     console.log(this.selectedRows);
     this.rowSelect.emit(this.selectedRows);
@@ -198,8 +205,8 @@ export class DatatableComponent implements OnInit {
 
   //dropdown event
   @Output() itemClick: EventEmitter<any> = new EventEmitter<any>();
-  onItemSelected(id) {
-    this.itemClick.emit(id);
+  onItemSelected(id, rowData) {
+    this.itemClick.emit({ id, rowData });
   }
 }
 
@@ -207,7 +214,7 @@ export class DatatableComponent implements OnInit {
 export class TableConfig {
   nestedColumns: any[];
   columns: any[]; //field, header, width, clickable, sortable, dateFormat, style, currency, hasDollar, hasBar, isStatus
-  disableButtonsList: any[];
+  disableButtonsList: any[] = [];
   value: any[];
   valueBkup: any[]; // Backup value field when applying filter. Input not required
   disable: boolean = false;
@@ -220,9 +227,12 @@ export class TableConfig {
   hasCheckBox: boolean = false;
   hasHamburger: boolean = false;
   dropdownList: any[] = [];
+  currentPage: any = 0;
 
   private onChangeSource = new BehaviorSubject(null);
   private onChange$ = this.onChangeSource.asObservable();
+  minWidth: string;
+
   /**
    * call refresh() after TableConfig's fields are all updated to refresh datatable
    */

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiCallService } from '@apiService';
+import { URLS } from '@urls';
 
 @Injectable({
   providedIn: 'root'
@@ -19,25 +20,67 @@ export class ProcessChequesService {
   rejectChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   reviewChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   successChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  responseData: any;
 
+  /****** GET METHODS  *******/
   getProcessedCheques() {
-    return new Promise((resolve, reject) => {
-      this.api.getRecords('./assets/jsonData/processed_cheques.json').then((res: any) => {
-        this.processedCheques = res.data;
-        this.reviewCheques = this.processedCheques['reviewCheques'];
-        this.rejectCheques = this.processedCheques['rejectedCheques'];
-        this.successCheques = this.processedCheques['successfulCheques'];
-
-        this.updateRejectCheques(this.rejectCheques);
+    return new Promise(resolve => {
+      this.getReviewCheques().then((res: any) => {
+        this.reviewCheques = res.reviewCheques;
         this.updateReviewCheques(this.reviewCheques);
-        this.updateSuccessCheques(this.successCheques);
-
-        console.log("@processChqe: received data: ");
-        console.log(this.processedCheques);
-        resolve(true);
       });
-    });
+      this.getRejectCheques().then((res: any) => {
+        this.rejectCheques = res.rejectedCheques;
+        this.updateRejectCheques(this.rejectCheques);
+      });
+      this.getSuccessCheques().then((res: any) => {
+        this.successCheques = res.successfulCheques;
+        this.updateSuccessCheques(this.successCheques);
+      });
 
+      resolve(true);
+    });
+  }
+
+  getReviewCheques() {
+    if (URLS.stubData) {
+      return this.api.getRecords('./assets/jsonData/processed_cheques_review.json')
+    } else {
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/review")
+    }
+  }
+
+  getRejectCheques() {
+    if (URLS.stubData) {
+      return this.api.getRecords('./assets/jsonData/processed_cheques_reject.json')
+    } else {
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/reject")
+    }
+  }
+
+  getSuccessCheques() {
+    if (URLS.stubData) {
+      return this.api.getRecords('./assets/jsonData/processed_cheques_success.json')
+    } else {
+      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/success")
+    }
+  }
+
+  /****** ADD TO DB METHODS  *******/
+  addReviewCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/review', data);
+  }
+
+  addRejectCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/reject', data);
+  }
+
+  addSuccessCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/success', data);
+  }
+
+  sendSms(data) {
+    return this.api.sendSMS(URLS.POST_SMS, data);
   }
 
   changePage(tabName) {
@@ -48,15 +91,19 @@ export class ProcessChequesService {
     return this.tabSource;
   }
 
+  //listener to update remainng processing cheques
   updateReviewCheques(reviewCheques) {
+    this.reviewCheques = reviewCheques
     this.reviewChequesSubj.next(reviewCheques);
   }
 
   updateRejectCheques(rejectCheques) {
+    this.rejectCheques = rejectCheques;
     this.rejectChequesSubj.next(rejectCheques);
   }
 
   updateSuccessCheques(successCheques) {
+    this.successCheques = successCheques;
     this.successChequesSubj.next(successCheques);
   }
 
@@ -69,6 +116,11 @@ export class ProcessChequesService {
       case 'success':
         return this.successChequesSubj.asObservable();
     }
+  }
+
+  setUnfinishedCheques() {
+    let count = this.successCheques.length + this.rejectCheques.length + this.reviewCheques.length;
+    localStorage.setItem("processCount", count.toString());
   }
 
 }

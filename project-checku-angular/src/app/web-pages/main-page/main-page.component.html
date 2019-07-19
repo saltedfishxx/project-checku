@@ -1,3 +1,116 @@
-<p>
-  main-page works!
-</p>
+<div class="w-100 h-100 animated fadeIn faster">
+  <div class="w-100 d-flex row justify-content-center m-0">
+    <div #logo class="mx-2 my-4 d-flex row align-items-center" style="width: 90%">
+      <div class="row align-items-end mr-auto">
+        <i class="white-text material-icons logo small">check</i><span class="logoFont small white-text">Checku</span>
+      </div>
+      <div>
+        <img [style.width]="'40px'" class="img-fluid z-depth-1 rounded-circle"
+          src="../../../assets/img/icons/profile_pic.png">
+      </div>
+      <div>
+        <button mdbBtn class="bg-transparent z-depth-0 px-2" #pop="bs-mdbPopover" mdbWavesEffect
+          [mdbPopover]="popTemplate" placement="bottom"><span class="text-white h6">{{ userSession.staffName }}</span>
+        </button>
+      </div>
+      <!--pop over-->
+      <ng-template #popTemplate>
+        <div [style.width]="'150px'">
+          <div><small>Welcome!</small></div>
+          <div>
+            <button mdbBtn class="p-0 bg-transparent z-depth-0" mdbWavesEffect>
+              <mdb-icon fas icon="user" size="sm" class="mr-2 mt-2"></mdb-icon>Profile
+            </button>
+            <button mdbBtn class="p-0 bg-transparent z-depth-0" mdbWavesEffect>
+              <mdb-icon fas icon="cog" size="sm" class="mr-2"></mdb-icon>Settings
+            </button>
+            <hr class="w-100 my-1" />
+            <button mdbBtn class="p-0 bg-transparent z-depth-0" (click)="navigate('logout')" mdbWavesEffect>
+              <mdb-icon fas icon="sign-out-alt" size="sm" class="mr-2"></mdb-icon>Logout
+            </button>
+          </div>
+        </div>
+
+      </ng-template>
+      <!--pop over end-->
+    </div>
+    <div class="bg-white shadow z-depth-1 h-auto" style="width: 90%">
+      <div #header class="m-4 d-flex row justify-content-start">
+        <h4 class="ml-4 mb-0 text-primary">Processed Cheques</h4>
+        <hr class="w-50" />
+        <button mdbBtn class="round btn-outline-primary my-0 mr-4" [style.height]="'40px'" type="button" color="primary"
+          size="sm" mdbWavesEffect (click)="navigate('upload')">
+          <mdb-icon fas icon="arrow-circle-up" size="lg" class="mr-1"></mdb-icon>Upload Cheques
+        </button>
+        <button mdbBtn class="round my-0" [style.height]="'40px'" type="button" color="primary" size="sm" mdbWavesEffect
+          (click)="navigate('review')">
+          <mdb-icon fas icon="cog" size="lg" class="mr-1"></mdb-icon>Review Cheques
+        </button>
+        <mdb-badge pill="true" *ngIf="processCount > 0" class="process-badge" danger="true">{{processCount}}</mdb-badge>
+      </div>
+      <div #tables class="pt-4">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link py-3" (click)="changeTab(1)" [ngClass]="tab === 1 ? 'active': ''" role="tab"
+              aria-selected="true"><span class="h6 mx-2">
+                <mdb-icon fas icon="circle" size="xs" [ngClass]="tab === 1 ? 'animated bounceIn ': ''"
+                  class="text-warning mr-2"></mdb-icon>Pending SMS
+                Verification
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link py-3" (click)="changeTab(2)" [ngClass]="tab === 2 ? 'active': ''" role="tab"
+              aria-controls="profile" aria-selected="false"><span class="h6 mx-2">
+                <mdb-icon fas icon="circle" size="xs" [ngClass]="tab === 2 ? 'animated bounceIn ': ''"
+                  class="grey-text mr-2"></mdb-icon>Holding
+                Account
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link py-3" (click)="changeTab(3)" [ngClass]="tab === 3 ? 'active': ''" role="tab"
+              aria-controls="contact" aria-selected="false"><span class="h6 mx-2">
+                <mdb-icon fas icon="circle" size="xs" [ngClass]="tab === 3 ? 'animated bounceIn ': ''"
+                  class="text-success mr-2"></mdb-icon>Successful
+                Policy Payments
+              </span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link py-3" (click)="changeTab(4)" [ngClass]="tab === 4 ? 'active': ''" role="tab"
+              aria-controls="contact" aria-selected="false"><span class="h6 mx-2">
+                <mdb-icon fas icon="circle" size="xs" [ngClass]="tab === 4 ? 'animated bounceIn ': ''"
+                  class="text-danger mr-2"></mdb-icon>Rejected
+                cheques
+              </span></a>
+          </li>
+        </ul>
+        <div class="tab-content" class="bg-white">
+          <div class="tab-panel w-100 animated fadeIn faster" *ngIf=" tab===1" role="tabpanel">
+            <div class="d-flex m-0 row justify-content-center w-100">
+              <datatable [config]=" pendingSMSConfig" class="w-100 p-4">
+              </datatable>
+            </div>
+          </div>
+          <div class="tab-panel animated fadeIn faster" *ngIf="tab === 2" role="tabpanel">
+            <div class="d-flex m-0 row justify-content-center">
+              <datatable [config]=" holdingAccountConfig" class="w-100 p-4" (clicked)="dropdownSelected($event)">
+              </datatable>
+            </div>
+          </div>
+          <div class="tab-panel animated fadeIn faster" *ngIf="tab === 3" role="tabpanel">
+            <div class="d-flex m-0 row justify-content-center">
+              <datatable [config]=" successPaymentConfig" class="w-100 p-4">
+              </datatable>
+            </div>
+          </div>
+          <div class="tab-panel animated fadeIn faster" *ngIf="tab === 4" role="tabpanel">
+            <div class="d-flex m-0 row justify-content-center">
+              <datatable [config]=" rejectedPaymentConfig" class="w-100 p-4" [buttonText]="'Details'"
+                [buttonColor]="'primary'" (clicked)="openChequeDetailsReject($event)">
+              </datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

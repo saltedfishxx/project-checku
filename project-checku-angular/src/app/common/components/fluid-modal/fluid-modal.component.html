@@ -1,17 +1,107 @@
 <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header py-2">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100 text-white" id="myModalLabel"><strong>{{content.heading}}</strong></h4>
     </div>
     <div class="modal-body" style="white-space: pre-line;">
-        <p>{{ content.description }}</p>
+        <ng-container *ngIf="(content.imageFront || content.imageBack) && !content.template; else noImg">
+            <div class="d-flex row justify-content-center align-items-center">
+                <img *ngIf="content.imageFront && !content.template" [src]="content.imageFront" class="mx-2 z-depth-1"
+                    [style.width]="'400px'">
+                <img *ngIf="content.imageBack && !content.template" [src]="content.imageBack" class="mx-2 z-depth-1"
+                    [style.width]="'400px'">
+            </div>
+            <div class="d-flex row justify-content-center align-items-center mt-4">
+                <p [class]="checkText()">{{ content.description }}</p>
+            </div>
+        </ng-container>
+        <ng-template #noImg>
+            <p *ngIf="content.description">{{ content.description }}</p>
+            <div *ngIf="content.template">
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <img [style.width]="'400px'" class="z-depth-1"
+                                [src]="toggleChequeImg ? content.imageBack:  content.imageFront" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2"><small>Legal Information</small></div>
+                        <div class="row my-0">
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">ADDRESSEE</h6>
+                                <p [class]="checkText(content.template.addresseeCorrect)">
+                                    {{ content.template.addresseeCorrect }}</p>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">DATE</h6>
+                                <p [class]="checkText(content.template.chequeDate)">{{ content.template.chequeDate }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row my-0">
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">AMOUNT</h6>
+                                <p [class]="checkText(content.template.amount)">{{ content.template.amount }}</p>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">SIGNATURE</h6>
+                                <p [class]="checkText(content.template.signature)">{{ content.template.signature }}</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mr-2 mt-4">
+                            <p class="m-0 pr-2 small pt-1 text-primary">Front</p>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" [(ngModel)]="toggleChequeImg" class="custom-control-input"
+                                    id="customSwitches">
+                                <label class="custom-control-label small pt-1 text-primary"
+                                    for="customSwitches">Back</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-2"><small>Sender Information</small></div>
+                        <div class="row my-0">
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">SENDER NAME</h6>
+                                <p [class]="checkText(content.template.chequeCustome)">
+                                    {{ content.template.chequeCustomer }}</p>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">CONTACT</h6>
+                                <p [class]="checkText(content.template.chequeContact)">
+                                    {{ content.template.chequeContact }}</p>
+                            </div>
+                        </div>
+                        <div class="row my-0">
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">POLICY NUMBER</h6>
+                                <p [class]="checkText(content.template.chequePolicyNo)">
+                                    {{ content.template.chequePolicyNo }}</p>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="text-primary m-0">PREMIUM TYPE</h6>
+                                <p [class]="checkText(content.template.chequePremiumType)">
+                                    {{ content.template.chequePremiumType }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
     </div>
-    <div class="modal-footer justify-content-center">
-        <button type="button" mdbBtn color="primary" class="waves-light" aria-label="Close"
-            *ngIf="content.negativeLabel" (click)="modalRef.hide()" mdbWavesEffect>{{ content.negativeLabel}}</button>
-        <button type="button" mdbBtn color="primary" class="relative waves-light" *ngIf="content.positiveLabel"
-            (click)="onPositiveClick()" mdbWavesEffect>{{ content.positiveLabel}}</button>
-    </div>
+    <ng-container *ngIf="content.postiveLabel">
+        <div class="modal-footer justify-content-center">
+            <button type="button" mdbBtn color="primary" class="waves-light" aria-label="Close"
+                *ngIf="content.negativeLabel" (click)="modalRef.hide()"
+                mdbWavesEffect>{{ content.negativeLabel}}</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" *ngIf="content.positiveLabel"
+                (click)="onPositiveClick()" mdbWavesEffect>{{ content.positiveLabel}}</button>
+        </div>
+    </ng-container>
+
 </div>

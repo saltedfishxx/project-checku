@@ -1,21 +1,22 @@
 <div class="background-gradient">
-  <div class="container h-100">
+  <div class="container h-100  animated fadeIn faster">
     <div class="row align-items-center h-100">
       <div class="col-6 mx-auto">
-          <div class="row align-items-end justify-content-center mb-1">
-              <i class="white-text material-icons logo">check</i><span class="logoFont white-text display-3">Checku</span>
-            </div>
-            <div class="row align-items-end justify-content-center mb-4">
-                <span class="white-text lead"><em>Easy check a cheque</em></span>
-              </div>
+        <div class="row align-items-end justify-content-center mb-1">
+          <i class="white-text material-icons logo">check</i><span class="logoFont white-text display-3">Checku</span>
+        </div>
+        <div class="row align-items-end justify-content-center mb-4">
+          <span class="white-text lead"><em>Easy check a cheque</em></span>
+        </div>
         <div class="card shadow">
           <div class="my-5 mx-4">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
               <div class="form-group">
-                <input type="email" class="form-control"  formControlName="email" id="email" placeholder="Email">
+                <input type="email" class="form-control" formControlName="email" id="email" placeholder="Email">
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" id="password"  formControlName="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" formControlName="password"
+                  placeholder="Password">
               </div>
               <div class="form-group mt-2 mb-5">
                 <button class="btn btn-primary btn-block" type="submit">Login</button>

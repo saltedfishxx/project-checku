@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProcessChequesService } from './process-cheques.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { ProcessChequesService } from './process-cheques.service';
   templateUrl: './process-cheques.component.html',
   styleUrls: []
 })
-export class ProcessChequesComponent implements OnInit {
+export class ProcessChequesComponent implements OnInit, OnDestroy {
 
   constructor(private processChqeSvc: ProcessChequesService) { }
 
@@ -22,6 +22,10 @@ export class ProcessChequesComponent implements OnInit {
         });
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.processChqeSvc.setUnfinishedCheques();
   }
 
   changePage(number) {

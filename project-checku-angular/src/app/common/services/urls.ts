@@ -1,15 +1,18 @@
 export const URLS = {
     //determine to use replace data or data from server
-    stubData: false,
+    stubData: true,
 
     //get url methods
-    GET_PENDING_REC: "getPendingRec",
-    GET_HOLDING_REC: "getHoldingRec",
-    GET_SUCCESS_REC: "getSuccessRec",
-    GET_REJECTED_REC: "getRejectedRec",
+    //main page api calls
+    GET_RECORDS: "getRecords",
+
+    //process cheque api calls
+    GET_PROCESSED_CHEQUES: "getProcessCheques",
 
     //post url methods
     POST_LOGIN: "login",
+    //process cheque api calls
+    POST_CONFIRMED_CHEQUES: "addConfirmedCheques",
     POST_SCANNED_CHEQUES: "processCheques",
     POST_REJECTED_CHEQUES: "postRejectedChqe",
     POST_REVIEW_CHEQUES: "postReviewChqe",

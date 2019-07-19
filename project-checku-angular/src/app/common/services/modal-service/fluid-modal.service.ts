@@ -20,7 +20,7 @@ export class FluidModalService {
       show: false,
       ignoreBackdropClick: false,
       class: 'modal-full-height modal-bottom modal-notify modal-primary',
-      containerClass: 'animated slideInUp faster',
+      containerClass: 'top animated slideInUp faster',
       animated: true,
       data: {
         heading: data,
@@ -28,7 +28,10 @@ export class FluidModalService {
           heading: data.header,
           description: data.description,
           positiveLabel: data.positive,
-          negativeLabel: data.negative
+          negativeLabel: data.negative,
+          imageFront: data.imageFront,
+          imageBack: data.imageBack,
+          template: data.template
         }
       }
     }
