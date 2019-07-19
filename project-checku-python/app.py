@@ -125,6 +125,20 @@ def scanCheque():
     return jsonify({'status': 200, 'data received': chequeList})
 
 
+@app.route('/getProcessedCheques', methods=['GET'])
+def getProccessedCheques():
+    status = request.args.get('status')
+    print(status)
+    if status == 'review':
+        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessReview")})
+    elif status == 'success':
+        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessSuccess")})
+    elif status == 'reject':
+        return jsonify({'status': 200, 'data received': db.getProccessedCheques("proccessReject")})
+    else:
+        return jsonify({'status': 400, 'data received': 'Invalid status'})
+
+
 ######################## HELPER METHODS ################################
 
 
