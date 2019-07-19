@@ -101,8 +101,13 @@ export class SuccessChequesComponent implements OnInit {
     this.confirmDialogSvc.openDialog(data).then(yes => {
       //if confirm send
       if (yes) {
-        this.addChequeRecord('success');
-        this.toastSvc.success("Successfully accepted the cheques!", "");
+        this.addChequeRecord('success').then(added => {
+          if (added) {
+            this.toastSvc.success("Cheques has been successfully accepted!", "");
+          } else {
+            this.toastSvc.error("Error completing success for cheque. Please try again.", "");
+          }
+        });
       }
     });
   }
@@ -131,23 +136,46 @@ export class SuccessChequesComponent implements OnInit {
     let data = {
       header: "Cheque details",
       imageFront: selectedCheque.imageFront,
-      imageBack: selectedCheque.imageBack,
-      description: "this is a joke how to pass image gonna fail this hackathon YEET"
+      imageBack: selectedCheque.imageBack
     }
     this.fluidModalSvc.openFluidModal(data);
   }
 
   addChequeRecord(type) {
     //TODO: add record of cheque sent to server
-    switch (type) {
-      case 'review':
-        break;
-      case 'success':
-        break;
-      case 'success':
-        break;
-    }
+    return new Promise((resolve, reject) => {
+      switch (type) {
+        case 'review':
+          break;
+        case 'reject':
+          break;
+        case 'success':
+          this.processChequeSvc.addSuccessCheques({ data: this.selectedRows }).then(response => {
+            if (response) {
+              this.removeCheques();
+              resolve(true);
+            } else {
+              //clear selected rows
+              this.selectedRows = [];
+              this.successTableConfig.refresh();
+              resolve(false);
+            }
+          }).catch(error => {
+            //clear selected rows
+            this.selectedRows = [];
+            this.successTableConfig.refresh();
+            console.log('error submitting cheque', error);
+            this.toastSvc.error("Technical Error. Please contact system administrator", "");
+            reject(false);
 
+          });
+          break;
+      }
+    });
+  }
+
+
+  removeCheques() {
     //remove selected cheques from view
     if (this.successCheques.length > 1) {
       this.selectedRows.forEach(row => {

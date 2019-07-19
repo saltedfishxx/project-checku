@@ -37,7 +37,7 @@
                     <!--checkbox cell-->
                     <td class="align-middle" *ngIf="config.hasCheckBox">
                         <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)"
-                            default="true">
+                            [default]="true">
                         </mdb-checkbox>
                     </td>
                     <td *ngFor="let col of config.columns" [style.width]="col.width ? col.width : 'inherit'"
@@ -99,7 +99,7 @@
                     </td>
                     <!-- hamburger cell-->
                     <td class="align-middle" *ngIf="config.hasHamburger">
-                        <hamburger-dropdown icon="ellipsis-v" [config]="config"
+                        <hamburger-dropdown icon="ellipsis-v" [config]="config" [style.cursor]="'pointer'"
                             (itemClick)="onItemSelected($event, rowData)">
                         </hamburger-dropdown>
                     </td>

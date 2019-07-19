@@ -60,5 +60,16 @@ export class ApiCallService {
     });
   }
 
+  sendSMS(requestUrl, data) {
+    return new Promise((resolve, reject) => {
+
+      this.http.post(requestUrl, data).subscribe(response => {
+        resolve(response);
+      },
+        errorResponse => {
+          reject(errorResponse);
+        });
+    });
+  }
 
 }

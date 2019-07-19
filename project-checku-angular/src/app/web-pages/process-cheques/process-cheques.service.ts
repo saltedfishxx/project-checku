@@ -22,6 +22,7 @@ export class ProcessChequesService {
   successChequesSubj: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   responseData: any;
 
+  /****** GET METHODS  *******/
   getProcessedCheques() {
     return new Promise(resolve => {
       this.getReviewCheques().then((res: any) => {
@@ -63,6 +64,23 @@ export class ProcessChequesService {
     } else {
       return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "/success")
     }
+  }
+
+  /****** ADD TO DB METHODS  *******/
+  addReviewCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/review', data);
+  }
+
+  addRejectCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/reject', data);
+  }
+
+  addSuccessCheques(data) {
+    return this.api.addRecords(URLS.POST_CONFIRMED_CHEQUES + '/success', data);
+  }
+
+  sendSms(data) {
+    return this.api.sendSMS(URLS.POST_SMS, data);
   }
 
   changePage(tabName) {

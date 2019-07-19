@@ -17,8 +17,19 @@ export class FluidModalComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
   onPositiveClick() {
     this.action.next(true);
-}
+  }
+
+  checkText(text) {
+    switch (text) {
+      case 'Not Correct':
+      case 'Not Provided':
+        return 'text-danger';
+      case 'Provided':
+      case 'Correct':
+        return 'text-success';
+    }
+  }
 }

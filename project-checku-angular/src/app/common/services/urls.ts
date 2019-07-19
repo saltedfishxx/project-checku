@@ -12,6 +12,7 @@ export const URLS = {
     //post url methods
     POST_LOGIN: "login",
     //process cheque api calls
+    POST_CONFIRMED_CHEQUES: "addConfirmedCheques",
     POST_SCANNED_CHEQUES: "processCheques",
     POST_REJECTED_CHEQUES: "postRejectedChqe",
     POST_REVIEW_CHEQUES: "postReviewChqe",

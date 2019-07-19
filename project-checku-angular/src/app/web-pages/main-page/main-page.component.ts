@@ -106,13 +106,22 @@ export class MainPageComponent implements OnInit {
     console.log('dropdown', event);
     switch (event.id) {
       case 1:
-        this.openChequeDetails(event);
+        this.openChequeDetailsHolding(event);
     }
   }
 
-  openChequeDetails(event) {
+  openChequeDetailsReject(event) {
+    console.log('button', event);
     let addresseeCorrect = "";
     let signature = "";
+    let cheque = event.rowData;
+
+    for (let row in event.rowData) {
+      if (event.rowData[row] == "") {
+        event.rowData[row] = "Not Provided";
+      }
+    }
+
     if (event.rowData.addresseeCorrect == "false") {
       addresseeCorrect = "Correct";
     } else {
@@ -124,72 +133,62 @@ export class MainPageComponent implements OnInit {
     } else {
       signature = "Provided";
     }
-    let template = `
-    <div class="row">
-        <div class="col-4">
-            <div>
-                <img [style.width]="'400px'" class="z-depth-1"
-                    [src]="toggleChequeImg ? ` + event.rowData.imageFront + ` : ` + event.rowData.imageBack + `" />
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="mb-2"><small>Legal Information</small></div>
-            <div class="row my-0">
-                <div class="col-6">
-                    <h6 class="text-primary m-0">ADDRESSEE</h6>
-                    <p>` + addresseeCorrect + `</p>
-                </div>
-                <div class="col-6">
-                    <h6 class="text-primary m-0">DATE</h6>
-                    <p>` + event.rowData.chequeDate + `</p>
-                </div>
-            </div>
-            <div class="row my-0">
-                <div class="col-6">
-                    <h6 class="text-primary m-0">AMOUNT</h6>
-                    <p>` + event.rowData.amount + `</p>
-                </div>
-                <div class="col-6">
-                    <h6 class="text-primary m-0">SIGNATURE</h6>
-                    <p>` + signature + `</p>
-                </div>
-            </div>
+    let template = {
+      addresseeCorrect: addresseeCorrect,
+      chequeDate: cheque.chequeDate,
+      amount: "S$" + cheque.chequeAmount,
+      signature: signature,
+      chequeCustomer: cheque.chequeName,
+      chequeContact: cheque.chequeContact,
+      chequePolicyNo: cheque.chequePolicyNo,
+      chequePremiumType: cheque.chequePremiumType
+    }
 
-            <div class="d-flex mr-2 mt-4">
-                <p class="m-0 pr-2 small pt-1 text-primary">Front</p>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" [(ngModel)]="toggleChequeImg" class="custom-control-input"
-                        id="customSwitches">
-                    <label class="custom-control-label small pt-1 text-primary"
-                        for="customSwitches">Back</label>
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="mb-2"><small>Sender Information</small></div>
-            <div class="row my-0">
-                <div class="col-6">
-                    <h6 class="text-primary m-0">SENDER NAME</h6>
-                    <p>` + event.rowData.chequeCustomer + `</p>
-                </div>
-                <div class="col-6">
-                    <h6 class="text-primary m-0">CONTACT</h6>
-                    <p>` + event.rowData.chequeContact + `</p>
-                </div>
-            </div>
-            <div class="row my-0">
-                <div class="col-6">
-                    <h6 class="text-primary m-0">POLICY NUMBER</h6>
-                    <p>` + event.rowData.chequePolicyNo + `</p>
-                </div>
-                <div class="col-6">
-                    <h6 class="text-primary m-0">PREMIUM TYPE</h6>
-                    <p>` + event.rowData.chequePremiumType + `</p>
-                </div>
-            </div>
-        </div>
-</div>`
-    let selectedCheque: any = event.rowData;
+    console.log(template);
+    console.log("details for reject clicked");
+    let data = {
+      header: "Cheque details",
+      imageFront: "../../assets/img/cheques/1. sample check dh.jpg",
+      imageBack: "../../assets/img/cheques/sample check dh back.jpg",
+      template: template
+    }
+    this.fluidModalSvc.openFluidModal(data);
+  }
+
+  openChequeDetailsHolding(event) {
+    let addresseeCorrect = "";
+    let signature = "";
+    let cheque = event.rowData;
+
+    for (let row in event.rowData) {
+      if (event.rowData[row] == "") {
+        event.rowData[row] = "Not Provided";
+      }
+    }
+
+    if (event.rowData.addresseeCorrect == "false") {
+      addresseeCorrect = "Correct";
+    } else {
+      addresseeCorrect = "Not Correct"
+    }
+
+    if (event.rowData.signatureExists == "false") {
+      signature = "Not Provided";
+    } else {
+      signature = "Provided";
+    }
+    let template = {
+      addresseeCorrect: addresseeCorrect,
+      chequeDate: cheque.chequeDate,
+      amount: "S$" + cheque.amount,
+      signature: signature,
+      chequeCustomer: cheque.chequeCustomer,
+      chequeContact: cheque.chequeContact,
+      chequePolicyNo: cheque.chequePolicyNo,
+      chequePremiumType: cheque.chequePremiumType
+    }
+
+    console.log(template);
     console.log("details clicked");
     let data = {
       header: "Cheque details",
@@ -458,6 +457,7 @@ export class MainPageComponent implements OnInit {
     this.rejectedPaymentConfig.columns = cols;
     this.rejectedPaymentConfig.showPagination = false;
     this.rejectedPaymentConfig.minWidth = '1200px';
+    this.rejectedPaymentConfig.hasButton = true;
   }
 
   changeTab(selectNum) {

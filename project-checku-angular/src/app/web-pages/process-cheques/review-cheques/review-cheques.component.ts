@@ -230,11 +230,28 @@ export class ReviewChequesComponent implements OnInit {
             if (status) {
               this.reviewTableConfig.refresh();
               this.toastSvc.success("SMS has been successfully sent!", "");
+              this.addChequeRecord('review').then(added => {
+                if (added) {
+                  this.toastSvc.success("Cheque has been successfully reviewed!", "");
+                } else {
+                  this.toastSvc.error("Error completing review for cheque. Please try again.", "");
+                }
+              });
+            }
+          }).catch(error => {
+            console.log('Error in sending SMS', error);
+            this.toastSvc.error("SMS could not be sent. Please try again.");
+          });
+        } else {
+          this.addChequeRecord('review').then(added => {
+            if (added) {
+              this.toastSvc.success("Cheque has been successfully reviewed!", "");
+            } else {
+              this.toastSvc.error("Error completing review for cheque. Please try again.", "");
             }
           });
         }
 
-        this.addChequeRecord('review');
       }
     });
   }
@@ -275,24 +292,47 @@ export class ReviewChequesComponent implements OnInit {
 
   sendSms() {
     //TODO: send sms from selected Rows + add record of person sent to server
-    return new Promise(resolve => {
-      this.selectedRows = [];
-      resolve();
+    return new Promise((resolve, reject) => {
+      this.processChequeSvc.sendSms(this.selectedRows).then(res => {
+        if (res) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }).catch(error => {
+        reject(error);
+      });
     });
   }
 
   addChequeRecord(type) {
     //TODO: add record of cheque sent to server
-    switch (type) {
-      case 'review':
-        this.toastSvc.success("Cheque has been successfully reviewed!", "");
-        break;
-      case 'reject':
-        break;
-      case 'success':
-        break;
-    }
+    return new Promise((resolve, reject) => {
+      switch (type) {
+        case 'review':
+          this.processChequeSvc.addReviewCheques({ data: this.currentChequeReviewed }).then(response => {
+            if (response) {
+              this.removeCheque();
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          }).catch(error => {
+            console.log('error submitting cheque', error);
+            this.toastSvc.error("Technical Error. Please contact system administrator", "");
+            reject(false);
 
+          });
+          break;
+        case 'reject':
+          break;
+        case 'success':
+          break;
+      }
+    });
+  }
+
+  removeCheque() {
     //remove selected cheque from view
     if (this.reviewCheques.length > 1) {
       this.reviewCheques.splice(this.reviewCheques.indexOf(this.currentChequeReviewed), 1);

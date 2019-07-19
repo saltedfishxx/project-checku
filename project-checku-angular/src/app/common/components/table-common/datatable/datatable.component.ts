@@ -170,13 +170,16 @@ export class DatatableComponent implements OnInit {
         }
       }
     } else {
-      console.log("adding row to selected rows");
-      this.selectedRows.push({ id: checkBoxId, rowData: rowData });
-      if (this.selectedRows.length == allData.length)
-        this.allChecked = true;
-      else
-        this.allChecked = false;
+      if (isChecked == true) {
+        console.log("adding row to selected rows");
+        this.selectedRows.push({ id: checkBoxId, rowData: rowData });
+        if (this.selectedRows.length == allData.length)
+          this.allChecked = true;
+        else
+          this.allChecked = false;
+      }
     }
+
 
     console.log(this.selectedRows);
     this.rowSelect.emit(this.selectedRows);
@@ -211,7 +214,7 @@ export class DatatableComponent implements OnInit {
 export class TableConfig {
   nestedColumns: any[];
   columns: any[]; //field, header, width, clickable, sortable, dateFormat, style, currency, hasDollar, hasBar, isStatus
-  disableButtonsList: any[];
+  disableButtonsList: any[] = [];
   value: any[];
   valueBkup: any[]; // Backup value field when applying filter. Input not required
   disable: boolean = false;
