@@ -55,49 +55,77 @@ export class MainPageComponent implements OnInit {
   }
 
   getPendingSMS() {
-    let urls = URLS.GET_RECORDS + "/pending";
+    let urls = URLS.GET_RECORDS + "?status=pending";
     if (URLS.stubData) {
       urls = "./assets/jsonData/getPendingSMS.json";
     }
     this.api.getRecords(urls).then((response: any) => {
+      console.log("🤙 pending records");
+      console.log(response);
       this.pendingSms = response.data;
+      for (let row of this.pendingSms) {
+        for (let key in row) {
+          if (row[key] == null || row[key] == "")
+            row[key] = "---";
+        }
+      }
       this.pendingSMSConfig.value = this.pendingSms;
     });
   }
   getHoldingAccounts() {
-    let urls = URLS.GET_RECORDS + "/holding";
+    let urls = URLS.GET_RECORDS + "?status=holding";
     if (URLS.stubData) {
       urls = "./assets/jsonData/getHoldingAccount.json";
     }
     this.api.getRecords(urls).then((response: any) => {
       this.holdingAccount = response.data;
       for (let row of this.holdingAccount) {
-        if (row.paymentStatus == "holdingPending") {
+        if (row.Status == "holdingPending") {
           row.status = "pending";
-        } else if (row.paymentStatus == "holdingUnverified") {
+        } else if (row.Status == "holdingUnverified") {
           row.status = "unverified";
         }
       }
+
+      for (let row of this.holdingAccount) {
+        for (let key in row) {
+          if (row[key] == null || row[key] == "")
+            row[key] = "---";
+        }
+      }
+
       this.holdingAccountConfig.value = this.holdingAccount;
     });
   }
   getSuccessPayments() {
-    let urls = URLS.GET_RECORDS + "/success";
+    let urls = URLS.GET_RECORDS + "?status=success";
     if (URLS.stubData) {
       urls = "./assets/jsonData/getSuccessPayments.json";
     }
     this.api.getRecords(urls).then((response: any) => {
       this.successPayment = response.data;
+      for (let row of this.successPayment) {
+        for (let key in row) {
+          if (row[key] == null || row[key] == "")
+            row[key] = "---";
+        }
+      }
       this.successPaymentConfig.value = this.successPayment;
     });
   }
   getRejetedPayments() {
-    let urls = URLS.GET_RECORDS + "/rejected";
+    let urls = URLS.GET_RECORDS + "?status=reject";
     if (URLS.stubData) {
       urls = "./assets/jsonData/getRejectedPayments.json";
     }
     this.api.getRecords(urls).then((response: any) => {
       this.rejectedPayment = response.data;
+      for (let row of this.rejectedPayment) {
+        for (let key in row) {
+          if (row[key] == null || row[key] == "")
+            row[key] = "---";
+        }
+      }
       this.rejectedPaymentConfig.value = this.rejectedPayment;
     });
   }
@@ -117,7 +145,7 @@ export class MainPageComponent implements OnInit {
     let cheque = event.rowData;
 
     for (let row in event.rowData) {
-      if (event.rowData[row] == "") {
+      if (event.rowData[row] == "" || event.rowData[row] == "---") {
         event.rowData[row] = "Not Provided";
       }
     }
@@ -161,7 +189,7 @@ export class MainPageComponent implements OnInit {
     let cheque = event.rowData;
 
     for (let row in event.rowData) {
-      if (event.rowData[row] == "") {
+      if (event.rowData[row] == "" || event.rowData[row] == "---") {
         event.rowData[row] = "Not Provided";
       }
     }
@@ -309,7 +337,7 @@ export class MainPageComponent implements OnInit {
       },
       {
         header: 'Reviewed By',
-        field: 'reviewedBy',
+        field: 'ReviewedBy',
         width: '15%'
       },
       {

@@ -92,7 +92,7 @@
           </div>
           <div class="tab-panel animated fadeIn faster" *ngIf="tab === 2" role="tabpanel">
             <div class="d-flex m-0 row justify-content-center">
-              <datatable [config]=" holdingAccountConfig" class="w-100 p-4" (clicked)="dropdownSelected($event)">
+              <datatable [config]=" holdingAccountConfig" class="w-100 p-4" (itemClick)="dropdownSelected($event)">
               </datatable>
             </div>
           </div>

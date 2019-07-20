@@ -130,7 +130,8 @@ def ocr(frontLink, backLink):
     if addressee:
         prediction = json.loads(AI.getAIResult(
             json.dumps(chequeDetail))).get("prediction", [])
-        if prediction[0].get("score", None) == 1.0:
+        
+        if float(prediction[0].get("score", None)) > 0.95 and len(prediction) == 1:
             print(prediction)
             nric = prediction[0].get("nric", None)
             policyNo = prediction[0].get("policyno", None)

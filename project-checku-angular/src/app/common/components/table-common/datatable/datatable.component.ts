@@ -110,6 +110,9 @@ export class DatatableComponent implements OnInit {
   @Input() buttonColor: string = "";
   @Input() buttonWidth: string = "110px";
 
+  //checkbos properties
+  @Input() checkBoxText: string = "";
+
   //button events
   @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
 

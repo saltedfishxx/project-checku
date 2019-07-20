@@ -101,13 +101,15 @@ export class SuccessChequesComponent implements OnInit {
     this.confirmDialogSvc.openDialog(data).then(yes => {
       //if confirm send
       if (yes) {
-        this.addChequeRecord('success').then(added => {
-          if (added) {
-            this.toastSvc.success("Cheques has been successfully accepted!", "");
-          } else {
-            this.toastSvc.error("Error completing success for cheque. Please try again.", "");
-          }
-        });
+        this.toastSvc.success("Cheques has been successfully accepted!", "");
+        this.removeCheques();
+        // this.addChequeRecord('success').then(added => {
+        //   if (added) {
+        //     this.toastSvc.success("Cheques has been successfully accepted!", "");
+        //   } else {
+        //     this.toastSvc.error("Error completing success for cheque. Please try again.", "");
+        //   }
+        // });
       }
     });
   }

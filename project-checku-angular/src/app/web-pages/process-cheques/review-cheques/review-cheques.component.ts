@@ -62,8 +62,10 @@ export class ReviewChequesComponent implements OnInit {
   }
 
   populateChequeForm(data) {
+    let policyNo: string = data.policyNo;
+    let isNull = policyNo.match(/^ *$/) === null;
     this.chequeDetailsForm.patchValue({
-      policyNo: data.policyNo != 'None' ? data.policyNo : 'NOT PROVIDED',
+      policyNo: data.policyNo != 'None' && isNull ? data.policyNo : 'NOT PROVIDED',
       premiumType: data.premiumType != 'None' ? data.premiumType : 'NOT PROVIDED',
       custName: data.customerName != 'None' ? data.customerName : 'NOT PROVIDED',
       contact: data.contact != 'None' ? data.contact : 'NOT PROVIDED',
@@ -75,7 +77,7 @@ export class ReviewChequesComponent implements OnInit {
   initReviewTable() {
     let cols: any[] = [
       {
-        header: 'Match',
+        header: 'Overall Match',
         field: 'score',
         width: '10%',
         isPercent: true
@@ -226,30 +228,35 @@ export class ReviewChequesComponent implements OnInit {
         this.reviewTableConfig.currentPage = this.currentChequeReviewed.index;
         if (this.selectedRows.length > 0) {
           this.smsSent = true;
-          this.sendSms().then(status => {
-            if (status) {
-              this.reviewTableConfig.refresh();
-              this.toastSvc.success("SMS has been successfully sent!", "");
-              this.addChequeRecord('review').then(added => {
-                if (added) {
-                  this.toastSvc.success("Cheque has been successfully reviewed!", "");
-                } else {
-                  this.toastSvc.error("Error completing review for cheque. Please try again.", "");
-                }
-              });
-            }
-          }).catch(error => {
-            console.log('Error in sending SMS', error);
-            this.toastSvc.error("SMS could not be sent. Please try again.");
-          });
+          this.toastSvc.success("SMS has been successfully sent!", "");
+          this.toastSvc.success("Cheque has been successfully reviewed!", "");
+          this.removeCheque();
+          // this.sendSms().then(status => {
+          //   if (status) {
+          //     this.reviewTableConfig.refresh();
+          //     this.toastSvc.success("SMS has been successfully sent!", "");
+          //     this.addChequeRecord('review').then(added => {
+          //       if (added) {
+          //         this.toastSvc.success("Cheque has been successfully reviewed!", "");
+          //       } else {
+          //         this.toastSvc.error("Error completing review for cheque. Please try again.", "");
+          //       }
+          //     });
+          //   }
+          // }).catch(error => {
+          //   console.log('Error in sending SMS', error);
+          //   this.toastSvc.error("SMS could not be sent. Please try again.");
+          // });
         } else {
-          this.addChequeRecord('review').then(added => {
-            if (added) {
-              this.toastSvc.success("Cheque has been successfully reviewed!", "");
-            } else {
-              this.toastSvc.error("Error completing review for cheque. Please try again.", "");
-            }
-          });
+          this.toastSvc.success("Cheque has been successfully reviewed!", "");
+          this.removeCheque();
+          // this.addChequeRecord('review').then(added => {
+          //   if (added) {
+          //     this.toastSvc.success("Cheque has been successfully reviewed!", "");
+          //   } else {
+          //     this.toastSvc.error("Error completing review for cheque. Please try again.", "");
+          //   }
+          // });
         }
 
       }

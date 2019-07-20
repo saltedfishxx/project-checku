@@ -13,7 +13,8 @@
             <thead class="sticky-top blue-grey lighten-5">
                 <tr>
                     <!--checkbox col-->
-                    <th *ngIf="config.hasCheckBox" [style.width]="'1%'">
+                    <th *ngIf="config.hasCheckBox" class="text-center" [style.width]="'1%'">
+                        <span class="h6" *ngIf="checkBoxText">{{ checkBoxText }}</span>
                         <mdb-checkbox default="true" [checked]="allChecked"
                             (change)="onSelectAll($event, config.value)"></mdb-checkbox>
                     </th>
@@ -35,7 +36,7 @@
                     *ngFor="let rowData of config.value; let i = index">
                     <!-- <div *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"> -->
                     <!--checkbox cell-->
-                    <td class="align-middle" *ngIf="config.hasCheckBox">
+                    <td class="align-middle text-center" *ngIf="config.hasCheckBox">
                         <mdb-checkbox [checked]="selectAll" (change)="onRowSelect($event, rowData, i, config.value)"
                             [default]="true">
                         </mdb-checkbox>

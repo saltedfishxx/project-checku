@@ -26,28 +26,19 @@ def main():
 
 
 ######################### GET METHODS ################################
-@app.route('/getPendingRec', methods=['GET'])
-def getPendingRecords():
-
-    # returns reponse
-    return jsonify({'data': "get pending record is called."})
-
-
-@app.route('/getHoldingRec', methods=['GET'])
-def getHoldingRecords():
-    # returns reponse
-    return jsonify({'data': "get holding record is called."})
-
-
-@app.route('/getSuccessRec', methods=['GET'])
-def getSuccessRecords():
-    return jsonify({'data': "get success record is called."})
-
-
-@app.route('/getRejectedRec', methods=['GET'])
-def getRejectedRecords():
-    # returns reponse
-    return jsonify({'data': "get rejected record is called."})
+@app.route('/getRecords', methods=['GET'])
+def getRecords():
+    status = request.args.get('status')
+    if status == 'pending':
+        return db.getCheques("getPendingRec")
+    elif status == 'success':
+        return db.getCheques("getSuccessRec")
+    elif status == 'reject':
+        return db.getCheques("getRejectedRec")
+    elif status == 'holding':
+        return db.getCheques("getHoldingRec")
+    else:
+        return jsonify({'status': 400, 'data': 'Invalid status'})
 
 
 ######################## POST METHODS ################################
@@ -98,7 +89,6 @@ def scanCheque():
         status = ocr.ocr(cheque["front"]["url"], cheque["back"]["url"])
         if(status == 400):
             return jsonify({'status': status})
-            break
     return jsonify({'status': status})
 
 

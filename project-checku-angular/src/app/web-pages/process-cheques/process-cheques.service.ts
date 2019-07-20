@@ -31,10 +31,12 @@ export class ProcessChequesService {
         this.reviewCheques = res.data;
         this.updateReviewCheques(this.reviewCheques);
       });
-      this.getRejectCheques().then((res: any) => {
-        this.rejectCheques = res.data;
-        this.updateRejectCheques(this.rejectCheques);
-      });
+      // this.getRejectCheques().then((res: any) => {
+
+      // });
+      this.rejectCheques = [];
+      this.updateRejectCheques(this.rejectCheques);
+
       this.getSuccessCheques().then((res: any) => {
         this.successCheques = res.data;
         this.updateSuccessCheques(this.successCheques);
@@ -53,13 +55,13 @@ export class ProcessChequesService {
     }
   }
 
-  getRejectCheques() {
-    if (URLS.stubData) {
-      return this.api.getRecords('./assets/jsonData/processed_cheques_reject.json')
-    } else {
-      return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "?status=reject")
-    }
-  }
+  // getRejectCheques() {
+  //   //if (URLS.stubData) {
+  //   return this.api.getRecords('./assets/jsonData/processed_cheques_reject.json')
+  //   // } else {
+  //   //   return this.api.getRecords(URLS.GET_PROCESSED_CHEQUES + "?status=reject")
+  //   // }
+  // }
 
   getSuccessCheques() {
     if (URLS.stubData) {
@@ -122,8 +124,8 @@ export class ProcessChequesService {
   }
 
   setUnfinishedCheques() {
-    let count = this.successCheques.length + this.rejectCheques.length + this.reviewCheques.length;
-    localStorage.setItem("processCount", count.toString());
+    // let count = this.successCheques.length + this.rejectCheques.length + this.reviewCheques.length;
+    // localStorage.setItem("processCount", count.toString());
   }
 
 }
